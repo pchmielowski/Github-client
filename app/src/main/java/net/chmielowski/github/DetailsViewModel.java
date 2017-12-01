@@ -1,9 +1,21 @@
 package net.chmielowski.github;
 
-public class DetailsViewModel {
-    public final String name;
+import android.databinding.ObservableField;
 
-    DetailsViewModel(final long id) {
-        name = String.valueOf(id);
+import javax.inject.Inject;
+
+public final class DetailsViewModel {
+    public final ObservableField<String> name = new ObservableField<>();
+
+    private final ReposRepository service;
+
+    @Inject
+    DetailsViewModel(final ReposRepository service) {
+        this.service = service;
+    }
+
+    void setRepo(final long repo) {
+        service.repository(repo)
+                .subscribe(item -> name.set(item.fullName));
     }
 }

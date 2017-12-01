@@ -1,6 +1,7 @@
 package net.chmielowski.github;
 
 import android.support.annotation.NonNull;
+import android.util.LongSparseArray;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
@@ -47,6 +48,14 @@ abstract class MainModule {
                         .addNetworkInterceptor(new StethoInterceptor())
                         .build())
                 .build();
+    }
+
+
+    @Provides
+    @Singleton
+    @NonNull
+    static LongSparseArray<Repositories.Item> provideCache() {
+        return new LongSparseArray<>();
     }
 
 }
