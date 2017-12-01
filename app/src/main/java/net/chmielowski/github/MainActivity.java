@@ -1,18 +1,18 @@
 package net.chmielowski.github;
 
+import android.content.Intent;
 import android.databinding.DataBindingUtil;
-import android.databinding.ViewDataBinding;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+
+import com.jakewharton.rxbinding2.view.RxView;
 
 import net.chmielowski.github.databinding.ActivityMainBinding;
 import net.chmielowski.github.databinding.ItemRepoBinding;
@@ -22,6 +22,10 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
+
+import io.reactivex.Observable;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 public class MainActivity extends AppCompatActivity {
     @Inject
@@ -49,6 +53,13 @@ public class MainActivity extends AppCompatActivity {
         super.onResume();
         model.fetchData()
                 .subscribe(repositories -> adapter.update(repositories));
+        // TODO: unsubscribe
+        adapter.observeClicks()
+                .subscribe(id -> {
+                    final Bundle options = new Bundle();
+                    options.putLong(DetailsActivity.KEY_ID, id);
+                    startActivity(new Intent(this, DetailsActivity.class), options);
+                });
     }
 
     @Override
@@ -88,9 +99,24 @@ public class MainActivity extends AppCompatActivity {
                     R.layout.item_repo, parent, false));
         }
 
+        private final Subject<Long> clickSubject = PublishSubject.create();
+
+        Observable<Long> observeClicks() {
+            return clickSubject;
+        }
+
         @Override
         public void onBindViewHolder(final ViewHolder holder, final int position) {
-            holder.binding.setModel(items.get(position));
+            final RepositoryViewModel model = items.get(position);
+            holder.bind(model);
+            RxView.clicks(holder.itemView)
+                    .map(__ -> model.id)
+                    .subscribe(clickSubject);
+        }
+
+        @Override
+        public void onViewRecycled(final ViewHolder holder) {
+            super.onViewRecycled(holder);
         }
 
         @Override
@@ -110,6 +136,10 @@ public class MainActivity extends AppCompatActivity {
             ViewHolder(final ItemRepoBinding binding) {
                 super(binding.getRoot());
                 this.binding = binding;
+            }
+
+            private void bind(final RepositoryViewModel model) {
+                binding.setModel(model);
             }
         }
     }

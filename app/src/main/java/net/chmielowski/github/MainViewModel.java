@@ -21,4 +21,8 @@ final class MainViewModel {
                         .map(RepositoryViewModel::new)
                         .collect(Collectors.toList()));
     }
+
+    void onClicked(final Long id) {
+
+    }
 }
