@@ -1,6 +1,11 @@
 package net.chmielowski.github;
 
+import java.util.Collection;
+import java.util.stream.Collectors;
+
 import javax.inject.Inject;
+
+import io.reactivex.Single;
 
 final class MainViewModel {
     private final ReposRepository repository;
@@ -8,7 +13,12 @@ final class MainViewModel {
     @Inject
     MainViewModel(final ReposRepository repository) {
         this.repository = repository;
+    }
 
-        repository.fetchData();
+    Single<Collection<RepositoryViewModel>> fetchData() {
+        return repository.fetchData()
+                .map(repositories -> repositories.items.stream()
+                        .map(RepositoryViewModel::new)
+                        .collect(Collectors.toList()));
     }
 }

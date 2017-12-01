@@ -1,5 +1,7 @@
 package net.chmielowski.github;
 
+import io.reactivex.Single;
+
 interface ReposRepository {
-    void fetchData();
+    Single<Repositories> fetchData();
 }

@@ -1,8 +1,12 @@
 package net.chmielowski.github;
 
-import android.support.annotation.Nullable;
+import java.util.Collection;
 
 final class Repositories {
-    @Nullable
-    Long total_count;
+
+    Collection<Item> items;
+
+    final class Item {
+        String fullName;
+    }
 }
