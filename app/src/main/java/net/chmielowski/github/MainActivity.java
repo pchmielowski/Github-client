@@ -56,9 +56,9 @@ public class MainActivity extends AppCompatActivity {
         // TODO: unsubscribe
         adapter.observeClicks()
                 .subscribe(id -> {
-                    final Bundle options = new Bundle();
-                    options.putLong(DetailsActivity.KEY_ID, id);
-                    startActivity(new Intent(this, DetailsActivity.class), options);
+                    final Intent intent = new Intent(this, DetailsActivity.class);
+                    intent.putExtra(DetailsActivity.KEY_ID, id);
+                    startActivity(intent);
                 });
     }
 
