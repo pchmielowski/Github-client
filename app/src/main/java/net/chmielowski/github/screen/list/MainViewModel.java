@@ -1,5 +1,7 @@
 package net.chmielowski.github.screen.list;
 
+import android.databinding.ObservableBoolean;
+
 import net.chmielowski.github.ReposRepository;
 import net.chmielowski.github.RepositoryViewModel;
 
@@ -10,8 +12,10 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-final class MainViewModel {
+public final class MainViewModel {
     private final ReposRepository repository;
+
+    public final ObservableBoolean searchVisible = new ObservableBoolean(false);
 
     @Inject
     MainViewModel(final ReposRepository repository) {
@@ -25,7 +29,7 @@ final class MainViewModel {
                         .collect(Collectors.toList()));
     }
 
-    void onClicked(final Long id) {
-
+    public void fabClicked() {
+        searchVisible.set(true);
     }
 }

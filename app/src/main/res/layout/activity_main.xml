@@ -3,6 +3,13 @@
         xmlns:app="http://schemas.android.com/apk/res-auto"
         xmlns:tools="http://schemas.android.com/tools">
 
+    <data>
+
+        <variable
+            name="model"
+            type="net.chmielowski.github.screen.list.MainViewModel"/>
+    </data>
+
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -27,16 +34,28 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="net.chmielowski.github.screen.list.MainActivity"
-            tools:showIn="@layout/activity_main">
+            tools:showIn="@layout/activity_main"
+            tools:ignore="GradleDependency">
+
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:inputType="text"
+                app:layout_constraintBottom_toTopOf="@+id/list"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:visibility="@{model.searchVisible}"
+                tools:ignore="LabelFor"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toBottomOf="@id/search"/>
 
         </android.support.constraint.ConstraintLayout>
 
@@ -46,7 +65,8 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
-            app:srcCompat="@android:drawable/ic_dialog_email"/>
+            android:onClick="@{() -> model.fabClicked()}"
+            app:srcCompat="@drawable/ic_search"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

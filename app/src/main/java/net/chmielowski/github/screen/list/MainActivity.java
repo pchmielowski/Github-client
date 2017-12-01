@@ -42,14 +42,12 @@ public class MainActivity extends AppCompatActivity {
         ((CustomApplication) getApplication()).component().inject(this);
         // TODO: binding
         final ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding.setModel(model);
         setSupportActionBar(binding.toolbar);
 
         binding.list.setLayoutManager(new LinearLayoutManager(this));
         adapter = new Adapter(MainActivity.this);
         binding.list.setAdapter(adapter);
-
-        binding.fab.setOnClickListener(view -> Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show());
     }
 
     @Override
