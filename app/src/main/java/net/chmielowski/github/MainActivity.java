@@ -47,8 +47,8 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: unsubscribe
-        model.fetchData().subscribe(repositories -> adapter.update(repositories));
+        model.fetchData()
+                .subscribe(repositories -> adapter.update(repositories));
     }
 
     @Override
