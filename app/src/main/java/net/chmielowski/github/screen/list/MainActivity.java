@@ -1,4 +1,4 @@
-package net.chmielowski.github;
+package net.chmielowski.github.screen.list;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -14,8 +14,12 @@ import android.view.ViewGroup;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
+import net.chmielowski.github.CustomApplication;
+import net.chmielowski.github.R;
+import net.chmielowski.github.RepositoryViewModel;
 import net.chmielowski.github.databinding.ActivityMainBinding;
 import net.chmielowski.github.databinding.ItemRepoBinding;
+import net.chmielowski.github.screen.details.DetailsActivity;
 
 import java.util.ArrayList;
 import java.util.Collection;

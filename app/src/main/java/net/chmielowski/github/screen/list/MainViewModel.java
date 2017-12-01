@@ -1,4 +1,7 @@
-package net.chmielowski.github;
+package net.chmielowski.github.screen.list;
+
+import net.chmielowski.github.ReposRepository;
+import net.chmielowski.github.RepositoryViewModel;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -17,7 +20,7 @@ final class MainViewModel {
 
     Single<Collection<RepositoryViewModel>> fetchData() {
         return repository.fetchData()
-                .map(repositories -> repositories.items.stream()
+                .map(repositories -> repositories.stream()
                         .map(RepositoryViewModel::new)
                         .collect(Collectors.toList()));
     }

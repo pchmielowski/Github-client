@@ -1,8 +1,8 @@
 package net.chmielowski.github;
 
-import android.util.Log;
 import android.util.LongSparseArray;
 
+import java.util.Collection;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -22,13 +22,14 @@ final class ReposRepositoryImpl implements ReposRepository {
     }
 
     @Override
-    public Single<Repositories> fetchData() {
+    public Single<Collection<Repositories.Item>> fetchData() {
         return service.searchRepositories("java")
-                .doOnSuccess(repositories ->
-                        repositories.items
-                                .forEach(item -> {
-                                    cache.put(item.id, item);
-                                }))
+                .map(repositories ->
+                        repositories.items)
+                .doOnSuccess(repositories -> repositories
+                        .forEach(item -> {
+                            cache.put(item.id, item);
+                        }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

@@ -1,6 +1,9 @@
-package net.chmielowski.github;
+package net.chmielowski.github.screen.details;
 
 import android.databinding.ObservableField;
+
+import net.chmielowski.github.ReposRepository;
+import net.chmielowski.github.RepositoryViewModel;
 
 import javax.inject.Inject;
 
@@ -16,6 +19,7 @@ public final class DetailsViewModel {
 
     void setRepo(final long repo) {
         service.repository(repo)
-                .subscribe(item -> name.set(item.fullName));
+                .map(RepositoryViewModel::new)
+                .subscribe(item -> name.set(item.name));
     }
 }

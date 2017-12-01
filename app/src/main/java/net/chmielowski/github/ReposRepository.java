@@ -1,10 +1,12 @@
 package net.chmielowski.github;
 
+import java.util.Collection;
+
 import io.reactivex.Single;
 
 // TODO: rename to service
-interface ReposRepository {
-    Single<Repositories> fetchData();
+public interface ReposRepository {
+    Single<Collection<Repositories.Item>> fetchData();
 
     Single<Repositories.Item> repository(long repo);
 }

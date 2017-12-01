@@ -2,11 +2,13 @@ package net.chmielowski.github;
 
 import java.util.Collection;
 
-final class Repositories {
+// Seems like Android Studio can not deduce, that here we need public
+@SuppressWarnings("WeakerAccess")
+public final class Repositories {
 
     Collection<Item> items;
 
-    final class Item {
+    public final class Item {
         Long id;
         String fullName;
     }
