@@ -22,8 +22,8 @@ public final class MainViewModel {
         this.repository = repository;
     }
 
-    Single<Collection<RepositoryViewModel>> fetchData() {
-        return repository.fetchData()
+    Single<Collection<RepositoryViewModel>> fetchData(final String text) {
+        return repository.fetchData(text)
                 .map(repositories -> repositories.stream()
                         .map(RepositoryViewModel::new)
                         .collect(Collectors.toList()));
@@ -32,4 +32,5 @@ public final class MainViewModel {
     public void fabClicked() {
         searchVisible.set(true);
     }
+
 }

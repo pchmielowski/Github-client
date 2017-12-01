@@ -3,7 +3,6 @@ package net.chmielowski.github.screen.list;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -13,6 +12,7 @@ import android.view.MenuItem;
 import android.view.ViewGroup;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
@@ -24,6 +24,7 @@ import net.chmielowski.github.screen.details.DetailsActivity;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
@@ -34,17 +35,18 @@ import io.reactivex.subjects.Subject;
 public class MainActivity extends AppCompatActivity {
     @Inject
     MainViewModel model;
+
     private Adapter adapter;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((CustomApplication) getApplication()).component().inject(this);
         // TODO: binding
-        final ActivityMainBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setModel(model);
         setSupportActionBar(binding.toolbar);
-
         binding.list.setLayoutManager(new LinearLayoutManager(this));
         adapter = new Adapter(MainActivity.this);
         binding.list.setAdapter(adapter);
@@ -53,8 +55,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        model.fetchData()
-                .subscribe(repositories -> adapter.update(repositories));
         // TODO: unsubscribe
         adapter.observeClicks()
                 .subscribe(id -> {
@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity {
                     intent.putExtra(DetailsActivity.KEY_ID, id);
                     startActivity(intent);
                 });
+        RxTextView.textChanges(binding.search)
+                .debounce(1, TimeUnit.SECONDS)
+                .map(String::valueOf)
+                .filter(text -> !text.isEmpty())
+                .flatMapSingle(text -> model.fetchData(text))
+                .subscribe(repositories -> adapter.update(repositories));
     }
 
     @Override

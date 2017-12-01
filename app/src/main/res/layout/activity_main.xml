@@ -34,8 +34,8 @@
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
             tools:context="net.chmielowski.github.screen.list.MainActivity"
-            tools:showIn="@layout/activity_main"
-            tools:ignore="GradleDependency">
+            tools:ignore="GradleDependency"
+            tools:showIn="@layout/activity_main">
 
             <EditText
                 android:id="@+id/search"
@@ -66,7 +66,8 @@
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> model.fabClicked()}"
-            app:srcCompat="@drawable/ic_search"/>
+            app:srcCompat="@drawable/ic_search"
+            app:visibility="@{!model.searchVisible}"/>
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
