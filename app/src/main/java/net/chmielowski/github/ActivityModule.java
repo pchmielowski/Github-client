@@ -25,7 +25,7 @@ final class ActivityModule {
         return activity;
     }
 
-    /*@ActivityContext*/
+    @ActivityContext
     @NonNull
     @Provides
     Context provideContext() {
