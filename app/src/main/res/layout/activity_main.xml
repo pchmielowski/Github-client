@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="model"
-            type="net.chmielowski.github.screen.list.ListViewModel"/>
+            type="net.chmielowski.github.screen.list.ListViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
@@ -25,7 +25,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="?attr/actionBarSize"
                 android:background="?attr/colorPrimary"
-                app:popupTheme="@style/AppTheme.PopupOverlay"/>
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
 
         </android.support.design.widget.AppBarLayout>
 
@@ -45,8 +45,8 @@
                 app:layout_constraintBottom_toTopOf="@+id/list"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:visibility="@{model.searchVisible}"
-                tools:ignore="LabelFor"/>
+                app:visibility="@{model.inputVisible}"
+                tools:ignore="LabelFor" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
@@ -55,7 +55,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search"/>
+                app:layout_constraintTop_toBottomOf="@id/search" />
 
         </android.support.constraint.ConstraintLayout>
 
@@ -67,7 +67,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> model.fabClicked()}"
             app:srcCompat="@drawable/ic_search"
-            app:visibility="@{model.fabVisible}" />
+            app:visibility="@{model.searchVisible}" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>

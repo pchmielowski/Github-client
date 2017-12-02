@@ -25,7 +25,7 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 @ActivityScope
-public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements RepositoriesView {
+public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements ResultsView {
     private final Context context;
     private final List<RepositoryViewModel> items = new ArrayList<>();
 

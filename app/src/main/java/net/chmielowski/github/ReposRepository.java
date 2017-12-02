@@ -6,7 +6,7 @@ import io.reactivex.Single;
 
 // TODO: rename to service
 public interface ReposRepository {
-    Single<Collection<Repositories.Item>> fetchData(final String query);
+    Single<Collection<Repositories.Item>> items(final String query);
 
-    Single<Repositories.Item> repository(long repo);
+    Single<Repositories.Item> item(long id);
 }

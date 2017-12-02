@@ -22,7 +22,7 @@ final class ReposRepositoryImpl implements ReposRepository {
     }
 
     @Override
-    public Single<Collection<Repositories.Item>> fetchData(final String query) {
+    public Single<Collection<Repositories.Item>> items(final String query) {
         return service.searchRepositories(query)
                 .map(repositories ->
                         repositories.items)
@@ -35,8 +35,8 @@ final class ReposRepositoryImpl implements ReposRepository {
     }
 
     @Override
-    public Single<Repositories.Item> repository(final long repo) {
+    public Single<Repositories.Item> item(final long id) {
         //noinspection ConstantConditions
-        return Optional.ofNullable(cache.get(repo)).map(Single::just).get(); // TODO: fetch data
+        return Optional.ofNullable(cache.get(id)).map(Single::just).get(); // TODO: fetch data
     }
 }

@@ -50,7 +50,7 @@ public class ListActivity extends AppCompatActivity {
                 });
         RxTextView.textChanges(binding.search)
                 .map(String::valueOf)
-                .subscribe(t -> model.onTextEntered(t));
+                .subscribe(t -> model.onQueryChanged(t));
     }
 
     @Override

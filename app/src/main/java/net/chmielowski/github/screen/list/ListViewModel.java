@@ -9,43 +9,43 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-// TODO: SearchViewModel, SearchActivity, ResultsView etc
+// TODO: SearchViewModel, SearchActivity
 public final class ListViewModel {
     private final ReposRepository repository;
-    private final RepositoriesView adapter; // TODO: RepositoriesView
+    private final ResultsView results;
 
-    public final ObservableBoolean searchVisible = new ObservableBoolean(true);
-    public final ObservableBoolean fabVisible = new ObservableBoolean(false);
+    public final ObservableBoolean inputVisible = new ObservableBoolean(true);
+    public final ObservableBoolean searchVisible = new ObservableBoolean(false);
     private String query;
 
     @Inject
-    public ListViewModel(final ReposRepository repository, final RepositoriesView adapter) {
+    public ListViewModel(final ReposRepository repository, final ResultsView results) {
         this.repository = repository;
-        this.adapter = adapter;
+        this.results = results;
     }
 
-    void onTextEntered(final String text) {
-        fabVisible.set(!text.isEmpty());
-        query = text; // TODO: keep in Realm
+    void onQueryChanged(final String query) {
+        searchVisible.set(!query.isEmpty());
+        this.query = query; // TODO: keep in Realm
     }
 
     void onScreenAppeared() {
-//        fetchData();
+
+    }
+
+    public void onSearchClicked() {
+        fetchData();
     }
 
     private void fetchData() {
-        repository.fetchData(query())
+        repository.items(query())
                 .map(repositories -> repositories.stream()
                         .map(RepositoryViewModel::new)
                         .collect(Collectors.toList()))
-                .subscribe(adapter::update);
+                .subscribe(results::update);
     }
 
     private String query() {
         return query; // if null, get from Realm
-    }
-
-    public void fabClicked() {
-        fetchData();
     }
 }

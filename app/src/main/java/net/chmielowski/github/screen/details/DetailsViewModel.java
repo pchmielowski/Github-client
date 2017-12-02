@@ -18,7 +18,7 @@ public final class DetailsViewModel {
     }
 
     void setRepo(final long repo) {
-        service.repository(repo)
+        service.item(repo)
                 .map(RepositoryViewModel::new)
                 .subscribe(item -> name.set(item.name));
     }
