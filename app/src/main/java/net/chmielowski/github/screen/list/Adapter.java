@@ -1,13 +1,14 @@
 package net.chmielowski.github.screen.list;
 
+import android.content.Context;
 import android.databinding.DataBindingUtil;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
+import net.chmielowski.github.ActivityContext;
 import net.chmielowski.github.R;
 import net.chmielowski.github.RepositoryViewModel;
 import net.chmielowski.github.databinding.ItemRepoBinding;
@@ -23,12 +24,11 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-    private final AppCompatActivity context;
+    private final Context context;
     private final List<RepositoryViewModel> items = new ArrayList<>();
 
-    // TODO: context
     @Inject
-    Adapter(final AppCompatActivity context) {
+    Adapter(@ActivityContext final Context context) {
         this.context = context;
     }
 

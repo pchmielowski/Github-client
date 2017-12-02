@@ -1,5 +1,6 @@
 package net.chmielowski.github;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
@@ -18,6 +19,13 @@ final class ActivityModule {
     @NonNull
     @Provides
     AppCompatActivity provideActivity() {
+        return activity;
+    }
+
+    @ActivityContext
+    @NonNull
+    @Provides
+    Context provideContext() {
         return activity;
     }
 }
