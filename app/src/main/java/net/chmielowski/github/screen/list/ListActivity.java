@@ -50,11 +50,9 @@ public class ListActivity extends AppCompatActivity {
                     startActivity(intent);
                 });
         RxTextView.textChanges(binding.search)
-                .debounce(1, TimeUnit.SECONDS)
                 .map(String::valueOf)
                 .filter(text -> !text.isEmpty())
-                .flatMapSingle(text -> model.fetchData(text))
-                .subscribe(repositories -> adapter.update(repositories));
+                .subscribe(t -> model.onTextEntered(t));
     }
 
     @Override

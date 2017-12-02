@@ -3,6 +3,7 @@ package net.chmielowski.github.screen.list;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -18,18 +19,21 @@ import java.util.Collection;
 import java.util.List;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
-final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+//@Singleton
+public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements RepositoriesView {
     private final Context context;
     private final List<RepositoryViewModel> items = new ArrayList<>();
 
-    @Inject
-    Adapter(@ActivityContext final Context context) {
+//    @Inject
+public Adapter(/*@ActivityContext*/ final Context context) {
         this.context = context;
+        Log.d("pchm", "Creating Adapter");
     }
 
     @Override
