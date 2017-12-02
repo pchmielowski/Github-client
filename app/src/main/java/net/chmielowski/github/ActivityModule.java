@@ -4,13 +4,13 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
-import net.chmielowski.github.screen.list.Adapter;
 import net.chmielowski.github.screen.list.ListViewModel;
+import net.chmielowski.github.screen.list.RepositoriesView;
 
 import dagger.Module;
 import dagger.Provides;
 
-@Module
+@Module(includes = BindingModule.class)
 final class ActivityModule {
     @NonNull
     private final AppCompatActivity activity;
@@ -33,12 +33,7 @@ final class ActivityModule {
     }
 
     @Provides
-    ListViewModel provideListViewModel(ReposRepository service, Adapter adapter) {
+    ListViewModel provideListViewModel(ReposRepository service, RepositoriesView adapter) {
         return new ListViewModel(service, adapter);
-    }
-
-    @Provides
-    Adapter provideAdapter(Context context) {
-        return new Adapter(context);
     }
 }

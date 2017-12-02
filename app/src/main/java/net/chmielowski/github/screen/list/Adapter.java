@@ -10,6 +10,7 @@ import android.view.ViewGroup;
 import com.jakewharton.rxbinding2.view.RxView;
 
 import net.chmielowski.github.ActivityContext;
+import net.chmielowski.github.ActivityScope;
 import net.chmielowski.github.R;
 import net.chmielowski.github.RepositoryViewModel;
 import net.chmielowski.github.databinding.ItemRepoBinding;
@@ -25,12 +26,12 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
-//@Singleton
+@ActivityScope
 public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements RepositoriesView {
     private final Context context;
     private final List<RepositoryViewModel> items = new ArrayList<>();
 
-//    @Inject
+    @Inject
 public Adapter(/*@ActivityContext*/ final Context context) {
         this.context = context;
         Log.d("pchm", "Creating Adapter");
@@ -67,7 +68,8 @@ public Adapter(/*@ActivityContext*/ final Context context) {
         return items.size();
     }
 
-    void update(final Collection<RepositoryViewModel> repositories) {
+    @Override
+    public void update(final Collection<RepositoryViewModel> repositories) {
         items.clear();
         items.addAll(repositories);
         notifyDataSetChanged();

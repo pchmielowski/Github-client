@@ -7,17 +7,15 @@ import net.chmielowski.github.RepositoryViewModel;
 
 import java.util.stream.Collectors;
 
-import javax.inject.Inject;
-
 public final class ListViewModel {
     private final ReposRepository repository;
-    private final Adapter adapter; // TODO: RepositoriesView
+    private final RepositoriesView adapter; // TODO: RepositoriesView
 
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
     public final ObservableBoolean fabVisible = new ObservableBoolean(false);
     private String query;
 
-    public ListViewModel(final ReposRepository repository, final Adapter adapter) {
+    public ListViewModel(final ReposRepository repository, final RepositoriesView adapter) {
         this.repository = repository;
         this.adapter = adapter;
     }

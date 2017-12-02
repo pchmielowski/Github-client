@@ -5,6 +5,7 @@ import net.chmielowski.github.screen.list.ListActivity;
 
 import dagger.Subcomponent;
 
+@ActivityScope
 @Subcomponent(modules = ActivityModule.class)
 public interface ActivityComponent {
     void inject(ListActivity activity);

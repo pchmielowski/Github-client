@@ -1,5 +1,10 @@
 package net.chmielowski.github.screen.list;
 
 
-interface RepositoriesView {
+import net.chmielowski.github.RepositoryViewModel;
+
+import java.util.Collection;
+
+public interface RepositoriesView {
+    void update(Collection<RepositoryViewModel> repositories);
 }
