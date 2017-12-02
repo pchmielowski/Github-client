@@ -9,12 +9,13 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+// TODO: SearchViewModel, SearchActivity, ResultsView etc
 public final class ListViewModel {
     private final ReposRepository repository;
     private final RepositoriesView adapter; // TODO: RepositoriesView
 
-    public final ObservableBoolean searchVisible = new ObservableBoolean(false);
-    private final ObservableBoolean fabVisible = new ObservableBoolean(false);
+    public final ObservableBoolean searchVisible = new ObservableBoolean(true);
+    public final ObservableBoolean fabVisible = new ObservableBoolean(false);
     private String query;
 
     @Inject

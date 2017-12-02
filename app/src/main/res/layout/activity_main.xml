@@ -67,7 +67,7 @@
             android:layout_margin="@dimen/fab_margin"
             android:onClick="@{() -> model.fabClicked()}"
             app:srcCompat="@drawable/ic_search"
-            app:visibility="@{!model.searchVisible}"/>
+            app:visibility="@{model.fabVisible}" />
 
     </android.support.design.widget.CoordinatorLayout>
 </layout>
