@@ -43,6 +43,7 @@ public final class ListViewModel {
                 .map(repositories -> repositories.stream()
                         .map(repo -> new RepositoryViewModel(repo, query))
                         .collect(Collectors.toList()))
+                .doOnSuccess(__ -> searchVisible.set(false))
                 .subscribe(results::update);
     }
 
