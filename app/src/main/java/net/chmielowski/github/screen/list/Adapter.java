@@ -30,7 +30,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> impl
     private final List<RepositoryViewModel> items = new ArrayList<>();
 
     @Inject
-    public Adapter(@ActivityContext final Context context) {
+    Adapter(@ActivityContext final Context context) {
         this.context = context;
     }
 

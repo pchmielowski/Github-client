@@ -15,8 +15,6 @@ import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityMainBinding;
 import net.chmielowski.github.screen.details.DetailsActivity;
 
-import java.util.concurrent.TimeUnit;
-
 import javax.inject.Inject;
 
 public class ListActivity extends AppCompatActivity {
@@ -42,6 +40,7 @@ public class ListActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
+        model.onScreenAppeared();
         // TODO: unsubscribe
         adapter.observeClicks()
                 .subscribe(id -> {

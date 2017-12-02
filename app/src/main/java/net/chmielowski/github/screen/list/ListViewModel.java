@@ -7,14 +7,17 @@ import net.chmielowski.github.RepositoryViewModel;
 
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+
 public final class ListViewModel {
     private final ReposRepository repository;
     private final RepositoriesView adapter; // TODO: RepositoriesView
 
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
-    public final ObservableBoolean fabVisible = new ObservableBoolean(false);
+    private final ObservableBoolean fabVisible = new ObservableBoolean(false);
     private String query;
 
+    @Inject
     public ListViewModel(final ReposRepository repository, final RepositoriesView adapter) {
         this.repository = repository;
         this.adapter = adapter;
@@ -29,7 +32,7 @@ public final class ListViewModel {
 //        fetchData();
     }
 
-    void fetchData() {
+    private void fetchData() {
         repository.fetchData(query())
                 .map(repositories -> repositories.stream()
                         .map(RepositoryViewModel::new)

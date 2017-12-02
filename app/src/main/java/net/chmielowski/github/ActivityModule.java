@@ -4,9 +4,6 @@ import android.content.Context;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 
-import net.chmielowski.github.screen.list.ListViewModel;
-import net.chmielowski.github.screen.list.RepositoriesView;
-
 import dagger.Module;
 import dagger.Provides;
 
@@ -30,10 +27,5 @@ final class ActivityModule {
     @Provides
     Context provideContext() {
         return activity;
-    }
-
-    @Provides
-    ListViewModel provideListViewModel(ReposRepository service, RepositoriesView adapter) {
-        return new ListViewModel(service, adapter);
     }
 }
