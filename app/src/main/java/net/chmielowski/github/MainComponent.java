@@ -10,7 +10,8 @@ import dagger.Component;
 @Singleton
 @Component(modules = MainModule.class)
 public interface MainComponent {
-    void inject(MainActivity activity);
 
     void inject(DetailsActivity activity);
+
+    ActivityComponent plusActivityComponent(ActivityModule activityModule);
 }

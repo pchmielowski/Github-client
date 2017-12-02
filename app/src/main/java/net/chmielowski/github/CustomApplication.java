@@ -1,6 +1,7 @@
 package net.chmielowski.github;
 
 import android.app.Application;
+import android.support.v7.app.AppCompatActivity;
 
 public final class CustomApplication extends Application {
 
@@ -12,7 +13,7 @@ public final class CustomApplication extends Application {
         component = DaggerMainComponent.create();
     }
 
-    public MainComponent component() {
-        return component;
+    public ActivityComponent component(final AppCompatActivity activity) {
+        return component.plusActivityComponent(new ActivityModule(activity));
     }
 }

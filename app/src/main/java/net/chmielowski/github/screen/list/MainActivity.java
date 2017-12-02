@@ -5,50 +5,37 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 
-import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
-import net.chmielowski.github.RepositoryViewModel;
 import net.chmielowski.github.databinding.ActivityMainBinding;
-import net.chmielowski.github.databinding.ItemRepoBinding;
 import net.chmielowski.github.screen.details.DetailsActivity;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
-
-import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
 
 public class MainActivity extends AppCompatActivity {
     @Inject
     MainViewModel model;
 
-    private Adapter adapter;
+    @Inject
+    Adapter adapter;
+
     private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CustomApplication) getApplication()).component().inject(this);
-        // TODO: binding
+        ((CustomApplication) getApplication()).component(this).inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         binding.setModel(model);
         setSupportActionBar(binding.toolbar);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
-        adapter = new Adapter(MainActivity.this);
         binding.list.setAdapter(adapter);
     }
 
@@ -93,62 +80,4 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    private static final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
-        private final MainActivity context;
-        private final List<RepositoryViewModel> items = new ArrayList<>();
-
-        Adapter(final MainActivity context) {
-            this.context = context;
-        }
-
-        @Override
-        public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-            return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(context),
-                    R.layout.item_repo, parent, false));
-        }
-
-        private final Subject<Long> clickSubject = PublishSubject.create();
-
-        Observable<Long> observeClicks() {
-            return clickSubject;
-        }
-
-        @Override
-        public void onBindViewHolder(final ViewHolder holder, final int position) {
-            final RepositoryViewModel model = items.get(position);
-            holder.bind(model);
-            RxView.clicks(holder.itemView)
-                    .map(__ -> model.id)
-                    .subscribe(clickSubject);
-        }
-
-        @Override
-        public void onViewRecycled(final ViewHolder holder) {
-            super.onViewRecycled(holder);
-        }
-
-        @Override
-        public int getItemCount() {
-            return items.size();
-        }
-
-        private void update(final Collection<RepositoryViewModel> repositories) {
-            items.clear();
-            items.addAll(repositories);
-            notifyDataSetChanged();
-        }
-
-        final class ViewHolder extends RecyclerView.ViewHolder {
-            private final ItemRepoBinding binding;
-
-            ViewHolder(final ItemRepoBinding binding) {
-                super(binding.getRoot());
-                this.binding = binding;
-            }
-
-            private void bind(final RepositoryViewModel model) {
-                binding.setModel(model);
-            }
-        }
-    }
 }
