@@ -38,9 +38,10 @@ public final class ListViewModel {
     }
 
     private void fetchData() {
-        repository.items(query())
+        final String query = query();
+        repository.items(query)
                 .map(repositories -> repositories.stream()
-                        .map(RepositoryViewModel::new)
+                        .map(repo -> new RepositoryViewModel(repo, query))
                         .collect(Collectors.toList()))
                 .subscribe(results::update);
     }

@@ -20,6 +20,6 @@ public final class DetailsViewModel {
     void setRepo(final long repo) {
         service.item(repo)
                 .map(RepositoryViewModel::new)
-                .subscribe(item -> name.set(item.name));
+                .subscribe(item -> name.set(item.name.toString()));
     }
 }
