@@ -1,7 +1,6 @@
 package net.chmielowski.github;
 
 import net.chmielowski.github.screen.details.DetailsActivity;
-import net.chmielowski.github.screen.list.MainActivity;
 
 import javax.inject.Singleton;
 

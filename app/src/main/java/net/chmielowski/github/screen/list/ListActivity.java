@@ -19,9 +19,9 @@ import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-public class MainActivity extends AppCompatActivity {
+public class ListActivity extends AppCompatActivity {
     @Inject
-    MainViewModel model;
+    ListViewModel model;
 
     @Inject
     Adapter adapter;

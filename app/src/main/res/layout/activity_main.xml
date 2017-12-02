@@ -7,13 +7,13 @@
 
         <variable
             name="model"
-            type="net.chmielowski.github.screen.list.MainViewModel"/>
+            type="net.chmielowski.github.screen.list.ListViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="net.chmielowski.github.screen.list.MainActivity">
+        tools:context="net.chmielowski.github.screen.list.ListActivity">
 
         <android.support.design.widget.AppBarLayout
             android:layout_width="match_parent"
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="net.chmielowski.github.screen.list.MainActivity"
+            tools:context="net.chmielowski.github.screen.list.ListActivity"
             tools:ignore="GradleDependency"
             tools:showIn="@layout/activity_main">
 

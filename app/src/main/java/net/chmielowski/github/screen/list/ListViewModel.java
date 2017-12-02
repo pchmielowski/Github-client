@@ -12,13 +12,13 @@ import javax.inject.Inject;
 
 import io.reactivex.Single;
 
-public final class MainViewModel {
+public final class ListViewModel {
     private final ReposRepository repository;
 
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
 
     @Inject
-    MainViewModel(final ReposRepository repository) {
+    ListViewModel(final ReposRepository repository) {
         this.repository = repository;
     }
 
