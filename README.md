@@ -18,3 +18,6 @@ Simple Android Github client
 * debugging:
   * Stetho
   * LeakCanary
+
+* other
+  * Picasso
