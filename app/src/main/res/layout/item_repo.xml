@@ -16,11 +16,23 @@
         android:orientation="vertical"
         android:padding="@dimen/margin_small">
 
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{model.name}"
-            android:transitionName="@string/shared_element_transition" />
+            android:orientation="vertical">
+
+
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.name}"
+                android:transitionName="@string/shared_element_transition" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.owner}" />
+        </LinearLayout>
     </android.support.v7.widget.CardView>
 </layout>

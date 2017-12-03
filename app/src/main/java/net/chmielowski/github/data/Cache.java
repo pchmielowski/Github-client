@@ -19,7 +19,8 @@ public class Cache {
         // TODO: move to another class
         realmFacade.executeInTransaction(realm -> {
             final RealmRepo realmRepo = new RealmRepo();
-            realmRepo.name = repo.fullName;
+            realmRepo.name = repo.name;
+            realmRepo.owner = repo.owner.login;
             realmRepo.id = repo.id;
             // TODO: what if favorite was set before
             realm.copyToRealmOrUpdate(realmRepo);
@@ -47,7 +48,7 @@ public class Cache {
             final RealmRepo realmModel = first(id, realm);
             final Repositories.Item domainModel = new Repositories.Item();
             assert realmModel != null;
-            domainModel.fullName = realmModel.name;
+            domainModel.name = realmModel.name;
             domainModel.id = realmModel.id;
             return domainModel;
         });

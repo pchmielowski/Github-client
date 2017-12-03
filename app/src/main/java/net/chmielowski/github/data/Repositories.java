@@ -10,6 +10,14 @@ public final class Repositories {
 
     public static final class Item {
         public Long id;
-        public String fullName;
+
+        public String name;
+
+        public Owner owner;
+
+        public static final class Owner {
+            public String login;
+            public String avatarUrl;
+        }
     }
 }

@@ -10,19 +10,21 @@ import net.chmielowski.github.data.Repositories;
 
 public final class RepositoryViewModel {
     public final SpannableStringBuilder name;
+    public final String owner;
     public final long id;
 
-    private RepositoryViewModel(final SpannableStringBuilder name, final long id) {
+    private RepositoryViewModel(final SpannableStringBuilder name, String owner, final long id) {
         this.name = name;
+        this.owner = owner;
         this.id = id;
     }
 
     RepositoryViewModel(final Repositories.Item repo, final String query) {
-        this(withQueryInBold(repo.fullName, query), repo.id);
+        this(withQueryInBold(repo.name, query), repo.owner.login, repo.id);
     }
 
     public RepositoryViewModel(final RealmRepo realmModel) {
-        this(SpannableStringBuilder.valueOf(realmModel.name), realmModel.id);
+        this(SpannableStringBuilder.valueOf(realmModel.name), realmModel.owner, realmModel.id);
     }
 
     public RepositoryViewModel(final Repositories.Item repo) {
