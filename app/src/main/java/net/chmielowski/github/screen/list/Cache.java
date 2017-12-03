@@ -3,7 +3,10 @@ package net.chmielowski.github.screen.list;
 import net.chmielowski.github.Repositories;
 import net.chmielowski.github.screen.fav.RealmRepo;
 
+import javax.annotation.Nullable;
 import javax.inject.Inject;
+
+import io.realm.Realm;
 
 import static net.chmielowski.github.screen.fav.RealmRepo.ID;
 
@@ -30,19 +33,30 @@ public class Cache {
     public void like(long id) {
         realmFacade.execute(realm ->
                 realm.executeTransaction(transaction -> {
-                    final RealmRepo repo = transaction.where(RealmRepo.class)
-                            .equalTo(ID, id)
-                            .findFirst();
+                    final RealmRepo repo = first(id, transaction);
                     repo.favourite = true;
                     transaction.copyToRealmOrUpdate(repo);
                 }));
     }
 
     public boolean isLiked(long id) {
-        return realmFacade.get(realm ->
-                realm.where(RealmRepo.class)
-                        .equalTo(ID, id)
-                        .findFirst()
-                        .favourite);
+        return realmFacade.get(realm -> first(id, realm).favourite);
+    }
+
+    public Repositories.Item get(long id) {
+        return realmFacade.get(realm -> {
+            final RealmRepo realmModel = first(id, realm);
+            final Repositories.Item domainModel = new Repositories.Item();
+            domainModel.fullName = realmModel.name;
+            domainModel.id = realmModel.id;
+            return domainModel;
+        });
+    }
+
+    @Nullable
+    private static RealmRepo first(long id, Realm realm) {
+        return realm.where(RealmRepo.class)
+                .equalTo(ID, id)
+                .findFirst();
     }
 }

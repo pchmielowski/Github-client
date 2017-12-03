@@ -43,7 +43,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> impl
 
     private final Subject<Pair<ItemRepoBinding, Long>> clickSubject = PublishSubject.create();
 
-    Observable<Pair<ItemRepoBinding, Long>> observeClicks() {
+    public Observable<Pair<ItemRepoBinding, Long>> observeClicks() {
         return clickSubject;
     }
 

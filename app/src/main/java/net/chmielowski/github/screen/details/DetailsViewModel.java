@@ -27,9 +27,7 @@ public final class DetailsViewModel {
     void setRepo(final long repo) {
         this.id = repo;
         favourite.set(cache.isLiked(id));
-        service.item(repo)
-                .map(RepositoryViewModel::new)
-                .subscribe(item -> name.set(item.name.toString()));
+        name.set(new RepositoryViewModel(service.item(repo)).name.toString());
     }
 
     public void addToFavs() {

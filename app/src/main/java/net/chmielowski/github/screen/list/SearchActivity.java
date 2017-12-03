@@ -3,29 +3,28 @@ package net.chmielowski.github.screen.list;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
-import net.chmielowski.github.databinding.ItemRepoBinding;
-import net.chmielowski.github.screen.details.DetailsActivity;
 import net.chmielowski.github.screen.fav.FavsActivity;
 
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 
-import static android.support.v4.app.ActivityOptionsCompat.makeSceneTransitionAnimation;
 import static com.jakewharton.rxbinding2.view.RxView.clicks;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
 
 public class SearchActivity extends AppCompatActivity {
+
+    @Inject
+    OpenDetails openDetails;
+
     @Inject
     SearchViewModel model;
 
@@ -51,7 +50,7 @@ public class SearchActivity extends AppCompatActivity {
         clicks(binding.fab).subscribe(model.searchClicked());
         textChanges(binding.search).subscribe(model.queryChanged());
         disposable.addAll(
-                adapter.observeClicks().subscribe(this::startDetailsActivity),
+                adapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
                 model.searchResults().subscribe(results -> adapter.update(results)),
                 model.searchVisibleDisposable());
     }
@@ -77,17 +76,8 @@ public class SearchActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
-    private void startDetailsActivity(final Pair<ItemRepoBinding, Long> clickedItem) {
-        final Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(DetailsActivity.KEY_ID, clickedItem.second);
-        final ActivityOptionsCompat options = makeSceneTransitionAnimation(
-                this,
-                clickedItem.first.name,
-                getString(R.string.shared_element_transition));
-        startActivity(intent, options.toBundle());
-    }
-
     private void startFavouritesActivity() {
         startActivity(new Intent(this, FavsActivity.class));
     }
+
 }

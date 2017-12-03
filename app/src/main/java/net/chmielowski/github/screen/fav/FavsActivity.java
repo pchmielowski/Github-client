@@ -10,6 +10,7 @@ import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityFavsBinding;
 import net.chmielowski.github.screen.list.Adapter;
+import net.chmielowski.github.screen.list.OpenDetails;
 
 import javax.inject.Inject;
 
@@ -21,6 +22,9 @@ public final class FavsActivity extends AppCompatActivity {
 
     @Inject
     Adapter adapter;
+
+    @Inject
+    OpenDetails openDetails;
 
     private final CompositeDisposable disposable = new CompositeDisposable();
 
@@ -39,7 +43,7 @@ public final class FavsActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         disposable.addAll(
-//                adapter.observeClicks().subscribe(this::startDetailsActivity),
+                adapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
                 model.data().subscribe(results -> adapter.update(results)));
     }
 
