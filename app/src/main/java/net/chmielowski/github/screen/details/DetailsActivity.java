@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
+import com.squareup.picasso.Picasso;
+
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityDetailsBinding;
@@ -26,5 +28,12 @@ public class DetailsActivity extends AppCompatActivity {
         final ActivityDetailsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_details);
         binding.setModel(model);
+
+        model.url()
+                .subscribe(url -> Picasso.with(this)
+                        .load(url)
+                        .placeholder(R.drawable.ic_avatar_placeholder)
+                        .fit()
+                        .into(binding.avatar));
     }
 }

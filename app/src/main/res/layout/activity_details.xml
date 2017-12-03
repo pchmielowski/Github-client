@@ -15,6 +15,12 @@
         android:orientation="horizontal"
         tools:ignore="UseCompoundDrawables">
 
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/avatar_large"
+            android:layout_height="@dimen/avatar_large"
+            android:contentDescription="@string/avatar" />
+
         <TextView
             android:id="@+id/test"
             android:layout_width="0dp"

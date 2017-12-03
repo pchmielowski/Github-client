@@ -4,11 +4,12 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
 import net.chmielowski.github.data.ReposRepository;
-import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.screen.RepositoryViewModel;
 import net.chmielowski.github.data.LikedRepos;
 
 import javax.inject.Inject;
+
+import io.reactivex.Single;
 
 public final class DetailsViewModel {
     public final ObservableField<String> name = new ObservableField<>();
@@ -18,6 +19,7 @@ public final class DetailsViewModel {
     private final LikedRepos likedRepos;
 
     private String id;
+    public int url;
 
     @Inject
     DetailsViewModel(final ReposRepository service, final LikedRepos likedRepos) {
@@ -40,5 +42,10 @@ public final class DetailsViewModel {
                     likedRepos.like(item);
                     favourite.set(true);
                 });
+    }
+
+    Single<String> url() {
+        return service.item(id)
+                .map(item -> item.owner.avatarUrl);
     }
 }

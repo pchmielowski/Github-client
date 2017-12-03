@@ -3,4 +3,5 @@
     <dimen name="elevation">8dp</dimen>
     <dimen name="margin_small">8dp</dimen>
     <dimen name="avatar">56dp</dimen>
+    <dimen name="avatar_large">100dp</dimen>
 </resources>
