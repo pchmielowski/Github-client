@@ -2,21 +2,24 @@ package net.chmielowski.github.screen.fav;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityFavsBinding;
+import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.list.Adapter;
 import net.chmielowski.github.screen.list.OpenDetails;
 
+import java.util.Arrays;
+
 import javax.inject.Inject;
 
-import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.disposables.Disposable;
 
-public final class FavsActivity extends AppCompatActivity {
+public final class FavsActivity extends BaseActivity {
     @Inject
     FavsViewModel model;
 
@@ -25,8 +28,6 @@ public final class FavsActivity extends AppCompatActivity {
 
     @Inject
     OpenDetails openDetails;
-
-    private final CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -40,16 +41,11 @@ public final class FavsActivity extends AppCompatActivity {
 
 
     @Override
-    protected void onResume() {
-        super.onResume();
-        disposable.addAll(
+    @NonNull
+    protected Iterable<Disposable> disposables() {
+        return Arrays.asList(
                 adapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
-                model.data().subscribe(results -> adapter.update(results)));
-    }
-
-    @Override
-    protected void onPause() {
-        disposable.clear();
-        super.onPause();
+                model.data().subscribe(results -> adapter.update(results))
+        );
     }
 }
