@@ -2,13 +2,19 @@ package net.chmielowski.github.screen.details;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.util.Pair;
 
 import net.chmielowski.github.data.LikedRepos;
 import net.chmielowski.github.data.ReposRepository;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
+
+import static net.chmielowski.github.screen.details.DetailsViewModel.Action.LIKE;
 
 public final class DetailsViewModel {
     public final ObservableField<String> owner = new ObservableField<>();
@@ -39,9 +45,16 @@ public final class DetailsViewModel {
                 });
     }
 
+    enum Action {
+        LIKE, UNLIKE
+    }
+
+    private Subject<Pair<Action, String>> addedSubject = PublishSubject.create();
+
     public void addToFavs() {
         service.item(id)
                 .subscribe(item -> {
+                    addedSubject.onNext(Pair.create(LIKE, name.get()));
                     likedRepos.like(item);
                     favourite.set(true);
                 });
@@ -50,5 +63,9 @@ public final class DetailsViewModel {
     Single<String> url() {
         return service.item(id)
                 .map(item -> item.owner.avatarUrl);
+    }
+
+    Observable<Pair<Action, String>> observeActions() {
+        return addedSubject;
     }
 }

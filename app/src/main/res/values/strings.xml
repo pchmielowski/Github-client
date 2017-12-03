@@ -6,4 +6,6 @@
     <string name="avatar">avatar</string>
     <string name="transition_owner">transition_owner</string>
     <string name="transition_avatar">transition_avatar</string>
+    <string name="now_you_like">Now you like</string>
+    <string name="you_unlike">You\'ve unliked</string>
 </resources>

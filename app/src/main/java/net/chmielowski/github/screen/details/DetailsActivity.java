@@ -2,18 +2,30 @@ package net.chmielowski.github.screen.details;
 
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Pair;
 
 import com.squareup.picasso.Picasso;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityDetailsBinding;
+import net.chmielowski.github.screen.BaseActivity;
+
+import java.util.Collection;
+import java.util.Collections;
 
 import javax.inject.Inject;
 
-public class DetailsActivity extends AppCompatActivity {
+import io.reactivex.disposables.Disposable;
+
+import static net.chmielowski.github.screen.details.DetailsViewModel.Action.LIKE;
+
+public class DetailsActivity extends BaseActivity {
     public static final String KEY_ID = "REPOSITORY_ID";
 
     @Inject
@@ -35,5 +47,25 @@ public class DetailsActivity extends AppCompatActivity {
                         .placeholder(R.drawable.ic_avatar_placeholder)
                         .fit()
                         .into(binding.avatar));
+    }
+
+    @NonNull
+    @Override
+    protected Iterable<Disposable> disposables() {
+        return Collections.singletonList(model.observeActions()
+                .map(this::message)
+                .subscribe(this::show));
+    }
+
+    private void show(String message) {
+        Snackbar.make(findViewById(R.id.container), message, BaseTransientBottomBar.LENGTH_LONG)
+                .show();
+    }
+
+    @NonNull
+    private String message(Pair<DetailsViewModel.Action, String> action) {
+        return String.format("%s %s",
+                getString(action.first == LIKE ? R.string.now_you_like : R.string.you_unlike),
+                action.second);
     }
 }
