@@ -18,7 +18,7 @@ import io.reactivex.subjects.Subject;
 public final class SearchViewModel {
     private final ReposRepository repository;
 
-    private final Subject<String> querySubject = PublishSubject.create();
+    private final Subject<CharSequence> querySubject = PublishSubject.create();
     private final Subject<Object> searchSubject = PublishSubject.create();
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
@@ -28,14 +28,19 @@ public final class SearchViewModel {
     @Inject
     SearchViewModel(final ReposRepository repository) {
         this.repository = repository;
-        this.querySubject
+        queryAsString()
                 .doOnComplete(() -> {
                     throw new IllegalStateException("querySubject completed");
                 })
                 .subscribe(query -> searchVisible.set(!query.isEmpty()));
     }
 
-    Observer<String> queryChanged() {
+    private Observable<String> queryAsString() {
+        return this.querySubject
+                .map(String::valueOf);
+    }
+
+    Observer<CharSequence> queryChanged() {
         return querySubject;
     }
 
@@ -44,7 +49,7 @@ public final class SearchViewModel {
     }
 
     Observable<Collection<RepositoryViewModel>> searchResults() {
-        return searchSubject.withLatestFrom(querySubject, (__, s) -> s)
+        return searchSubject.withLatestFrom(queryAsString(), (__, s) -> s)
                 .flatMapSingle(query ->
                         repository.items(query)
                                 .map(repositories -> repositories.stream()

@@ -8,15 +8,17 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
-import com.jakewharton.rxbinding2.view.RxView;
-import com.jakewharton.rxbinding2.widget.RxTextView;
-
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.screen.details.DetailsActivity;
 
 import javax.inject.Inject;
+
+import io.reactivex.disposables.CompositeDisposable;
+
+import static com.jakewharton.rxbinding2.view.RxView.clicks;
+import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
 
 public class SearchActivity extends AppCompatActivity {
     @Inject
@@ -38,22 +40,28 @@ public class SearchActivity extends AppCompatActivity {
         binding.list.setAdapter(adapter);
     }
 
+    private final CompositeDisposable disposable = new CompositeDisposable();
+
     @Override
     protected void onResume() {
         super.onResume();
-        // TODO: unsubscribe
-        adapter.observeClicks()
-                .subscribe(id -> {
-                    final Intent intent = new Intent(this, DetailsActivity.class);
-                    intent.putExtra(DetailsActivity.KEY_ID, id);
-                    startActivity(intent);
-                });
-        RxView.clicks(binding.fab)
-                .subscribe(model.searchClicked());
-        RxTextView.textChanges(binding.search)
-                .map(String::valueOf)
-                .subscribe(model.queryChanged());
-        model.searchResults().subscribe(results -> adapter.update(results));
+        clicks(binding.fab).subscribe(model.searchClicked());
+        textChanges(binding.search).subscribe(model.queryChanged());
+        disposable.addAll(
+                adapter.observeClicks().subscribe(this::startDetailsActivity),
+                model.searchResults().subscribe(results -> adapter.update(results)));
+    }
+
+    @Override
+    protected void onPause() {
+        disposable.clear();
+        super.onPause();
+    }
+
+    private void startDetailsActivity(Long id) {
+        final Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(DetailsActivity.KEY_ID, id);
+        startActivity(intent);
     }
 
     @Override
