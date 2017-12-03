@@ -13,16 +13,23 @@ public final class RepositoryViewModel {
     public final String owner;
     public final String id;
     final String avatar;
+    public final String language;
 
-    private RepositoryViewModel(final SpannableStringBuilder name, String owner, final String id, String avatar) {
+    private RepositoryViewModel(final SpannableStringBuilder name,
+                                final String owner,
+                                final String id,
+                                final String avatar,
+                                final String language) {
         this.name = name;
         this.owner = owner;
         this.id = id;
         this.avatar = avatar;
+        this.language = language;
     }
 
     RepositoryViewModel(final Repositories.Item repo, final String query) {
-        this(withQueryInBold(repo.name, query), repo.owner.login, repo.fullName, repo.owner.avatarUrl);
+        this(withQueryInBold(repo.name, query), repo.owner.login, repo.fullName,
+                repo.owner.avatarUrl, repo.language);
     }
 
     public RepositoryViewModel(final Repositories.Item repo) {
@@ -30,7 +37,8 @@ public final class RepositoryViewModel {
     }
 
     public RepositoryViewModel(final RealmRepo repo) {
-        this(SpannableStringBuilder.valueOf(repo.name), repo.owner, repo.id, repo.avatar);
+        this(SpannableStringBuilder.valueOf(repo.name), repo.owner, repo.id, repo.avatar,
+                repo.language);
     }
 
     @NonNull

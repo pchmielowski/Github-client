@@ -16,6 +16,8 @@ public class RealmRepo implements RealmModel {
 
     public String avatar;
 
+    public String language;
+
     public RealmRepo() {
     }
 
@@ -24,5 +26,6 @@ public class RealmRepo implements RealmModel {
         this.name = json.name;
         this.owner = json.owner.login;
         this.avatar = json.owner.avatarUrl;
+        this.language = json.language;
     }
 }
