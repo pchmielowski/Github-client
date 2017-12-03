@@ -16,7 +16,13 @@ public final class RealmFacade {
     // TODO: inject factory
     private final Supplier<Realm> factory = Realm::getDefaultInstance;
 
-    void execute(final Consumer<Realm> consumer) {
+    public void executeInTransaction(final Consumer<Realm> consumer) {
+        try (final Realm realm = factory.get()) {
+            realm.executeTransaction(consumer::accept);
+        }
+    }
+
+    public void execute(final Consumer<Realm> consumer) {
         try (final Realm realm = factory.get()) {
             consumer.accept(realm);
         }
