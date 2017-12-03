@@ -20,6 +20,7 @@ public final class CustomApplication extends Application {
      *  do not store all info in Realm - store in memory cache, and fetch if needed
      *  collapsing action bar on details screen
      *  removing from favourites
+     *  avatar
      */
 
     private MainComponent component;
