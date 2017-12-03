@@ -82,13 +82,13 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            startFavsActivity();
+            startFavouritesActivity();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void startFavsActivity() {
+    private void startFavouritesActivity() {
         startActivity(new Intent(this, FavsActivity.class));
     }
 }

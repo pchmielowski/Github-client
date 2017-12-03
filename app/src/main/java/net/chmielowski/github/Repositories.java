@@ -8,8 +8,8 @@ public final class Repositories {
 
     Collection<Item> items;
 
-    public final class Item {
-        Long id;
-        String fullName;
+    public static final class Item {
+        public Long id;
+        public String fullName;
     }
 }
