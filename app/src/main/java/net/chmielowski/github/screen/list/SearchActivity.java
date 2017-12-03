@@ -49,7 +49,8 @@ public class SearchActivity extends BaseActivity {
     @NonNull
     @Override
     protected Iterable<Disposable> disposables() {
-        return Arrays.asList(adapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
+        return Arrays.asList(
+                adapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
                 model.searchResults().subscribe(results -> adapter.update(results)),
                 model.searchVisibleDisposable());
     }
