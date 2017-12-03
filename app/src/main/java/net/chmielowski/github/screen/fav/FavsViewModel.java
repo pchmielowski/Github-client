@@ -1,7 +1,6 @@
 package net.chmielowski.github.screen.fav;
 
 import net.chmielowski.github.data.RealmRepo;
-import net.chmielowski.github.data.ReposRepository;
 import net.chmielowski.github.screen.RepositoryViewModel;
 import net.chmielowski.github.screen.search.RealmFacade;
 
@@ -14,12 +13,10 @@ import io.reactivex.Observable;
 
 public class FavsViewModel {
     private final RealmFacade realm;
-    private final ReposRepository service;
 
     @Inject
-    FavsViewModel(final RealmFacade realm, final ReposRepository service) {
+    FavsViewModel(final RealmFacade realm) {
         this.realm = realm;
-        this.service = service;
     }
 
     public Observable<Collection<RepositoryViewModel>> data() {
@@ -28,7 +25,6 @@ public class FavsViewModel {
                 realm.where(RealmRepo.class)
                         .findAll()
                         .stream()
-                        .map(realmModel -> service.item(realmModel.name))
                         .map(RepositoryViewModel::new)
                         .collect(Collectors.toList())));
     }

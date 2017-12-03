@@ -5,6 +5,7 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 
+import net.chmielowski.github.data.RealmRepo;
 import net.chmielowski.github.data.Repositories;
 
 public final class RepositoryViewModel {
@@ -24,6 +25,10 @@ public final class RepositoryViewModel {
 
     public RepositoryViewModel(final Repositories.Item repo) {
         this(repo, "");
+    }
+
+    public RepositoryViewModel(final RealmRepo repo) {
+        this(SpannableStringBuilder.valueOf(repo.name), repo.owner, repo.id);
     }
 
     @NonNull

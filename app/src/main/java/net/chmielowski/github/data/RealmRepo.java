@@ -6,14 +6,20 @@ import io.realm.annotations.RealmClass;
 
 @RealmClass
 public class RealmRepo implements RealmModel {
-    static final String NAME = "name";
+    static final String ID = "id";
     @PrimaryKey
+    public String id;
+
+    public String owner;
+
     public String name;
 
     public RealmRepo() {
     }
 
-    RealmRepo(final String name) {
-        this.name = name;
+    RealmRepo(final Repositories.Item json) {
+        this.id = json.fullName;
+        this.name = json.name;
+        this.owner = json.owner.login;
     }
 }

@@ -34,7 +34,7 @@ public final class DetailsViewModel {
 
     public void addToFavs() {
         final Repositories.Item item = service.item(id);
-        likedRepos.like(item.fullName);
+        likedRepos.like(item);
         favourite.set(true);
     }
 }

@@ -2,10 +2,7 @@ package net.chmielowski.github.data;
 
 import net.chmielowski.github.screen.search.RealmFacade;
 
-import javax.annotation.Nullable;
 import javax.inject.Inject;
-
-import io.realm.Realm;
 
 public final class LikedRepos {
     private RealmFacade realmFacade;
@@ -15,7 +12,7 @@ public final class LikedRepos {
         this.realmFacade = realmFacade;
     }
 
-    public void like(final String name) {
+    public void like(final Repositories.Item name) {
         realmFacade.execute(realm ->
                 realm.executeTransaction(transaction -> {
                     transaction.copyToRealmOrUpdate(new RealmRepo(name));
@@ -26,7 +23,7 @@ public final class LikedRepos {
     public boolean isLiked(final String repo) {
         return realmFacade.get(realm -> {
             final long count = realm.where(RealmRepo.class)
-                    .equalTo(RealmRepo.NAME, repo)
+                    .equalTo(RealmRepo.ID, repo)
                     .count();
             if (count > 1) {
                 throw new IllegalStateException(
