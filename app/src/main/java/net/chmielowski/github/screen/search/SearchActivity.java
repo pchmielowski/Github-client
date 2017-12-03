@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -51,6 +52,7 @@ public class SearchActivity extends BaseActivity {
         binding.setModel(model);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
         binding.list.setAdapter(reposAdapter);
+        ViewCompat.setNestedScrollingEnabled(binding.list, false);
 
         binding.searches.setLayoutManager(new LinearLayoutManager(this));
         binding.searches.setAdapter(searchAdapter);
