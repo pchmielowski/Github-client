@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
 import com.jakewharton.rxbinding2.view.RxView;
+import com.squareup.picasso.Picasso;
 
 import net.chmielowski.github.ActivityContext;
 import net.chmielowski.github.ActivityScope;
@@ -53,6 +54,10 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         RxView.clicks(holder.itemView)
                 .map(__ -> new Pair<>(holder.binding, model.id))
                 .subscribe(clickSubject);
+        Picasso.with(context)
+                .load(model.avatar)
+                .into(holder.binding.avatar);
+
     }
 
     @Override

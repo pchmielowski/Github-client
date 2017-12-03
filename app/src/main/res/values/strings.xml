@@ -3,4 +3,5 @@
     <string name="action_favourite">Favourite</string>
     <string name="shared_element_transition">transition</string>
     <string name="add_to_favourites">Add to favourites</string>
+    <string name="avatar">avatar</string>
 </resources>
