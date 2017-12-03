@@ -37,6 +37,16 @@
             tools:ignore="GradleDependency"
             tools:showIn="@layout/activity_search">
 
+            <TextView
+                android:id="@+id/test"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Test"
+                android:transitionName="@string/shared_element_transition"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
             <EditText
                 android:id="@+id/search"
                 android:layout_width="0dp"
@@ -45,6 +55,7 @@
                 app:layout_constraintBottom_toTopOf="@+id/list"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
+                app:layout_constraintTop_toTopOf="@id/test"
                 app:visibility="@{model.inputVisible}"
                 tools:ignore="LabelFor" />
 

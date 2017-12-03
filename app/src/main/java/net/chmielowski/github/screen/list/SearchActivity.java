@@ -3,10 +3,12 @@ package net.chmielowski.github.screen.list;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
@@ -60,9 +62,20 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void startDetailsActivity(Long id) {
-        final Intent intent = new Intent(this, DetailsActivity.class);
+
+
+        Intent intent = new Intent(this, DetailsActivity.class);
         intent.putExtra(DetailsActivity.KEY_ID, id);
-        startActivity(intent);
+
+        ActivityOptionsCompat options = ActivityOptionsCompat.
+                makeSceneTransitionAnimation(this, binding.test, getString(R.string.shared_element_transition));
+        startActivity(intent, options.toBundle());
+
+
+//
+//        final Intent intent = new Intent(this, DetailsActivity.class);
+//        intent.putExtra(DetailsActivity.KEY_ID, id);
+//        startActivity(intent);
     }
 
     @Override

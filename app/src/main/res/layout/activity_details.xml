@@ -5,16 +5,25 @@
 
         <variable
             name="model"
-            type="net.chmielowski.github.screen.details.DetailsViewModel"/>
+            type="net.chmielowski.github.screen.details.DetailsViewModel" />
     </data>
 
-    <android.support.constraint.ConstraintLayout
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <TextView
+            android:id="@+id/test"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:text="@{model.name}"/>
-    </android.support.constraint.ConstraintLayout>
+            android:layout_height="wrap_content"
+            android:text="Test"
+            android:textSize="46sp"
+            android:transitionName="@string/shared_element_transition" />
+
+
+        <!--<TextView-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:text="@{model.name}"/>-->
+    </FrameLayout>
 </layout>
