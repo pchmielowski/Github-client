@@ -24,6 +24,7 @@ public final class SearchViewModel {
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
+    public final ObservableBoolean searchHistoryVisible = new ObservableBoolean(true);
     public final ObservableBoolean loading = new ObservableBoolean(false);
 
     @Inject
@@ -41,6 +42,7 @@ public final class SearchViewModel {
 
     public Observable<Collection<RepositoryViewModel>> searchResults() {
         return observeSearchClicked()
+                .doOnNext(__ -> searchHistoryVisible.set(false))
                 .withLatestFrom(observeQuery(), (__, s) -> s)
                 .flatMapSingle(query ->
                         repository.items(query)
@@ -53,7 +55,10 @@ public final class SearchViewModel {
     }
 
     public Disposable searchVisibleDisposable() {
-        return observeQuery().subscribe(query -> searchVisible.set(!query.isEmpty()));
+        return observeQuery().subscribe(query -> {
+            searchHistoryVisible.set(true);
+            searchVisible.set(!query.isEmpty());
+        });
     }
 
     private Observable<String> observeQuery() {

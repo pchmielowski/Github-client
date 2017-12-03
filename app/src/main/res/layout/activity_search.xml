@@ -41,7 +41,8 @@
                 android:text="@string/last_searches"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/search" />
+                app:layout_constraintTop_toBottomOf="@id/search"
+                app:visibility="@{model.searchHistoryVisible}" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/searches"
@@ -49,7 +50,8 @@
                 android:layout_height="wrap_content"
                 app:layout_constraintLeft_toLeftOf="parent"
                 app:layout_constraintRight_toRightOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/searches_label" />
+                app:layout_constraintTop_toBottomOf="@id/searches_label"
+                app:visibility="@{model.searchHistoryVisible}" />
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/list"
