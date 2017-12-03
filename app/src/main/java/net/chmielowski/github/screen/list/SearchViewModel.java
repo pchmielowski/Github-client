@@ -12,8 +12,7 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-// TODO: SearchViewModel, SearchActivity
-public final class ListViewModel {
+public final class SearchViewModel {
     private final ReposRepository repository;
     private final ResultsView results;
     private final LastQueryCache lastQueryCache; // TODO: rename
@@ -24,9 +23,9 @@ public final class ListViewModel {
     private String query;
 
     @Inject
-    ListViewModel(final ReposRepository repository,
-                  final ResultsView results,
-                  final LastQueryCache lastQueryCache) {
+    SearchViewModel(final ReposRepository repository,
+                    final ResultsView results,
+                    final LastQueryCache lastQueryCache) {
         this.repository = repository;
         this.results = results;
         this.lastQueryCache = lastQueryCache;

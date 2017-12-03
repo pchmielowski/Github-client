@@ -12,25 +12,25 @@ import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
-import net.chmielowski.github.databinding.ActivityMainBinding;
+import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.screen.details.DetailsActivity;
 
 import javax.inject.Inject;
 
-public class ListActivity extends AppCompatActivity {
+public class SearchActivity extends AppCompatActivity {
     @Inject
-    ListViewModel model;
+    SearchViewModel model;
 
     @Inject
     Adapter adapter;
 
-    private ActivityMainBinding binding;
+    private ActivitySearchBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((CustomApplication) getApplication()).component(this).inject(this);
-        binding = DataBindingUtil.setContentView(this, R.layout.activity_main);
+        binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         binding.setModel(model);
         setSupportActionBar(binding.toolbar);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
