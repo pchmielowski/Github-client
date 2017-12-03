@@ -4,6 +4,7 @@ import android.databinding.ObservableBoolean;
 
 import net.chmielowski.github.data.ReposRepository;
 
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
 
@@ -68,5 +69,9 @@ public final class SearchViewModel {
                 .doOnComplete(() -> {
                     throw new IllegalStateException("searchSubject completed");
                 });
+    }
+
+    public Observable<Collection<String>> searches() {
+        return Observable.just(Arrays.asList("Hello", "World", "How are you?"));
     }
 }

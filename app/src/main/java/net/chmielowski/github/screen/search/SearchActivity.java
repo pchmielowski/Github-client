@@ -15,6 +15,7 @@ import net.chmielowski.github.screen.Adapter;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.OpenDetails;
 import net.chmielowski.github.screen.SearchViewModel;
+import net.chmielowski.github.screen.SearchesAdapter;
 import net.chmielowski.github.screen.fav.FavsActivity;
 
 import java.util.Arrays;
@@ -35,7 +36,10 @@ public class SearchActivity extends BaseActivity {
     SearchViewModel model;
 
     @Inject
-    Adapter adapter;
+    Adapter reposAdapter;
+
+    @Inject
+    SearchesAdapter searchAdapter;
 
     private ActivitySearchBinding binding;
 
@@ -46,15 +50,19 @@ public class SearchActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         binding.setModel(model);
         binding.list.setLayoutManager(new LinearLayoutManager(this));
-        binding.list.setAdapter(adapter);
+        binding.list.setAdapter(reposAdapter);
+
+        binding.searches.setLayoutManager(new LinearLayoutManager(this));
+        binding.searches.setAdapter(searchAdapter);
     }
 
     @NonNull
     @Override
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
-                adapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
-                model.searchResults().subscribe(results -> adapter.update(results)),
+                reposAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
+                model.searchResults().subscribe(results -> reposAdapter.update(results)),
+                model.searches().subscribe(queries -> searchAdapter.update(queries)),
                 model.searchVisibleDisposable());
     }
 
