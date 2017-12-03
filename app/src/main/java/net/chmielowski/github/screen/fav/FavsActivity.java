@@ -11,9 +11,9 @@ import net.chmielowski.github.databinding.ActivityFavsBinding;
 
 import javax.inject.Inject;
 
-public final class FavouritesActivity extends AppCompatActivity {
+public final class FavsActivity extends AppCompatActivity {
     @Inject
-    FavViewModel model;
+    FavsViewModel model;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

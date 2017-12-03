@@ -15,7 +15,7 @@ import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.databinding.ItemRepoBinding;
 import net.chmielowski.github.screen.details.DetailsActivity;
-import net.chmielowski.github.screen.fav.FavouritesActivity;
+import net.chmielowski.github.screen.fav.FavsActivity;
 
 import javax.inject.Inject;
 
@@ -82,13 +82,13 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            startFavouritesActivity();
+            startFavsActivity();
             return true;
         }
         return super.onOptionsItemSelected(item);
     }
 
-    private void startFavouritesActivity() {
-        startActivity(new Intent(this, FavouritesActivity.class));
+    private void startFavsActivity() {
+        startActivity(new Intent(this, FavsActivity.class));
     }
 }

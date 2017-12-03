@@ -2,8 +2,8 @@ package net.chmielowski.github.screen.fav;
 
 import javax.inject.Inject;
 
-public class FavViewModel {
+public class FavsViewModel {
     @Inject
-    FavViewModel() {
+    FavsViewModel() {
     }
 }
