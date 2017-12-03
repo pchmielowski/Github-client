@@ -12,6 +12,16 @@ import io.realm.RealmConfiguration;
 
 public final class CustomApplication extends Application {
 
+    /*
+     * TODO:
+     *  list of last searches
+     *  pagination
+     *  pull to refresh
+     *  do not store all info in Realm - store in memory cache, and fetch if needed
+     *  collapsing action bar on details screen
+     *  removing from favourites
+     */
+
     private MainComponent component;
 
     @Override
