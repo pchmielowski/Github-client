@@ -7,13 +7,14 @@ import io.realm.annotations.RealmClass;
 @RealmClass
 public class RealmString implements RealmModel {
     @PrimaryKey
-    int id;
+    private int id;
 
-    String value;
+    public String value;
 
-    static RealmString from(String val) {
+    public static RealmString from(final String val) {
         final RealmString object = new RealmString();
         object.id = 0; // Single instance
+        object.value = val;
         return object;
     }
 }
