@@ -9,6 +9,8 @@
             type="net.chmielowski.github.screen.details.DetailsViewModel" />
     </data>
 
+    <!--TODO: styles-->
+    <!--TODO: Constrains layout-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -23,8 +25,8 @@
 
             <ImageView
                 android:id="@+id/avatar"
-                android:layout_width="@dimen/avatar_large"
-                android:layout_height="@dimen/avatar_large"
+                android:layout_width="@dimen/avatar"
+                android:layout_height="@dimen/avatar"
                 android:contentDescription="@string/avatar" />
 
             <TextView
@@ -34,6 +36,7 @@
                 android:layout_marginStart="@dimen/margin_small"
                 android:layout_weight="1"
                 android:text="@{model.name}"
+                android:textSize="20sp"
                 android:transitionName="@string/shared_element_transition" />
 
             <ImageView
