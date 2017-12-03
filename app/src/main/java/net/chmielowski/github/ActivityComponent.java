@@ -1,6 +1,7 @@
 package net.chmielowski.github;
 
 import net.chmielowski.github.screen.details.DetailsActivity;
+import net.chmielowski.github.screen.fav.FavouritesActivity;
 import net.chmielowski.github.screen.list.SearchActivity;
 
 import dagger.Subcomponent;
@@ -11,4 +12,6 @@ public interface ActivityComponent {
     void inject(SearchActivity activity);
 
     void inject(DetailsActivity activity);
+
+    void inject(FavouritesActivity activity);
 }

@@ -9,13 +9,13 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.databinding.ItemRepoBinding;
 import net.chmielowski.github.screen.details.DetailsActivity;
+import net.chmielowski.github.screen.fav.FavouritesActivity;
 
 import javax.inject.Inject;
 
@@ -89,6 +89,6 @@ public class SearchActivity extends AppCompatActivity {
     }
 
     private void startFavouritesActivity() {
-//        startActivity(new Intent(this, FavouritesActivity.class));
+        startActivity(new Intent(this, FavouritesActivity.class));
     }
 }
