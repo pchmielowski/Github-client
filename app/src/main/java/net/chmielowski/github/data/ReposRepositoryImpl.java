@@ -1,7 +1,6 @@
 package net.chmielowski.github.data;
 
-import android.util.LongSparseArray;
-import android.util.SparseArray;
+import android.support.annotation.NonNull;
 
 import java.util.Collection;
 import java.util.Map;
@@ -38,13 +37,17 @@ public final class ReposRepositoryImpl implements ReposRepository {
     }
 
     @Override
-    public Repositories.Item item(final String name) {
+    @NonNull
+    public Single<Repositories.Item> item(final String name) {
         return Optional.ofNullable(cache.get(name))
-                .orElseGet(() -> fetch(name));
+                .map(Single::just)
+                .orElseGet(() -> {
+                    // TODO: just use owner/name
+                    final String[] split = name.split("/");
+                    return service.repo(split[0], split[1])
+                            .subscribeOn(Schedulers.io())
+                            .observeOn(AndroidSchedulers.mainThread());
+                });
     }
 
-    private Repositories.Item fetch(String id) {
-        // TODO: fetch from REST API
-        return null;
-    }
 }

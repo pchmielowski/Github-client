@@ -8,5 +8,5 @@ import io.reactivex.Single;
 public interface ReposRepository {
     Single<Collection<Repositories.Item>> items(final String query);
 
-    Repositories.Item item(String id);
+    Single<Repositories.Item> item(String id);
 }

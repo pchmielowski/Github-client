@@ -27,14 +27,18 @@ public final class DetailsViewModel {
 
     void setRepo(final String repo) {
         this.id = repo;
-        final Repositories.Item item = service.item(repo);
-        favourite.set(likedRepos.isLiked(item.fullName));
-        name.set(new RepositoryViewModel(item).name.toString());
+        service.item(repo)
+                .subscribe(item -> {
+                    favourite.set(likedRepos.isLiked(item.fullName));
+                    name.set(new RepositoryViewModel(item).name.toString());
+                });
     }
 
     public void addToFavs() {
-        final Repositories.Item item = service.item(id);
-        likedRepos.like(item);
-        favourite.set(true);
+        service.item(id)
+                .subscribe(item -> {
+                    likedRepos.like(item);
+                    favourite.set(true);
+                });
     }
 }
