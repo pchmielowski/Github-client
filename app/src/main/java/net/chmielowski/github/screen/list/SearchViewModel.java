@@ -19,10 +19,10 @@ public final class SearchViewModel {
     private final ReposRepository repository;
 
     private final Subject<String> querySubject = PublishSubject.create();
+    private final Subject<Object> searchSubject = PublishSubject.create();
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
-    private final Subject<Object> searchSubject = PublishSubject.create();
 
     @Inject
     SearchViewModel(final ReposRepository repository) {
