@@ -34,6 +34,7 @@ public final class ListViewModel {
 
     void onQueryChanged(final String query) {
         searchVisible.set(!query.isEmpty());
+        if (query.isEmpty()) return;
         this.query = query;
         lastQueryCache.saveToRealm(query);
     }
