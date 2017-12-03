@@ -9,14 +9,15 @@ public final class Repositories {
     Collection<Item> items;
 
     public static final class Item {
-        public Long id;
-
         public String name;
+
+        public String fullName;
 
         public Owner owner;
 
         public static final class Owner {
             public String login;
+
             public String avatarUrl;
         }
     }

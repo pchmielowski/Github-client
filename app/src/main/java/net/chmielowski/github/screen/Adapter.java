@@ -40,9 +40,9 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 R.layout.item_repo, parent, false));
     }
 
-    private final Subject<Pair<ItemRepoBinding, Long>> clickSubject = PublishSubject.create();
+    private final Subject<Pair<ItemRepoBinding, String>> clickSubject = PublishSubject.create();
 
-    public Observable<Pair<ItemRepoBinding, Long>> observeClicks() {
+    public Observable<Pair<ItemRepoBinding, String>> observeClicks() {
         return clickSubject;
     }
 

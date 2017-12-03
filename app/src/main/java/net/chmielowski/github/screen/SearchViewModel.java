@@ -3,7 +3,6 @@ package net.chmielowski.github.screen;
 import android.databinding.ObservableBoolean;
 
 import net.chmielowski.github.data.ReposRepository;
-import net.chmielowski.github.data.Cache;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -18,7 +17,6 @@ import io.reactivex.subjects.Subject;
 
 public final class SearchViewModel {
     private final ReposRepository repository;
-    private final Cache cache;
 
     private final Subject<CharSequence> querySubject = PublishSubject.create();
     private final Subject<Object> searchSubject = PublishSubject.create();
@@ -28,9 +26,8 @@ public final class SearchViewModel {
     public final ObservableBoolean loading = new ObservableBoolean(false);
 
     @Inject
-    SearchViewModel(final ReposRepository repository, final Cache cache) {
+    SearchViewModel(final ReposRepository repository) {
         this.repository = repository;
-        this.cache = cache;
     }
 
     public Observer<CharSequence> queryChanged() {
@@ -47,7 +44,6 @@ public final class SearchViewModel {
                 .flatMapSingle(query ->
                         repository.items(query)
                                 .map(repositories -> repositories.stream()
-                                        .map(cache::store)
                                         .map(repo -> new RepositoryViewModel(repo, query))
                                         .collect(Collectors.toList()))
                                 .doOnSubscribe(__ -> loading.set(true))

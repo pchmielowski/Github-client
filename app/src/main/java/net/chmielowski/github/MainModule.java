@@ -1,7 +1,6 @@
 package net.chmielowski.github;
 
 import android.support.annotation.NonNull;
-import android.util.LongSparseArray;
 
 import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
@@ -11,6 +10,9 @@ import net.chmielowski.github.data.ReposRepository;
 import net.chmielowski.github.data.ReposRepositoryImpl;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RestService;
+
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.inject.Singleton;
 
@@ -59,8 +61,8 @@ abstract class MainModule {
     @Provides
     @Singleton
     @NonNull
-    static LongSparseArray<Repositories.Item> provideCache() {
-        return new LongSparseArray<>();
+    static Map<String, Repositories.Item> provideCache() {
+        return new HashMap<>();
     }
 
 }

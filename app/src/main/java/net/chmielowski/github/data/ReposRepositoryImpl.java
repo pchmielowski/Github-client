@@ -1,8 +1,10 @@
 package net.chmielowski.github.data;
 
 import android.util.LongSparseArray;
+import android.util.SparseArray;
 
 import java.util.Collection;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -13,16 +15,13 @@ import io.reactivex.schedulers.Schedulers;
 
 public final class ReposRepositoryImpl implements ReposRepository {
     private final RestService service;
-    private final LongSparseArray<Repositories.Item> cache;
-    private final Cache realmCache;
+    private final Map<String, Repositories.Item> cache;
 
     @Inject
     ReposRepositoryImpl(final RestService service,
-                        final LongSparseArray<Repositories.Item> cache,
-                        final Cache realmCache) {
+                        final Map<String, Repositories.Item> cache) {
         this.service = service;
         this.cache = cache;
-        this.realmCache = realmCache;
     }
 
     @Override
@@ -32,15 +31,20 @@ public final class ReposRepositoryImpl implements ReposRepository {
                         repositories.items)
                 .doOnSuccess(repositories -> repositories
                         .forEach(item -> {
-                            cache.put(item.id, item);
+                            cache.put(item.fullName, item);
                         }))
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public Repositories.Item item(final long id) {
-        return Optional.ofNullable(cache.get(id))
-                .orElseGet(() -> realmCache.get(id));
+    public Repositories.Item item(final String name) {
+        return Optional.ofNullable(cache.get(name))
+                .orElseGet(() -> fetch(name));
+    }
+
+    private Repositories.Item fetch(String id) {
+        // TODO: fetch from REST API
+        return null;
     }
 }

@@ -6,14 +6,14 @@ import io.realm.annotations.RealmClass;
 
 @RealmClass
 public class RealmRepo implements RealmModel {
-    static final String ID = "id";
+    static final String NAME = "name";
     @PrimaryKey
-    public long id;
-
     public String name;
 
-    public String owner;
+    public RealmRepo() {
+    }
 
-    public static final String FAVOURITE = "favourite";
-    boolean favourite;
+    RealmRepo(final String name) {
+        this.name = name;
+    }
 }

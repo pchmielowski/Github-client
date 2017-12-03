@@ -4,8 +4,9 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
 import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.screen.RepositoryViewModel;
-import net.chmielowski.github.data.Cache;
+import net.chmielowski.github.data.LikedRepos;
 
 import javax.inject.Inject;
 
@@ -14,24 +15,26 @@ public final class DetailsViewModel {
     public final ObservableBoolean favourite = new ObservableBoolean(false);
 
     private final ReposRepository service;
-    private final Cache cache;
+    private final LikedRepos likedRepos;
 
-    private long id;
+    private String id;
 
     @Inject
-    DetailsViewModel(final ReposRepository service, final Cache cache) {
+    DetailsViewModel(final ReposRepository service, final LikedRepos likedRepos) {
         this.service = service;
-        this.cache = cache;
+        this.likedRepos = likedRepos;
     }
 
-    void setRepo(final long repo) {
+    void setRepo(final String repo) {
         this.id = repo;
-        favourite.set(cache.isLiked(id));
-        name.set(new RepositoryViewModel(service.item(repo)).name.toString());
+        final Repositories.Item item = service.item(repo);
+        favourite.set(likedRepos.isLiked(item.fullName));
+        name.set(new RepositoryViewModel(item).name.toString());
     }
 
     public void addToFavs() {
-        cache.like(id);
+        final Repositories.Item item = service.item(id);
+        likedRepos.like(item.fullName);
         favourite.set(true);
     }
 }

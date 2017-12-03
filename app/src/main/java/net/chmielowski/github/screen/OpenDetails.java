@@ -22,7 +22,7 @@ public final class OpenDetails {
         this.activity = activity;
     }
 
-    public void invoke(final Pair<ItemRepoBinding, Long> clickedItem) {
+    public void invoke(final Pair<ItemRepoBinding, String> clickedItem) {
         final Intent intent = new Intent(activity, DetailsActivity.class);
         intent.putExtra(DetailsActivity.KEY_ID, clickedItem.second);
         final ActivityOptionsCompat options = makeSceneTransitionAnimation(

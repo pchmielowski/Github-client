@@ -21,7 +21,7 @@ public class DetailsActivity extends AppCompatActivity {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((CustomApplication) getApplication()).component(this).inject(this);
-        model.setRepo(getIntent().getLongExtra(KEY_ID, 0));
+        model.setRepo(getIntent().getStringExtra(KEY_ID));
 
         final ActivityDetailsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_details);
