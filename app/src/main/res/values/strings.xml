@@ -5,4 +5,5 @@
     <string name="add_to_favourites">Add to favourites</string>
     <string name="avatar">avatar</string>
     <string name="transition_owner">transition_owner</string>
+    <string name="transition_avatar">transition_avatar</string>
 </resources>
