@@ -1,9 +1,9 @@
-package net.chmielowski.github.screen.list;
+package net.chmielowski.github.screen;
 
 import android.databinding.ObservableBoolean;
 
-import net.chmielowski.github.ReposRepository;
-import net.chmielowski.github.RepositoryViewModel;
+import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.data.Cache;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -33,15 +33,15 @@ public final class SearchViewModel {
         this.cache = cache;
     }
 
-    Observer<CharSequence> queryChanged() {
+    public Observer<CharSequence> queryChanged() {
         return querySubject;
     }
 
-    Observer<Object> searchClicked() {
+    public Observer<Object> searchClicked() {
         return searchSubject;
     }
 
-    Observable<Collection<RepositoryViewModel>> searchResults() {
+    public Observable<Collection<RepositoryViewModel>> searchResults() {
         return observeSearchClicked()
                 .withLatestFrom(observeQuery(), (__, s) -> s)
                 .flatMapSingle(query ->
@@ -55,7 +55,7 @@ public final class SearchViewModel {
                                 .doOnSuccess(__ -> searchVisible.set(false)));
     }
 
-    Disposable searchVisibleDisposable() {
+    public Disposable searchVisibleDisposable() {
         return observeQuery().subscribe(query -> searchVisible.set(!query.isEmpty()));
     }
 

@@ -1,4 +1,4 @@
-package net.chmielowski.github.screen.list;
+package net.chmielowski.github.screen.search;
 
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
@@ -11,7 +11,10 @@ import android.view.MenuItem;
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
+import net.chmielowski.github.screen.Adapter;
 import net.chmielowski.github.screen.BaseActivity;
+import net.chmielowski.github.screen.OpenDetails;
+import net.chmielowski.github.screen.SearchViewModel;
 import net.chmielowski.github.screen.fav.FavsActivity;
 
 import java.util.Arrays;

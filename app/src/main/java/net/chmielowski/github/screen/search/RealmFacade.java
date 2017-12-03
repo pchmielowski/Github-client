@@ -1,4 +1,4 @@
-package net.chmielowski.github.screen.list;
+package net.chmielowski.github.screen.search;
 
 import java.util.function.Consumer;
 import java.util.function.Function;

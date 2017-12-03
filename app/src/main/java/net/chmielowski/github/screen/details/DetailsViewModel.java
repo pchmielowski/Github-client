@@ -3,9 +3,9 @@ package net.chmielowski.github.screen.details;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
-import net.chmielowski.github.ReposRepository;
-import net.chmielowski.github.RepositoryViewModel;
-import net.chmielowski.github.screen.list.Cache;
+import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.screen.RepositoryViewModel;
+import net.chmielowski.github.data.Cache;
 
 import javax.inject.Inject;
 

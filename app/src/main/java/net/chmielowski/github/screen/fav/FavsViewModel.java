@@ -1,7 +1,8 @@
 package net.chmielowski.github.screen.fav;
 
-import net.chmielowski.github.RepositoryViewModel;
-import net.chmielowski.github.screen.list.RealmFacade;
+import net.chmielowski.github.data.RealmRepo;
+import net.chmielowski.github.screen.RepositoryViewModel;
+import net.chmielowski.github.screen.search.RealmFacade;
 
 import java.util.Collection;
 import java.util.stream.Collectors;

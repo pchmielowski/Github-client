@@ -2,7 +2,7 @@ package net.chmielowski.github;
 
 import net.chmielowski.github.screen.details.DetailsActivity;
 import net.chmielowski.github.screen.fav.FavsActivity;
-import net.chmielowski.github.screen.list.SearchActivity;
+import net.chmielowski.github.screen.search.SearchActivity;
 
 import dagger.Subcomponent;
 

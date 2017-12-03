@@ -7,19 +7,19 @@
 
         <variable
             name="model"
-            type="net.chmielowski.github.screen.list.SearchViewModel" />
+            type="net.chmielowski.github.screen.SearchViewModel" />
     </data>
 
     <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context="net.chmielowski.github.screen.list.SearchActivity">
+        tools:context="net.chmielowski.github.screen.search.SearchActivity">
 
         <android.support.constraint.ConstraintLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior"
-            tools:context="net.chmielowski.github.screen.list.SearchActivity"
+            tools:context="net.chmielowski.github.screen.search.SearchActivity"
             tools:ignore="GradleDependency"
             tools:showIn="@layout/activity_search">
 

@@ -7,6 +7,11 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.data.ReposRepositoryImpl;
+import net.chmielowski.github.data.Repositories;
+import net.chmielowski.github.data.RestService;
+
 import javax.inject.Singleton;
 
 import dagger.Binds;

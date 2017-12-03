@@ -1,9 +1,6 @@
-package net.chmielowski.github;
+package net.chmielowski.github.data;
 
 import android.util.LongSparseArray;
-
-import net.chmielowski.github.screen.fav.RealmRepo;
-import net.chmielowski.github.screen.list.Cache;
 
 import java.util.Collection;
 import java.util.Optional;
@@ -14,7 +11,7 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-final class ReposRepositoryImpl implements ReposRepository {
+public final class ReposRepositoryImpl implements ReposRepository {
     private final RestService service;
     private final LongSparseArray<Repositories.Item> cache;
     private final Cache realmCache;

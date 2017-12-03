@@ -1,4 +1,4 @@
-package net.chmielowski.github.screen.list;
+package net.chmielowski.github.screen;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
@@ -12,7 +12,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 import net.chmielowski.github.ActivityContext;
 import net.chmielowski.github.ActivityScope;
 import net.chmielowski.github.R;
-import net.chmielowski.github.RepositoryViewModel;
 import net.chmielowski.github.databinding.ItemRepoBinding;
 
 import java.util.ArrayList;
@@ -26,7 +25,7 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 @ActivityScope
-public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> implements ResultsView {
+public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private final Context context;
     private final List<RepositoryViewModel> items = new ArrayList<>();
 
@@ -66,7 +65,6 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> impl
         return items.size();
     }
 
-    @Override
     public void update(final Collection<RepositoryViewModel> repositories) {
         items.clear();
         items.addAll(repositories);

@@ -1,11 +1,12 @@
-package net.chmielowski.github;
+package net.chmielowski.github.screen;
 
 import android.support.annotation.NonNull;
 import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 
-import net.chmielowski.github.screen.fav.RealmRepo;
+import net.chmielowski.github.data.RealmRepo;
+import net.chmielowski.github.data.Repositories;
 
 public final class RepositoryViewModel {
     public final SpannableStringBuilder name;
@@ -16,7 +17,7 @@ public final class RepositoryViewModel {
         this.id = id;
     }
 
-    public RepositoryViewModel(final Repositories.Item repo, final String query) {
+    RepositoryViewModel(final Repositories.Item repo, final String query) {
         this(withQueryInBold(repo.fullName, query), repo.id);
     }
 

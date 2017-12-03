@@ -1,4 +1,4 @@
-package net.chmielowski.github.screen.list;
+package net.chmielowski.github.screen;
 
 import android.content.Intent;
 import android.support.v4.app.ActivityOptionsCompat;

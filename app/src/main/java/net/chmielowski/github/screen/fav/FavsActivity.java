@@ -10,8 +10,8 @@ import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityFavsBinding;
 import net.chmielowski.github.screen.BaseActivity;
-import net.chmielowski.github.screen.list.Adapter;
-import net.chmielowski.github.screen.list.OpenDetails;
+import net.chmielowski.github.screen.Adapter;
+import net.chmielowski.github.screen.OpenDetails;
 
 import java.util.Arrays;
 

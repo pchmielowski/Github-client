@@ -7,8 +7,6 @@ import com.facebook.stetho.Stetho;
 import com.squareup.leakcanary.LeakCanary;
 import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
-import net.chmielowski.github.screen.list.RealmString;
-
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
 

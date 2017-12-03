@@ -1,4 +1,4 @@
-package net.chmielowski.github;
+package net.chmielowski.github.data;
 
 import java.util.Collection;
 
