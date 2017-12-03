@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -10,13 +11,15 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        tools:ignore="UseCompoundDrawables">
 
         <TextView
             android:id="@+id/test"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_weight="1"
             android:gravity="center"
             android:text="@{model.name}"
             android:textSize="46sp"
@@ -24,8 +27,10 @@
 
         <ImageView
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="match_parent"
+            android:contentDescription="@string/add_to_favourites"
             android:onClick="@{() -> model.addToFavs()}"
-            android:src="@drawable/ic_favorite" />
+            android:padding="@dimen/margin_small"
+            android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}" />
     </LinearLayout>
 </layout>

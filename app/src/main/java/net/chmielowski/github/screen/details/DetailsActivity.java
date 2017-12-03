@@ -21,10 +21,10 @@ public class DetailsActivity extends AppCompatActivity {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         ((CustomApplication) getApplication()).component(this).inject(this);
+        model.setRepo(getIntent().getLongExtra(KEY_ID, 0));
 
         final ActivityDetailsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_details);
         binding.setModel(model);
-        model.setRepo(getIntent().getLongExtra(KEY_ID, 0));
     }
 }
