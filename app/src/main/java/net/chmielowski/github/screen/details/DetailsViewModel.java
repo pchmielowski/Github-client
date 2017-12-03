@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import io.reactivex.Single;
 
 public final class DetailsViewModel {
+    public final ObservableField<String> owner = new ObservableField<>();
     public final ObservableField<String> name = new ObservableField<>();
     public final ObservableBoolean favourite = new ObservableBoolean(false);
     public final ObservableField<String> description = new ObservableField<>();
@@ -32,6 +33,7 @@ public final class DetailsViewModel {
         service.item(repo)
                 .subscribe(item -> {
                     favourite.set(likedRepos.isLiked(item.fullName));
+                    owner.set(item.owner.login);
                     name.set(item.name);
                     description.set(item.description);
                 });

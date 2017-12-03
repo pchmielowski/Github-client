@@ -43,12 +43,14 @@
                     android:layout_height="wrap_content"
                     android:text="@{model.name}"
                     android:textStyle="bold"
-                    android:transitionName="@string/shared_element_transition" />
+                    android:transitionName="@string/transition_name" />
 
                 <TextView
+                    android:id="@+id/owner"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="@{model.owner}" />
+                    android:text="@{model.owner}"
+                    android:transitionName="@string/transition_owner" />
             </LinearLayout>
 
             <TextView

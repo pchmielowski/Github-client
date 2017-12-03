@@ -29,15 +29,28 @@
                 android:layout_height="@dimen/avatar"
                 android:contentDescription="@string/avatar" />
 
-            <TextView
-                android:id="@+id/test"
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/margin_small"
                 android:layout_weight="1"
-                android:text="@{model.name}"
-                android:textSize="20sp"
-                android:transitionName="@string/shared_element_transition" />
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{model.owner}"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:transitionName="@string/transition_owner" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="@{model.name}"
+                    android:textSize="20sp"
+                    android:transitionName="@string/transition_name" />
+            </LinearLayout>
 
             <ImageView
                 android:layout_width="wrap_content"
