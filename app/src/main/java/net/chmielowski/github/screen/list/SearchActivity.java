@@ -33,6 +33,7 @@ public class SearchActivity extends AppCompatActivity {
     Adapter adapter;
 
     private ActivitySearchBinding binding;
+    private final CompositeDisposable disposable = new CompositeDisposable();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,8 +45,6 @@ public class SearchActivity extends AppCompatActivity {
         binding.list.setAdapter(adapter);
     }
 
-    private final CompositeDisposable disposable = new CompositeDisposable();
-
     @Override
     protected void onResume() {
         super.onResume();
@@ -55,16 +54,6 @@ public class SearchActivity extends AppCompatActivity {
                 adapter.observeClicks().subscribe(this::startDetailsActivity),
                 model.searchResults().subscribe(results -> adapter.update(results)),
                 model.searchVisibleDisposable());
-    }
-
-    private void startDetailsActivity(final Pair<ItemRepoBinding, Long> clickedItem) {
-        final Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(DetailsActivity.KEY_ID, clickedItem.second);
-        final ActivityOptionsCompat options = makeSceneTransitionAnimation(
-                this,
-                clickedItem.first.name,
-                getString(R.string.shared_element_transition));
-        startActivity(intent, options.toBundle());
     }
 
     @Override
@@ -86,6 +75,16 @@ public class SearchActivity extends AppCompatActivity {
             return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    private void startDetailsActivity(final Pair<ItemRepoBinding, Long> clickedItem) {
+        final Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(DetailsActivity.KEY_ID, clickedItem.second);
+        final ActivityOptionsCompat options = makeSceneTransitionAnimation(
+                this,
+                clickedItem.first.name,
+                getString(R.string.shared_element_transition));
+        startActivity(intent, options.toBundle());
     }
 
     private void startFavouritesActivity() {

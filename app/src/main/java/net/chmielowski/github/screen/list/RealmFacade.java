@@ -8,7 +8,7 @@ import javax.inject.Inject;
 
 import io.realm.Realm;
 
-final class RealmFacade {
+public final class RealmFacade {
     @Inject
     RealmFacade() {
     }
@@ -22,7 +22,7 @@ final class RealmFacade {
         }
     }
 
-    <T> T get(final Function<Realm, T> function) {
+    public <T> T get(final Function<Realm, T> function) {
         try (final Realm realm = factory.get()) {
             return function.apply(realm);
         }

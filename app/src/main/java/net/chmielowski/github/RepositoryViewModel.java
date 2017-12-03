@@ -5,13 +5,27 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 
+import net.chmielowski.github.screen.fav.RealmRepo;
+
 public final class RepositoryViewModel {
     public final SpannableStringBuilder name;
     public final long id;
 
-    public RepositoryViewModel(final Repositories.Item repo, String query) {
-        this.name = withQueryInBold(repo.fullName, query);
-        this.id = repo.id;
+    private RepositoryViewModel(final SpannableStringBuilder name, final long id) {
+        this.name = name;
+        this.id = id;
+    }
+
+    public RepositoryViewModel(final Repositories.Item repo, final String query) {
+        this(withQueryInBold(repo.fullName, query), repo.id);
+    }
+
+    public RepositoryViewModel(final RealmRepo realmModel) {
+        this(SpannableStringBuilder.valueOf(realmModel.name), realmModel.id);
+    }
+
+    public RepositoryViewModel(final Repositories.Item repo) {
+        this(repo, "");
     }
 
     @NonNull
@@ -25,9 +39,5 @@ public final class RepositoryViewModel {
                     Spannable.SPAN_INCLUSIVE_INCLUSIVE);
         }
         return builder;
-    }
-
-    public RepositoryViewModel(Repositories.Item repo) {
-        this(repo, "");
     }
 }
