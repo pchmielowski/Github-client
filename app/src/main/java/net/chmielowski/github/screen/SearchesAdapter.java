@@ -3,14 +3,14 @@ package net.chmielowski.github.screen;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
-import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
+import com.jakewharton.rxbinding2.view.RxView;
 
 import net.chmielowski.github.ActivityContext;
 import net.chmielowski.github.ActivityScope;
 import net.chmielowski.github.R;
-import net.chmielowski.github.databinding.ItemRepoBinding;
 import net.chmielowski.github.databinding.ItemSearchBinding;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public final class SearchesAdapter extends RecyclerView.Adapter<SearchesAdapter.
     private final List<String> items = new ArrayList<>();
 
     @Inject
-    public SearchesAdapter(@ActivityContext final Context context) {
+    SearchesAdapter(@ActivityContext final Context context) {
         this.context = context;
     }
 
@@ -39,15 +39,18 @@ public final class SearchesAdapter extends RecyclerView.Adapter<SearchesAdapter.
                 R.layout.item_search, parent, false));
     }
 
-    private final Subject<Pair<ItemRepoBinding, String>> clickSubject = PublishSubject.create();
+    private final Subject<String> clickSubject = PublishSubject.create();
 
-    public Observable<Pair<ItemRepoBinding, String>> observeClicks() {
+    public Observable<String> observeClicks() {
         return clickSubject;
     }
 
     @Override
     public void onBindViewHolder(final ViewHolder holder, final int position) {
-        holder.binding.text.setText(items.get(position));
+        final String text = items.get(position);
+        holder.binding.text.setText(text);
+        RxView.clicks(holder.itemView)
+                .map(__ -> text).subscribe(clickSubject);
     }
 
     @Override

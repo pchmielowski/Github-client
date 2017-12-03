@@ -71,6 +71,7 @@ public class SearchActivity extends BaseActivity {
         super.onResume();
         clicks(binding.fab).subscribe(model.searchClicked());
         textChanges(binding.search).subscribe(model.queryChanged());
+        searchAdapter.observeClicks().subscribe(model.search());
     }
 
     @Override

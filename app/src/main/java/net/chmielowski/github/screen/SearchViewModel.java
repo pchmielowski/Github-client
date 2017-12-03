@@ -22,6 +22,8 @@ public final class SearchViewModel {
 
     private final Subject<CharSequence> querySubject = PublishSubject.create();
     private final Subject<Object> searchSubject = PublishSubject.create();
+    private final Subject<String> justSearchSubject = PublishSubject.create(); // TODO: rename
+
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
@@ -41,8 +43,13 @@ public final class SearchViewModel {
         return searchSubject;
     }
 
+    public Observer<String> search() {
+        return justSearchSubject;
+    }
+
     public Observable<Collection<RepositoryViewModel>> searchResults() {
         return observeSearchClicked()
+                .mergeWith(justSearchSubject)
                 .doOnNext(__ -> searchHistoryVisible.set(false))
                 .withLatestFrom(observeQuery(), (__, s) -> s)
                 .doOnNext(this::addToHistory)
