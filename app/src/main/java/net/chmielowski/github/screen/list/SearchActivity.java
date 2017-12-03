@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.jakewharton.rxbinding2.view.RxView;
 import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import net.chmielowski.github.CustomApplication;
@@ -40,7 +41,6 @@ public class SearchActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        model.onScreenAppeared();
         // TODO: unsubscribe
         adapter.observeClicks()
                 .subscribe(id -> {
@@ -48,9 +48,12 @@ public class SearchActivity extends AppCompatActivity {
                     intent.putExtra(DetailsActivity.KEY_ID, id);
                     startActivity(intent);
                 });
+        RxView.clicks(binding.fab)
+                .subscribe(model.searchClicked());
         RxTextView.textChanges(binding.search)
                 .map(String::valueOf)
-                .subscribe(t -> model.onQueryChanged(t));
+                .subscribe(model.queryChanged());
+        model.searchResults().subscribe(results -> adapter.update(results));
     }
 
     @Override

@@ -1,67 +1,54 @@
 package net.chmielowski.github.screen.list;
 
 import android.databinding.ObservableBoolean;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 
 import net.chmielowski.github.ReposRepository;
 import net.chmielowski.github.RepositoryViewModel;
 
-import java.util.Optional;
+import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
+
 public final class SearchViewModel {
     private final ReposRepository repository;
-    private final ResultsView results;
-    private final LastQueryCache lastQueryCache; // TODO: rename
+
+    private final Subject<String> querySubject = PublishSubject.create();
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
-    @Nullable
-    private String query;
+    private final Subject<Object> searchSubject = PublishSubject.create();
 
     @Inject
-    SearchViewModel(final ReposRepository repository,
-                    final ResultsView results,
-                    final LastQueryCache lastQueryCache) {
+    SearchViewModel(final ReposRepository repository) {
         this.repository = repository;
-        this.results = results;
-        this.lastQueryCache = lastQueryCache;
+        this.querySubject
+                .doOnComplete(() -> {
+                    throw new IllegalStateException("querySubject completed");
+                })
+                .subscribe(query -> searchVisible.set(!query.isEmpty()));
     }
 
-    void onQueryChanged(final String query) {
-        searchVisible.set(!query.isEmpty());
-        if (query.isEmpty()) return;
-        this.query = query;
-        lastQueryCache.saveToRealm(query);
+    Observer<String> queryChanged() {
+        return querySubject;
     }
 
-    void onScreenAppeared() {
-        fetchData();
+    Observer<Object> searchClicked() {
+        return searchSubject;
     }
 
-    public void onSearchClicked() {
-        fetchData();
+    Observable<Collection<RepositoryViewModel>> searchResults() {
+        return searchSubject.withLatestFrom(querySubject, (__, s) -> s)
+                .flatMapSingle(query ->
+                        repository.items(query)
+                                .map(repositories -> repositories.stream()
+                                        .map(repo -> new RepositoryViewModel(repo, query))
+                                        .collect(Collectors.toList()))
+                                .doOnSuccess(__ -> searchVisible.set(false)));
     }
-
-    private void fetchData() {
-        query().ifPresent(query ->
-                repository.items(query)
-                        .map(repositories -> repositories.stream()
-                                .map(repo -> new RepositoryViewModel(repo, query))
-                                .collect(Collectors.toList()))
-                        .doOnSuccess(__ -> searchVisible.set(false))
-                        .subscribe(results::update));
-    }
-
-    @NonNull
-    private Optional<String> query() {
-        if (query != null) {
-            return Optional.of(query);
-        }
-        return lastQueryCache.getFromRealm();
-    }
-
 }
