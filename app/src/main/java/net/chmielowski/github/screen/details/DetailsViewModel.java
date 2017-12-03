@@ -4,26 +4,22 @@ import android.databinding.ObservableField;
 
 import net.chmielowski.github.ReposRepository;
 import net.chmielowski.github.RepositoryViewModel;
-import net.chmielowski.github.screen.fav.RealmRepo;
-import net.chmielowski.github.screen.list.RealmFacade;
-
-import java.util.function.Consumer;
+import net.chmielowski.github.screen.list.Cache;
 
 import javax.inject.Inject;
-
-import io.realm.Realm;
 
 public final class DetailsViewModel {
     public final ObservableField<String> name = new ObservableField<>();
 
     private final ReposRepository service;
-    private final RealmFacade realmFacade;
+    private final Cache cache;
+
     private long id;
 
     @Inject
-    DetailsViewModel(final ReposRepository service, final RealmFacade realmFacade) {
+    DetailsViewModel(final ReposRepository service, final Cache cache) {
         this.service = service;
-        this.realmFacade = realmFacade;
+        this.cache = cache;
     }
 
     void setRepo(final long repo) {
@@ -34,13 +30,6 @@ public final class DetailsViewModel {
     }
 
     public void addToFavs() {
-        realmFacade.execute(realm ->
-                realm.executeTransaction(transaction -> {
-                    final RealmRepo repo = transaction.where(RealmRepo.class)
-                            .equalTo(RealmRepo.ID, id)
-                            .findFirst();
-                    repo.favourite = true;
-                    transaction.copyToRealmOrUpdate(repo);
-                }));
+        cache.like(id);
     }
 }
