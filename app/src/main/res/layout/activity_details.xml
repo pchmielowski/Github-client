@@ -11,32 +11,43 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        tools:ignore="UseCompoundDrawables">
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="@dimen/margin_small">
 
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/avatar_large"
-            android:layout_height="@dimen/avatar_large"
-            android:contentDescription="@string/avatar" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            tools:ignore="UseCompoundDrawables">
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/avatar_large"
+                android:layout_height="@dimen/avatar_large"
+                android:contentDescription="@string/avatar" />
+
+            <TextView
+                android:id="@+id/test"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/margin_small"
+                android:layout_weight="1"
+                android:text="@{model.name}"
+                android:transitionName="@string/shared_element_transition" />
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:contentDescription="@string/add_to_favourites"
+                android:onClick="@{() -> model.addToFavs()}"
+                android:padding="@dimen/margin_small"
+                android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}" />
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/test"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:gravity="center"
-            android:text="@{model.name}"
-            android:textSize="46sp"
-            android:transitionName="@string/shared_element_transition" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:contentDescription="@string/add_to_favourites"
-            android:onClick="@{() -> model.addToFavs()}"
-            android:padding="@dimen/margin_small"
-            android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}" />
+            android:text="@{model.description}" />
     </LinearLayout>
 </layout>

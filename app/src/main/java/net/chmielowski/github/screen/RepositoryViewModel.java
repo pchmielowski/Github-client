@@ -32,10 +32,6 @@ public final class RepositoryViewModel {
                 repo.owner.avatarUrl, repo.language);
     }
 
-    public RepositoryViewModel(final Repositories.Item repo) {
-        this(repo, "");
-    }
-
     public RepositoryViewModel(final RealmRepo repo) {
         this(SpannableStringBuilder.valueOf(repo.name), repo.owner, repo.id, repo.avatar,
                 repo.language);

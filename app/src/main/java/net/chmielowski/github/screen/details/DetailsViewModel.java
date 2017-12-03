@@ -3,9 +3,8 @@ package net.chmielowski.github.screen.details;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 
-import net.chmielowski.github.data.ReposRepository;
-import net.chmielowski.github.screen.RepositoryViewModel;
 import net.chmielowski.github.data.LikedRepos;
+import net.chmielowski.github.data.ReposRepository;
 
 import javax.inject.Inject;
 
@@ -14,6 +13,7 @@ import io.reactivex.Single;
 public final class DetailsViewModel {
     public final ObservableField<String> name = new ObservableField<>();
     public final ObservableBoolean favourite = new ObservableBoolean(false);
+    public final ObservableField<String> description = new ObservableField<>();
 
     private final ReposRepository service;
     private final LikedRepos likedRepos;
@@ -32,7 +32,8 @@ public final class DetailsViewModel {
         service.item(repo)
                 .subscribe(item -> {
                     favourite.set(likedRepos.isLiked(item.fullName));
-                    name.set(new RepositoryViewModel(item).name.toString());
+                    name.set(item.name);
+                    description.set(item.description);
                 });
     }
 
