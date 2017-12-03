@@ -56,6 +56,8 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
                 .subscribe(clickSubject);
         Picasso.with(context)
                 .load(model.avatar)
+                .placeholder(R.drawable.ic_avatar_placeholder)
+                .fit()
                 .into(holder.binding.avatar);
 
     }
