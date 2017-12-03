@@ -23,6 +23,7 @@ public final class SearchViewModel {
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
+    public final ObservableBoolean loading = new ObservableBoolean(false);
 
     @Inject
     SearchViewModel(final ReposRepository repository) {
@@ -49,6 +50,8 @@ public final class SearchViewModel {
                                 .map(repositories -> repositories.stream()
                                         .map(repo -> new RepositoryViewModel(repo, query))
                                         .collect(Collectors.toList()))
+                                .doOnSubscribe(__ -> loading.set(true))
+                                .doOnSuccess(__ -> loading.set(false))
                                 .doOnSuccess(__ -> searchVisible.set(false)));
     }
 }
