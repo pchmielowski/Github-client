@@ -16,14 +16,9 @@
             android:id="@+id/test"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Test"
+            android:gravity="center"
+            android:text="@{model.name}"
             android:textSize="46sp"
             android:transitionName="@string/shared_element_transition" />
-
-
-        <!--<TextView-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="match_parent"-->
-        <!--android:text="@{model.name}"/>-->
     </FrameLayout>
 </layout>

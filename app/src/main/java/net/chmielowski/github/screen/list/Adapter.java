@@ -3,6 +3,7 @@ package net.chmielowski.github.screen.list;
 import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.support.v7.widget.RecyclerView;
+import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
 
@@ -40,9 +41,9 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> impl
                 R.layout.item_repo, parent, false));
     }
 
-    private final Subject<Long> clickSubject = PublishSubject.create();
+    private final Subject<Pair<ItemRepoBinding, Long>> clickSubject = PublishSubject.create();
 
-    Observable<Long> observeClicks() {
+    Observable<Pair<ItemRepoBinding, Long>> observeClicks() {
         return clickSubject;
     }
 
@@ -51,7 +52,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> impl
         final RepositoryViewModel model = items.get(position);
         holder.bind(model);
         RxView.clicks(holder.itemView)
-                .map(__ -> model.id)
+                .map(__ -> new Pair<>(holder.binding, model.id))
                 .subscribe(clickSubject);
     }
 

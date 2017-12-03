@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -13,12 +14,14 @@ import android.view.View;
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
+import net.chmielowski.github.databinding.ItemRepoBinding;
 import net.chmielowski.github.screen.details.DetailsActivity;
 
 import javax.inject.Inject;
 
 import io.reactivex.disposables.CompositeDisposable;
 
+import static android.support.v4.app.ActivityOptionsCompat.makeSceneTransitionAnimation;
 import static com.jakewharton.rxbinding2.view.RxView.clicks;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
 
@@ -55,27 +58,20 @@ public class SearchActivity extends AppCompatActivity {
                 model.searchVisibleDisposable());
     }
 
+    private void startDetailsActivity(final Pair<ItemRepoBinding, Long> clickedItem) {
+        final Intent intent = new Intent(this, DetailsActivity.class);
+        intent.putExtra(DetailsActivity.KEY_ID, clickedItem.second);
+        final ActivityOptionsCompat options = makeSceneTransitionAnimation(
+                this,
+                clickedItem.first.name,
+                getString(R.string.shared_element_transition));
+        startActivity(intent, options.toBundle());
+    }
+
     @Override
     protected void onPause() {
         disposable.clear();
         super.onPause();
-    }
-
-    private void startDetailsActivity(Long id) {
-
-
-        Intent intent = new Intent(this, DetailsActivity.class);
-        intent.putExtra(DetailsActivity.KEY_ID, id);
-
-        ActivityOptionsCompat options = ActivityOptionsCompat.
-                makeSceneTransitionAnimation(this, binding.test, getString(R.string.shared_element_transition));
-        startActivity(intent, options.toBundle());
-
-
-//
-//        final Intent intent = new Intent(this, DetailsActivity.class);
-//        intent.putExtra(DetailsActivity.KEY_ID, id);
-//        startActivity(intent);
     }
 
     @Override
