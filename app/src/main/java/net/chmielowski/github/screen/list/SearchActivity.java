@@ -49,7 +49,8 @@ public class SearchActivity extends AppCompatActivity {
         textChanges(binding.search).subscribe(model.queryChanged());
         disposable.addAll(
                 adapter.observeClicks().subscribe(this::startDetailsActivity),
-                model.searchResults().subscribe(results -> adapter.update(results)));
+                model.searchResults().subscribe(results -> adapter.update(results)),
+                model.searchVisibleDisposable());
     }
 
     @Override

@@ -12,6 +12,7 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -28,16 +29,6 @@ public final class SearchViewModel {
     @Inject
     SearchViewModel(final ReposRepository repository) {
         this.repository = repository;
-        queryAsString()
-                .doOnComplete(() -> {
-                    throw new IllegalStateException("querySubject completed");
-                })
-                .subscribe(query -> searchVisible.set(!query.isEmpty()));
-    }
-
-    private Observable<String> queryAsString() {
-        return this.querySubject
-                .map(String::valueOf);
     }
 
     Observer<CharSequence> queryChanged() {
@@ -49,7 +40,8 @@ public final class SearchViewModel {
     }
 
     Observable<Collection<RepositoryViewModel>> searchResults() {
-        return searchSubject.withLatestFrom(queryAsString(), (__, s) -> s)
+        return observeSearchClicked()
+                .withLatestFrom(observeQuery(), (__, s) -> s)
                 .flatMapSingle(query ->
                         repository.items(query)
                                 .map(repositories -> repositories.stream()
@@ -58,5 +50,24 @@ public final class SearchViewModel {
                                 .doOnSubscribe(__ -> loading.set(true))
                                 .doOnSuccess(__ -> loading.set(false))
                                 .doOnSuccess(__ -> searchVisible.set(false)));
+    }
+
+    Disposable searchVisibleDisposable() {
+        return observeQuery().subscribe(query -> searchVisible.set(!query.isEmpty()));
+    }
+
+    private Observable<String> observeQuery() {
+        return querySubject
+                .doOnComplete(() -> {
+                    throw new IllegalStateException("querySubject completed");
+                })
+                .map(String::valueOf);
+    }
+
+    private Observable<Object> observeSearchClicked() {
+        return searchSubject
+                .doOnComplete(() -> {
+                    throw new IllegalStateException("searchSubject completed");
+                });
     }
 }
