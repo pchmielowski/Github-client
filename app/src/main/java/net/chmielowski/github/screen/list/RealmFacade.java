@@ -7,7 +7,6 @@ import java.util.function.Supplier;
 import javax.inject.Inject;
 
 import io.realm.Realm;
-import io.realm.RealmConfiguration;
 
 final class RealmFacade {
     @Inject
@@ -15,13 +14,7 @@ final class RealmFacade {
     }
 
     // TODO: inject factory
-    private final Supplier<Realm> factory = () -> {
-        final RealmConfiguration cfg = Realm.getDefaultConfiguration();
-        if (cfg == null) {
-            throw new IllegalStateException("Realm not configured");
-        }
-        return Realm.getInstance(cfg);
-    };
+    private final Supplier<Realm> factory = Realm::getDefaultInstance;
 
     void execute(final Consumer<Realm> consumer) {
         try (final Realm realm = factory.get()) {
