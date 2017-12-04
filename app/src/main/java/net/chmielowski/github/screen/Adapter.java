@@ -31,7 +31,7 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     private final List<RepositoryViewModel> items = new ArrayList<>();
 
     @Inject
-    public Adapter(@ActivityContext final Context context) {
+    Adapter(@ActivityContext final Context context) {
         this.context = context;
     }
 
@@ -76,6 +76,12 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
         items.clear();
         items.addAll(repositories);
         notifyDataSetChanged();
+    }
+
+    public void append(final Collection<RepositoryViewModel> repositories) {
+        final int size = items.size();
+        items.addAll(repositories);
+        notifyItemRangeInserted(size, repositories.size());
     }
 
     final class ViewHolder extends RecyclerView.ViewHolder {

@@ -24,8 +24,8 @@ public final class ReposRepositoryImpl implements ReposRepository {
     }
 
     @Override
-    public Single<Collection<Repositories.Item>> items(final String query) {
-        return service.searchRepositories(query)
+    public Single<Collection<Repositories.Item>> items(final String query, final int page) {
+        return service.searchRepositories(query, page)
                 .map(repositories ->
                         repositories.items)
                 .doOnSuccess(repositories -> repositories

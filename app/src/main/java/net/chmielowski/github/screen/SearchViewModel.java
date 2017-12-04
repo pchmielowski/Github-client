@@ -1,8 +1,11 @@
 package net.chmielowski.github.screen;
 
 import android.databinding.ObservableBoolean;
+import android.support.annotation.NonNull;
+import android.util.Pair;
 
 import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.pagination.ValueIgnored;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -22,13 +25,15 @@ public final class SearchViewModel {
 
     private final Subject<CharSequence> querySubject = PublishSubject.create();
     private final Subject<Object> searchSubject = PublishSubject.create();
-    private final Subject<String> justSearchSubject = PublishSubject.create(); // TODO: rename
-
+    private final Subject<Object> justSearchSubject = PublishSubject.create(); // TODO: rename
+    private final Subject<ValueIgnored> scrolledToEndSubject = PublishSubject.create();
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
     public final ObservableBoolean searchHistoryVisible = new ObservableBoolean(true);
     public final ObservableBoolean loading = new ObservableBoolean(false);
+
+    private int page = 0; // TODO: can we avoid this mutable variable?
 
     @Inject
     SearchViewModel(final ReposRepository repository) {
@@ -43,24 +48,25 @@ public final class SearchViewModel {
         return searchSubject;
     }
 
-    public Observer<String> search() {
+    public Observer<Object> search() {
         return justSearchSubject;
     }
 
     public Observable<Collection<RepositoryViewModel>> searchResults() {
         return observeSearchClicked()
                 .mergeWith(justSearchSubject)
+                .mergeWith(observeScrolledToEnd())
+                .map(__ -> page)
                 .doOnNext(__ -> searchHistoryVisible.set(false))
-                .withLatestFrom(observeQuery(), (__, s) -> s)
+                .withLatestFrom(observeQuery(), Pair::create)
                 .doOnNext(this::addToHistory)
-                .flatMapSingle(query ->
-                        repository.items(query)
+                .flatMapSingle(q ->
+                        repository.items(q.second, page)
                                 .map(repositories -> repositories.stream()
-                                        .map(repo -> new RepositoryViewModel(repo, query))
+                                        .map(repo -> new RepositoryViewModel(repo, q.second))
                                         .collect(Collectors.toList()))
                                 .doOnSubscribe(__ -> loading.set(true))
-                                .doOnSuccess(__ -> loading.set(false))
-                                .doOnSuccess(__ -> searchVisible.set(false)));
+                                .doOnSuccess(__ -> loading.set(false)));
     }
 
     public Disposable searchVisibleDisposable() {
@@ -72,17 +78,30 @@ public final class SearchViewModel {
 
     private Observable<String> observeQuery() {
         return querySubject
-                .doOnComplete(() -> {
-                    throw new IllegalStateException("querySubject completed");
-                })
+                .doOnComplete(this::throwBadState)
                 .map(String::valueOf);
+    }
+
+    private void throwBadState() {
+        throw new IllegalStateException("subject completed");
     }
 
     private Observable<Object> observeSearchClicked() {
         return searchSubject
-                .doOnComplete(() -> {
-                    throw new IllegalStateException("searchSubject completed");
-                });
+                .doOnComplete(this::throwBadState);
+    }
+
+    @NonNull
+    private Observable<Integer> observeScrolledToEnd() {
+        return scrolledToEndSubject
+                .filter(__ -> !loading.get())
+                .doOnNext(__ -> page++)
+                .doOnComplete(this::throwBadState)
+                .map(__ -> page);
+    }
+
+    public Observer<ValueIgnored> scrolledCloseToEnd() {
+        return scrolledToEndSubject;
     }
 
     class QueryHistory {
@@ -103,8 +122,8 @@ public final class SearchViewModel {
     // TODO: inject
     private final QueryHistory queryHistory = new QueryHistory();
 
-    private void addToHistory(final String query) {
-        queryHistory.searched(query);
+    private void addToHistory(final Pair<Integer, String> query) {
+        queryHistory.searched(query.second);
     }
 
     public Observable<Collection<String>> searches() {

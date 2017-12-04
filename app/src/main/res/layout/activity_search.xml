@@ -15,7 +15,8 @@
         android:layout_height="match_parent"
         tools:context="net.chmielowski.github.screen.search.SearchActivity">
 
-        <android.support.v4.widget.NestedScrollView
+        <!--TODO: Revert NestedScrollView-->
+        <FrameLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -54,7 +55,7 @@
                     android:layout_height="wrap_content" />
 
             </LinearLayout>
-        </android.support.v4.widget.NestedScrollView>
+        </FrameLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"

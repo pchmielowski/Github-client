@@ -12,6 +12,7 @@ import android.view.MenuItem;
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
+import net.chmielowski.github.pagination.RxPagination;
 import net.chmielowski.github.screen.Adapter;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.OpenDetails;
@@ -43,6 +44,7 @@ public class SearchActivity extends BaseActivity {
     SearchesAdapter searchAdapter;
 
     private ActivitySearchBinding binding;
+    private LinearLayoutManager resultsManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +52,8 @@ public class SearchActivity extends BaseActivity {
         ((CustomApplication) getApplication()).component(this).inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         binding.setModel(model);
-        binding.list.setLayoutManager(new LinearLayoutManager(this));
+        resultsManager = new LinearLayoutManager(this);
+        binding.list.setLayoutManager(resultsManager);
         binding.list.setAdapter(reposAdapter);
         ViewCompat.setNestedScrollingEnabled(binding.list, false);
 
@@ -63,7 +66,7 @@ public class SearchActivity extends BaseActivity {
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
                 reposAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
-                model.searchResults().subscribe(results -> reposAdapter.update(results)),
+                model.searchResults().subscribe(results -> reposAdapter.append(results)),
                 model.searches().subscribe(queries -> searchAdapter.update(queries)),
                 model.searchVisibleDisposable());
     }
@@ -73,6 +76,8 @@ public class SearchActivity extends BaseActivity {
         super.onResume();
         clicks(binding.fab).subscribe(model.searchClicked());
         textChanges(binding.search).subscribe(model.queryChanged());
+        RxPagination.scrolledCloseToEnd(binding.list, resultsManager)
+                .subscribe(model.scrolledCloseToEnd());
         searchAdapter.observeClicks().subscribe(model.search());
     }
 
