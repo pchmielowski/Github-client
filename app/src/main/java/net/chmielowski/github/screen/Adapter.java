@@ -4,6 +4,7 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     private final Context context;
     private final List<RepositoryViewModel> items = new ArrayList<>();
+    private boolean loading = false;
 
     @Inject
     Adapter(@ActivityContext final Context context) {
@@ -81,7 +83,7 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public int getItemCount() {
-        return items.size() + 1;
+        return items.size() + (loading ? 1 : 0);
     }
 
     public void update(final Collection<RepositoryViewModel> repositories) {
@@ -90,10 +92,11 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
-    public void append(final Collection<RepositoryViewModel> repositories) {
-        final int size = items.size();
-        items.addAll(repositories);
-        notifyItemRangeInserted(size, repositories.size());
+    public synchronized void append(final ListState state) {
+        loading = state.loading;
+        items.addAll(state.results);
+        notifyDataSetChanged();
+        // TODO: try to notify only of range inserted
     }
 
     final class RepoViewHolder extends RecyclerView.ViewHolder {

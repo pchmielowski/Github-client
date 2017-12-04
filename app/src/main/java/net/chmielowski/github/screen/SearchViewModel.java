@@ -52,7 +52,7 @@ public final class SearchViewModel {
         return justSearchSubject;
     }
 
-    public Observable<Collection<RepositoryViewModel>> searchResults() {
+    public Observable<ListState> searchResults() {
         return observeSearchClicked()
                 .mergeWith(justSearchSubject)
                 .mergeWith(observeScrolledToEnd())
@@ -60,13 +60,18 @@ public final class SearchViewModel {
                 .doOnNext(__ -> searchHistoryVisible.set(false))
                 .withLatestFrom(observeQuery(), Pair::create)
                 .doOnNext(this::addToHistory)
-                .flatMapSingle(q ->
+                .flatMap(q ->
                         repository.items(q.second, page)
                                 .map(repositories -> repositories.stream()
                                         .map(repo -> new RepositoryViewModel(repo, q.second))
                                         .collect(Collectors.toList()))
+                                .map(results -> new ListState(results, false)) // TODO: factory method
+                                .toObservable()
+                                .startWith(new ListState(Collections.emptyList(), true))
                                 .doOnSubscribe(__ -> loading.set(true))
-                                .doOnSuccess(__ -> loading.set(false)));
+                                .doOnComplete(() -> loading.set(false))
+                )
+                .startWith(new ListState(Collections.emptyList(), false)); // TODO: factory method
     }
 
     public Disposable searchVisibleDisposable() {
@@ -102,6 +107,10 @@ public final class SearchViewModel {
 
     public Observer<ValueIgnored> scrolledCloseToEnd() {
         return scrolledToEndSubject;
+    }
+
+    public Observable<Boolean> observeLoading() {
+        return null;
     }
 
     class QueryHistory {
