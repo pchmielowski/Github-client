@@ -52,6 +52,8 @@ public final class SearchViewModel {
         return justSearchSubject;
     }
 
+    // TODO: eliminate loading field
+    // TODO: try to eliminate subjects by just passing observables as this method's parameter
     public Observable<ListState> searchResults() {
         return observeSearchClicked()
                 .mergeWith(justSearchSubject)
