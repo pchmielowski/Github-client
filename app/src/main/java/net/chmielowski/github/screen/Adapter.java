@@ -2,6 +2,7 @@ package net.chmielowski.github.screen;
 
 import android.content.Context;
 import android.databinding.DataBindingUtil;
+import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
 import android.util.Pair;
 import android.view.LayoutInflater;
@@ -26,7 +27,9 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 @ActivityScope
-public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
+public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private static final int ORDINARY_ELEMENT = 0;
+    private static final int LAST_ELEMENT = 1;
     private final Context context;
     private final List<RepositoryViewModel> items = new ArrayList<>();
 
@@ -36,9 +39,25 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
-        return new ViewHolder(DataBindingUtil.inflate(LayoutInflater.from(context),
-                R.layout.item_repo, parent, false));
+    public int getItemViewType(final int position) {
+        return isLastElement(position) ? LAST_ELEMENT : ORDINARY_ELEMENT;
+    }
+
+    private boolean isLastElement(final int position) {
+        return position == items.size();
+    }
+
+    @Override
+    public RecyclerView.ViewHolder onCreateViewHolder(final ViewGroup parent, final int viewType) {
+        if (viewType == LAST_ELEMENT) {
+            return new RecyclerView.ViewHolder(inflate(parent, R.layout.item_last).getRoot()) {
+            };
+        }
+        return new ViewHolder(inflate(parent, R.layout.item_repo));
+    }
+
+    private <T extends ViewDataBinding> T inflate(final ViewGroup parent, final int layout) {
+        return DataBindingUtil.inflate(LayoutInflater.from(context), layout, parent, false);
     }
 
     private final Subject<Pair<ItemRepoBinding, String>> clickSubject = PublishSubject.create();
@@ -48,28 +67,28 @@ public final class Adapter extends RecyclerView.Adapter<Adapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(final ViewHolder holder, final int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
+        // TODO: refactor me
+        if (!(holder instanceof ViewHolder)) {
+            return;
+        }
+        final Adapter.ViewHolder casted = (ViewHolder) holder;
         final RepositoryViewModel model = items.get(position);
-        holder.bind(model);
+        casted.bind(model);
         RxView.clicks(holder.itemView)
-                .map(__ -> new Pair<>(holder.binding, model.id))
+                .map(__ -> new Pair<>(casted.binding, model.id))
                 .subscribe(clickSubject);
         Picasso.with(context)
                 .load(model.avatar)
                 .placeholder(R.drawable.ic_avatar_placeholder)
                 .fit()
-                .into(holder.binding.avatar);
+                .into(casted.binding.avatar);
 
-    }
-
-    @Override
-    public void onViewRecycled(final ViewHolder holder) {
-        super.onViewRecycled(holder);
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return items.size() + 1;
     }
 
     public void update(final Collection<RepositoryViewModel> repositories) {
