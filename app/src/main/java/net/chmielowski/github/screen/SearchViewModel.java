@@ -17,6 +17,7 @@ import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
+import lombok.EqualsAndHashCode;
 
 public final class SearchViewModel {
     private final ReposRepository repository;
@@ -41,6 +42,7 @@ public final class SearchViewModel {
         return justSearchSubject;
     }
 
+    @EqualsAndHashCode
     public static class Query {
         public String text;
         public int page;
@@ -51,7 +53,7 @@ public final class SearchViewModel {
         }
 
         @NonNull
-        private static Query firstPage(final String query) {
+        static Query firstPage(final String query) {
             return new Query(0, query);
         }
     }
@@ -69,7 +71,7 @@ public final class SearchViewModel {
     }
 
     // TODO: eliminate loading field
-    private Observable<ListState> searchResults(final Observable<String> searchQuery,
+    public Observable<ListState> searchResults(final Observable<String> searchQuery,
                                                 final Observable<?> scrolledToEnd) {
         return Observable.merge(
                 searchQuery
