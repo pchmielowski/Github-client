@@ -1,24 +1,21 @@
 package net.chmielowski.github.screen;
 
-import android.support.annotation.NonNull;
-
 import net.chmielowski.github.data.ReposRepository;
-import net.chmielowski.github.data.Repositories;
+import net.chmielowski.github.utils.TestUtils;
 
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Arrays;
 import java.util.Collections;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 
 import static io.reactivex.Single.just;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
@@ -74,20 +71,6 @@ public class SearchViewModelTest {
                         ListState.loading(),
                         ListState.loaded(Collections.singletonList(new RepositoryViewModel(sampleRepository(), query)))
                 );
-    }
-
-    @NonNull
-    private static Repositories.Item sampleRepository() {
-        final Repositories.Item item = new Repositories.Item();
-        item.description = "description";
-        item.fullName = "full name";
-        item.language = "language";
-        item.name = "name";
-        final Repositories.Item.Owner owner = new Repositories.Item.Owner();
-        owner.avatarUrl = "avatar url";
-        owner.login = "login";
-        item.owner = owner;
-        return item;
     }
 
 }

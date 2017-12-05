@@ -5,6 +5,9 @@ import android.support.annotation.NonNull;
 import net.chmielowski.github.data.RealmRepo;
 import net.chmielowski.github.data.Repositories;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
+
 public final class RepositoryViewModel {
     private final String name;
     private final String query;
@@ -35,7 +38,6 @@ public final class RepositoryViewModel {
         this(repo.name, "", repo.owner, repo.id, repo.avatar, repo.language);
     }
 
-    // TODO: write test
     public FormattedText name() {
         return withQuerySelected(name, query);
     }
@@ -44,10 +46,12 @@ public final class RepositoryViewModel {
     private static FormattedText withQuerySelected(final String name, final String query) {
         final String normalized = query.trim().toLowerCase();
         final int position = name.toLowerCase().indexOf(normalized); // TODO: find all occurrences
-        return new FormattedText(name, position, position + normalized.length());
+        return new FormattedText(name, position, position == -1 ? -1 : position + normalized.length());
     }
 
-    static class FormattedText {
+    @ToString
+    @EqualsAndHashCode
+    static final class FormattedText {
         final String text;
         final int start;
         final int end;
