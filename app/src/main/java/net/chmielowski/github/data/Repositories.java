@@ -4,8 +4,11 @@ import net.chmielowski.github.Cached;
 
 import java.util.Collection;
 
+import lombok.EqualsAndHashCode;
+
 // Seems like Android Studio can not deduce, that here we need public
 @SuppressWarnings("WeakerAccess")
+@EqualsAndHashCode
 public final class Repositories {
 
     Collection<Item> items;

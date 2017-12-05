@@ -8,6 +8,8 @@ import android.text.style.StyleSpan;
 import net.chmielowski.github.data.RealmRepo;
 import net.chmielowski.github.data.Repositories;
 
+// TODO: lets make it lazy
+// TODO: lets make it platform independent (get rid of SpannableStringBuilder)
 public final class RepositoryViewModel {
     public final SpannableStringBuilder name;
     public final String owner;
