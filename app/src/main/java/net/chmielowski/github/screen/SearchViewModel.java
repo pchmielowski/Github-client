@@ -30,27 +30,24 @@ public final class SearchViewModel {
     public final ObservableBoolean loading = new ObservableBoolean(false);
 
     private int page = 0; // TODO: can we avoid this mutable variable?
+    private String lastQuery;
 
     @Inject
     SearchViewModel(final ReposRepository repository) {
         this.repository = repository;
     }
 
-    public Observer<CharSequence> queryChanged() {
-        return querySubject;
-    }
-
     public Observer<String> search() {
         return justSearchSubject;
     }
 
-    static class Query {
-        String query;
-        int page;
+    public static class Query {
+        public String text;
+        public int page;
 
-        Query(final Integer page, final String query) {
+        Query(final Integer page, final String text) {
             this.page = page;
-            this.query = query;
+            this.text = text;
         }
 
         @NonNull
@@ -59,21 +56,27 @@ public final class SearchViewModel {
         }
     }
 
-    // TODO: eliminate loading field
-    // TODO: try to eliminate subjects by just passing observables as this method's parameter
+
     public Observable<ListState> searchResults(final Observable<?> searchBtnClicked,
                                                final Observable<String> searchQuery,
-                                               final Observable<?> scrolledToEnd) {
+                                               final Observable<?> scrolledToEnd,
+                                               final Observable<String> observeQuery) {
+        return searchResults(
+                Observable.merge(
+                        searchQuery,
+                        searchBtnClicked.withLatestFrom(observeQuery, (__, query) -> query)),
+                scrolledToEnd);
+    }
+
+    // TODO: eliminate loading field
+    private Observable<ListState> searchResults(final Observable<String> searchQuery,
+                                                final Observable<?> scrolledToEnd) {
         return Observable.merge(
-                searchBtnClicked
-                        .map(__ -> 0)
-                        .withLatestFrom(observeQuery(), Query::new)
-                ,
                 searchQuery
+                        .doOnNext(query -> lastQuery = query)
                         .map(Query::firstPage),
                 scrolledToEnd
-                        .map(__ -> page++)
-                        .withLatestFrom(observeQuery(), Query::new)
+                        .map(__ -> new Query(page++, lastQuery)) // TODO: mutable
 
         )
 
@@ -81,9 +84,9 @@ public final class SearchViewModel {
                 .doOnNext(__ -> searchHistoryVisible.set(false))
                 .doOnNext(this::addToHistory)
                 .flatMap(q ->
-                        repository.items(q.query, q.page)
+                        repository.items(q)
                                 .map(repositories -> repositories.stream()
-                                        .map(repo -> new RepositoryViewModel(repo, q.query))
+                                        .map(repo -> new RepositoryViewModel(repo, q.text))
                                         .collect(Collectors.toList()))
                                 .map(results -> new ListState(results, false)) // TODO: factory method
                                 .toObservable()
@@ -135,7 +138,7 @@ public final class SearchViewModel {
 
     private void addToHistory(final Query query) {
         if (query.page == 0) {
-            queryHistory.searched(query.query);
+            queryHistory.searched(query.text);
         }
     }
 

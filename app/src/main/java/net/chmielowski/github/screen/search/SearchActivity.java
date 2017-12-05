@@ -67,7 +67,8 @@ public class SearchActivity extends BaseActivity {
         return Arrays.asList(
                 model.searchResults(clicks(binding.fab),
                         searchAdapter.observeClicks(),
-                        RxPagination.scrolledCloseToEnd(binding.list, resultsManager))
+                        RxPagination.scrolledCloseToEnd(binding.list, resultsManager),
+                        textChanges(binding.search).map(CharSequence::toString)) // TODO: just use CharSequence everywhere
                         .subscribe(results -> reposAdapter.append(results)),
                 model.searches().subscribe(queries -> searchAdapter.update(queries)),
                 model.searchVisibleDisposable());
@@ -76,7 +77,6 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        textChanges(binding.search).subscribe(model.queryChanged());
         searchAdapter.observeClicks().subscribe(model.search());
     }
 
