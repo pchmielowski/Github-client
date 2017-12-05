@@ -65,8 +65,10 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
-                reposAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
-                model.searchResults().subscribe(results -> reposAdapter.append(results)),
+                model.searchResults(clicks(binding.fab),
+                        searchAdapter.observeClicks(),
+                        RxPagination.scrolledCloseToEnd(binding.list, resultsManager))
+                        .subscribe(results -> reposAdapter.append(results)),
                 model.searches().subscribe(queries -> searchAdapter.update(queries)),
                 model.searchVisibleDisposable());
     }
@@ -74,10 +76,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        clicks(binding.fab).subscribe(model.searchClicked());
         textChanges(binding.search).subscribe(model.queryChanged());
-        RxPagination.scrolledCloseToEnd(binding.list, resultsManager)
-                .subscribe(model.scrolledCloseToEnd());
         searchAdapter.observeClicks().subscribe(model.search());
     }
 

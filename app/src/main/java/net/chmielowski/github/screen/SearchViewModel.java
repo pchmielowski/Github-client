@@ -2,10 +2,8 @@ package net.chmielowski.github.screen;
 
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
-import android.util.Pair;
 
 import net.chmielowski.github.data.ReposRepository;
-import net.chmielowski.github.pagination.ValueIgnored;
 
 import java.util.Collection;
 import java.util.Collections;
@@ -24,9 +22,7 @@ public final class SearchViewModel {
     private final ReposRepository repository;
 
     private final Subject<CharSequence> querySubject = PublishSubject.create();
-    private final Subject<Object> searchSubject = PublishSubject.create();
-    private final Subject<Object> justSearchSubject = PublishSubject.create(); // TODO: rename
-    private final Subject<ValueIgnored> scrolledToEndSubject = PublishSubject.create();
+    private final Subject<String> justSearchSubject = PublishSubject.create(); // TODO: rename
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
@@ -44,28 +40,50 @@ public final class SearchViewModel {
         return querySubject;
     }
 
-    public Observer<Object> searchClicked() {
-        return searchSubject;
+    public Observer<String> search() {
+        return justSearchSubject;
     }
 
-    public Observer<Object> search() {
-        return justSearchSubject;
+    static class Query {
+        String query;
+        int page;
+
+        Query(final Integer page, final String query) {
+            this.page = page;
+            this.query = query;
+        }
+
+        @NonNull
+        private static Query firstPage(final String query) {
+            return new Query(0, query);
+        }
     }
 
     // TODO: eliminate loading field
     // TODO: try to eliminate subjects by just passing observables as this method's parameter
-    public Observable<ListState> searchResults() {
-        return observeSearchClicked()
-                .mergeWith(justSearchSubject)
-                .mergeWith(observeScrolledToEnd())
-                .map(__ -> page)
+    public Observable<ListState> searchResults(final Observable<?> searchBtnClicked,
+                                               final Observable<String> searchQuery,
+                                               final Observable<?> scrolledToEnd) {
+        return Observable.merge(
+                searchBtnClicked
+                        .map(__ -> 0)
+                        .withLatestFrom(observeQuery(), Query::new)
+                ,
+                searchQuery
+                        .map(Query::firstPage),
+                scrolledToEnd
+                        .map(__ -> page++)
+                        .withLatestFrom(observeQuery(), Query::new)
+
+        )
+
+                .filter(__ -> notLoadingCurrently())
                 .doOnNext(__ -> searchHistoryVisible.set(false))
-                .withLatestFrom(observeQuery(), Pair::create)
                 .doOnNext(this::addToHistory)
                 .flatMap(q ->
-                        repository.items(q.second, page)
+                        repository.items(q.query, q.page)
                                 .map(repositories -> repositories.stream()
-                                        .map(repo -> new RepositoryViewModel(repo, q.second))
+                                        .map(repo -> new RepositoryViewModel(repo, q.query))
                                         .collect(Collectors.toList()))
                                 .map(results -> new ListState(results, false)) // TODO: factory method
                                 .toObservable()
@@ -74,6 +92,10 @@ public final class SearchViewModel {
                                 .doOnComplete(() -> loading.set(false))
                 )
                 .startWith(new ListState(Collections.emptyList(), false)); // TODO: factory method
+    }
+
+    private boolean notLoadingCurrently() {
+        return !loading.get();
     }
 
     public Disposable searchVisibleDisposable() {
@@ -91,28 +113,6 @@ public final class SearchViewModel {
 
     private void throwBadState() {
         throw new IllegalStateException("subject completed");
-    }
-
-    private Observable<Object> observeSearchClicked() {
-        return searchSubject
-                .doOnComplete(this::throwBadState);
-    }
-
-    @NonNull
-    private Observable<Integer> observeScrolledToEnd() {
-        return scrolledToEndSubject
-                .filter(__ -> !loading.get())
-                .doOnNext(__ -> page++)
-                .doOnComplete(this::throwBadState)
-                .map(__ -> page);
-    }
-
-    public Observer<ValueIgnored> scrolledCloseToEnd() {
-        return scrolledToEndSubject;
-    }
-
-    public Observable<Boolean> observeLoading() {
-        return null;
     }
 
     class QueryHistory {
@@ -133,8 +133,10 @@ public final class SearchViewModel {
     // TODO: inject
     private final QueryHistory queryHistory = new QueryHistory();
 
-    private void addToHistory(final Pair<Integer, String> query) {
-        queryHistory.searched(query.second);
+    private void addToHistory(final Query query) {
+        if (query.page == 0) {
+            queryHistory.searched(query.query);
+        }
     }
 
     public Observable<Collection<String>> searches() {
