@@ -4,7 +4,6 @@ import android.content.Context;
 import android.databinding.DataBindingUtil;
 import android.databinding.ViewDataBinding;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.util.Pair;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
@@ -112,8 +111,9 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         }
 
         private void bind(final RepositoryViewModel model) {
-            binding.setModel(model);
+            binding.setModel(new BoldQueryViewModel(model));
         }
+
     }
 
     final class SpinnerViewHolder extends RecyclerView.ViewHolder {
@@ -121,4 +121,5 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
             super(inflate(parent, R.layout.item_spinner).getRoot());
         }
     }
+
 }
