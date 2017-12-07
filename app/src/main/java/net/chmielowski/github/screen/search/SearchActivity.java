@@ -1,5 +1,6 @@
 package net.chmielowski.github.screen.search;
 
+import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -8,6 +9,9 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.view.animation.BounceInterpolator;
+import android.view.animation.OvershootInterpolator;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
@@ -21,10 +25,15 @@ import net.chmielowski.github.screen.SearchesAdapter;
 import net.chmielowski.github.screen.fav.FavsActivity;
 
 import java.util.Arrays;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
+import io.reactivex.Observable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 
 import static com.jakewharton.rxbinding2.view.RxView.clicks;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
@@ -59,6 +68,12 @@ public class SearchActivity extends BaseActivity {
 
         binding.searches.setLayoutManager(new LinearLayoutManager(this));
         binding.searches.setAdapter(searchAdapter);
+
+        final LayoutTransition transition = binding.layout.getLayoutTransition();
+        transition.setDuration(1000);
+        transition.setInterpolator(LayoutTransition.CHANGE_APPEARING, new OvershootInterpolator(5));
+        transition.setInterpolator(LayoutTransition.CHANGE_DISAPPEARING, new OvershootInterpolator(5));
+        binding.layout.setLayoutTransition(transition);
     }
 
     @NonNull
@@ -78,6 +93,16 @@ public class SearchActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
         searchAdapter.observeClicks().subscribe(model.search());
+
+        Observable.interval(3, TimeUnit.SECONDS)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(new Consumer<Long>() {
+                    @Override
+                    public void accept(final Long aLong) throws Exception {
+                        binding.offline.setVisibility(aLong % 2 == 0 ? View.GONE : View.VISIBLE);
+                    }
+                });
     }
 
     @Override

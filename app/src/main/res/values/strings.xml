@@ -9,4 +9,5 @@
     <string name="now_you_like">Now you like</string>
     <string name="you_unlike">You\'ve unliked</string>
     <string name="last_searches">Last searches:</string>
+    <string name="you_are_offline">You are offline</string>
 </resources>
