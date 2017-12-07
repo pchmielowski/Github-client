@@ -117,6 +117,10 @@ public final class SearchViewModel {
         });
     }
 
+    public void clear() {
+        searchHistoryVisible.set(false);
+    }
+
     class QueryHistory {
         // TODO: store subject Realm
         Collection<String> history = new LinkedList<>();
