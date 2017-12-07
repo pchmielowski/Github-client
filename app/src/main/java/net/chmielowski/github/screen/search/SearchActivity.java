@@ -91,7 +91,7 @@ public class SearchActivity extends BaseActivity {
                         textChanges(binding.search).map(CharSequence::toString)) // TODO: just use CharSequence everywhere
                         .subscribe(results -> reposAdapter.append(results)),
                 model.searches().subscribe(queries -> searchAdapter.update(queries)),
-                model.searchVisibleDisposable());
+                model.searchVisibleDisposable(textChanges(binding.search)));
     }
 
     // TODO: unregister

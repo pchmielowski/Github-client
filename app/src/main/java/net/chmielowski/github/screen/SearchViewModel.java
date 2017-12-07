@@ -3,6 +3,8 @@ package net.chmielowski.github.screen;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
+import com.jakewharton.rxbinding2.InitialValueObservable;
+
 import net.chmielowski.github.data.ReposRepository;
 
 import java.util.Collection;
@@ -23,7 +25,6 @@ import lombok.ToString;
 public final class SearchViewModel {
     private final ReposRepository repository;
 
-    private final Subject<CharSequence> querySubject = PublishSubject.create();
     private final Subject<String> justSearchSubject = PublishSubject.create(); // TODO: rename
 
     public final ObservableBoolean inputVisible = new ObservableBoolean(true);
@@ -109,21 +110,11 @@ public final class SearchViewModel {
         return !loading.get();
     }
 
-    public Disposable searchVisibleDisposable() {
-        return observeQuery().subscribe(query -> {
+    public Disposable searchVisibleDisposable(final InitialValueObservable<CharSequence> observable) {
+        return observable.subscribe(query -> {
             searchHistoryVisible.set(true);
-            searchVisible.set(!query.isEmpty());
+            searchVisible.set(query.length() > 0);
         });
-    }
-
-    private Observable<String> observeQuery() {
-        return querySubject
-                .doOnComplete(this::throwBadState)
-                .map(String::valueOf);
-    }
-
-    private void throwBadState() {
-        throw new IllegalStateException("subject completed");
     }
 
     class QueryHistory {
