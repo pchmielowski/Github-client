@@ -1,6 +1,7 @@
 package net.chmielowski.github;
 
 import android.app.Application;
+import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.stetho.Stetho;
@@ -11,6 +12,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 
 public final class CustomApplication extends Application {
+    static Context INSTANCE; // TODO: use DI
 
     /*
      * TODO:
@@ -29,6 +31,7 @@ public final class CustomApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        INSTANCE = this;
         component = DaggerMainComponent.create();
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;

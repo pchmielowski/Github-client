@@ -1,28 +1,32 @@
 package net.chmielowski.github.screen.search;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
-import android.graphics.Color;
+import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.view.Gravity;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
-import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import com.google.android.gms.gcm.GcmNetworkManager;
+import com.google.android.gms.gcm.OneoffTask;
+import com.google.android.gms.gcm.Task;
+
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
+import net.chmielowski.github.SendNetworkConnectedBroadcast;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.pagination.RxPagination;
 import net.chmielowski.github.screen.Adapter;
@@ -33,17 +37,11 @@ import net.chmielowski.github.screen.SearchesAdapter;
 import net.chmielowski.github.screen.fav.FavsActivity;
 
 import java.util.Arrays;
-import java.util.concurrent.TimeUnit;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Consumer;
-import io.reactivex.schedulers.Schedulers;
 
-import static android.view.animation.AnimationUtils.loadAnimation;
 import static com.jakewharton.rxbinding2.view.RxView.clicks;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
 
@@ -96,33 +94,67 @@ public class SearchActivity extends BaseActivity {
                 model.searchVisibleDisposable());
     }
 
+    // TODO: unregister
+    private final BroadcastReceiver networkConnectedBroadcastReceiver = new BroadcastReceiver() {
+        @Override
+        public void onReceive(final Context context, final Intent intent) {
+            Log.d("pchm", "SearchActivity onReceive ");
+        }
+    };
+
     @Override
     protected void onResume() {
         super.onResume();
         searchAdapter.observeClicks().subscribe(model.search());
 
-        binding.offline.setFactory(() -> {
-            TextView myText = new TextView(this);
-            myText.setGravity(Gravity.CENTER_HORIZONTAL);
-            return myText;
-        });
+        waitForOnline();
 
-        binding.offline.setInAnimation(loadAnimation(this, android.R.anim.fade_in));
-        binding.offline.setOutAnimation(loadAnimation(this, android.R.anim.fade_out));
+        LocalBroadcastManager.getInstance(this).registerReceiver(
+                networkConnectedBroadcastReceiver,
+                new IntentFilter(SendNetworkConnectedBroadcast.NETWORK_AVAILABLE));
+    }
 
-        binding.offline.setText("Hello");
+    @SuppressWarnings("ConstantConditions")
+    boolean isOnline() {
+        return connectivityManager().getActiveNetworkInfo().isConnected();
+    }
 
-        Observable.interval(2, TimeUnit.SECONDS)
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Consumer<Long>() {
-                    @Override
-                    public void accept(final Long aLong) throws Exception {
-                        binding.offline.setText(aLong % 3 == 2 ? "You are online" : "You are offline");
-                        binding.offline.setBackgroundResource(aLong % 3 == 2 ? R.color.colorOnline : R.color.colorAccent);
-                        binding.offline.setVisibility(aLong % 3 == 0 ? View.GONE : View.VISIBLE);
-                    }
-                });
+    private final static String TAG = "NETWORK_CONNECTED";
+
+
+    void waitForOnline() {
+        final long ONE_HOUR = 3600L;
+        final OneoffTask task = new OneoffTask.Builder()
+                .setService(SendNetworkConnectedBroadcast.class)
+                .setTag(TAG)
+                .setExecutionWindow(0L, ONE_HOUR)
+                .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
+                .build();
+        GcmNetworkManager.getInstance(this).schedule(task);
+    }
+
+
+    private ConnectivityManager connectivityManager() {
+        return (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
+    }
+
+
+    void onOffline() {
+        setTo(binding.offline);
+    }
+
+    void onOnline() {
+        setTo(binding.online);
+    }
+
+    private void setTo(final TextView view) {
+        final ViewSwitcher indicator = binding.networkIndicator;
+        indicator.setVisibility(View.VISIBLE);
+        final View current = indicator.getCurrentView();
+        if (current == view) {
+            return;
+        }
+        indicator.showNext();
     }
 
     @Override

@@ -80,4 +80,6 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    implementation 'com.google.android.gms:play-services-gcm:11.6.2'
 }
