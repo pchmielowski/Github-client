@@ -8,6 +8,8 @@ import net.chmielowski.github.data.Repositories;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
+@EqualsAndHashCode
+@ToString
 public final class RepositoryViewModel {
     private final String name;
     private final String query;

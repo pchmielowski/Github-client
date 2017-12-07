@@ -1,10 +1,8 @@
 package net.chmielowski.github.screen;
 
 import net.chmielowski.github.data.ReposRepository;
-import net.chmielowski.github.utils.TestUtils;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
@@ -15,6 +13,9 @@ import io.reactivex.Observable;
 import static io.reactivex.Single.just;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static net.chmielowski.github.screen.ListState.initial;
+import static net.chmielowski.github.screen.ListState.loaded;
+import static net.chmielowski.github.screen.ListState.loading;
 import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
@@ -33,7 +34,7 @@ public class SearchViewModelTest {
         new SearchViewModel(service)
                 .searchResults(Observable.never(), Observable.never())
                 .test()
-                .assertValuesOnly(ListState.initial());
+                .assertValuesOnly(initial());
 
         verifyZeroInteractions(service);
     }
@@ -49,15 +50,14 @@ public class SearchViewModelTest {
                 .searchResults(Observable.just(query), Observable.never())
                 .test()
                 .assertValuesOnly(
-                        ListState.initial(),
-                        ListState.loading(),
-                        ListState.loaded(emptyList())
+                        initial(),
+                        loading(),
+                        loaded(emptyList())
                 );
     }
 
-    @Ignore("RepositoryViewModel should be Android independent")
     @Test
-    public void second() throws Exception {
+    public void serviceReturnsOneItem() throws Exception {
         final String query = "query";
 
         when(service.items(SearchViewModel.Query.firstPage(query)))
@@ -67,9 +67,9 @@ public class SearchViewModelTest {
                 .searchResults(Observable.just(query), Observable.never())
                 .test()
                 .assertValuesOnly(
-                        ListState.initial(),
-                        ListState.loading(),
-                        ListState.loaded(Collections.singletonList(new RepositoryViewModel(sampleRepository(), query)))
+                        initial(),
+                        loading(),
+                        loaded(singletonList(new RepositoryViewModel(sampleRepository(), query)))
                 );
     }
 
