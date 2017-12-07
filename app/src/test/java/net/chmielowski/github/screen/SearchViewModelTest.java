@@ -8,7 +8,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -29,7 +28,8 @@ import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
-public class SearchViewModelTest {
+// TODO: remove redundant tests
+public final class SearchViewModelTest {
 
     private ReposRepository service;
 
