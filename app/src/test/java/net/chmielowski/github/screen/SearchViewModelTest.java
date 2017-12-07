@@ -8,6 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.Collections;
 import java.util.List;
 
 import io.reactivex.Observable;
@@ -106,6 +107,41 @@ public class SearchViewModelTest {
                 loaded(mapToViewModel(firstPage, query)),
                 loading(),
                 loaded(mapToViewModel(secondPage, query))
+        );
+    }
+
+    @Test
+    public void scrolledToTheEndTwice() throws Exception {
+        final String query = "fourth";
+
+        final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
+        final List<Repositories.Item> secondPage = asList(sampleRepository(), sampleRepository(),
+                sampleRepository());
+        final List<Repositories.Item> thirdPage = singletonList(sampleRepository());
+
+        when(service.items(SearchViewModel.Query.firstPage(query)))
+                .thenReturn(just(firstPage));
+        when(service.items(new SearchViewModel.Query(1, query)))
+                .thenReturn(just(secondPage));
+        when(service.items(new SearchViewModel.Query(2, query)))
+                .thenReturn(just(thirdPage));
+
+        final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
+
+        final TestObserver<ListState> test = new SearchViewModel(service)
+                .searchResults(query(query), scrolledSubject)
+                .test();
+        scrolledSubject.onNext(VALUE_IGNORED);
+        scrolledSubject.onNext(VALUE_IGNORED);
+
+        test.assertValuesOnly(
+                initial(),
+                loading(),
+                loaded(mapToViewModel(firstPage, query)),
+                loading(),
+                loaded(mapToViewModel(secondPage, query)),
+                loading(),
+                loaded(mapToViewModel(thirdPage, query))
         );
     }
 
