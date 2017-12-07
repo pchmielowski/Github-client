@@ -28,7 +28,7 @@
                 android:id="@+id/layout"
                 android:orientation="vertical">
 
-                <TextView
+                <TextSwitcher
                     android:id="@+id/offline"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"

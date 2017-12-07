@@ -1,17 +1,25 @@
 package net.chmielowski.github.screen.search;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.LayoutTransition;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
+import android.widget.TextView;
+import android.widget.ViewSwitcher;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
@@ -35,6 +43,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
 
+import static android.view.animation.AnimationUtils.loadAnimation;
 import static com.jakewharton.rxbinding2.view.RxView.clicks;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
 
@@ -70,9 +79,7 @@ public class SearchActivity extends BaseActivity {
         binding.searches.setAdapter(searchAdapter);
 
         final LayoutTransition transition = binding.layout.getLayoutTransition();
-        transition.setDuration(1000);
-        transition.setInterpolator(LayoutTransition.CHANGE_APPEARING, new OvershootInterpolator(5));
-        transition.setInterpolator(LayoutTransition.CHANGE_DISAPPEARING, new OvershootInterpolator(5));
+        transition.setInterpolator(LayoutTransition.CHANGE_APPEARING, new OvershootInterpolator(10));
         binding.layout.setLayoutTransition(transition);
     }
 
@@ -94,13 +101,26 @@ public class SearchActivity extends BaseActivity {
         super.onResume();
         searchAdapter.observeClicks().subscribe(model.search());
 
-        Observable.interval(3, TimeUnit.SECONDS)
+        binding.offline.setFactory(() -> {
+            TextView myText = new TextView(this);
+            myText.setGravity(Gravity.CENTER_HORIZONTAL);
+            return myText;
+        });
+
+        binding.offline.setInAnimation(loadAnimation(this, android.R.anim.fade_in));
+        binding.offline.setOutAnimation(loadAnimation(this, android.R.anim.fade_out));
+
+        binding.offline.setText("Hello");
+
+        Observable.interval(2, TimeUnit.SECONDS)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 .subscribe(new Consumer<Long>() {
                     @Override
                     public void accept(final Long aLong) throws Exception {
-                        binding.offline.setVisibility(aLong % 2 == 0 ? View.GONE : View.VISIBLE);
+                        binding.offline.setText(aLong % 3 == 2 ? "You are online" : "You are offline");
+                        binding.offline.setBackgroundResource(aLong % 3 == 2 ? R.color.colorOnline : R.color.colorAccent);
+                        binding.offline.setVisibility(aLong % 3 == 0 ? View.GONE : View.VISIBLE);
                     }
                 });
     }
