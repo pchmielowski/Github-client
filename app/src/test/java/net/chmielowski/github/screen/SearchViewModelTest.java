@@ -1,18 +1,26 @@
 package net.chmielowski.github.screen;
 
 import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.data.Repositories;
+import net.chmielowski.github.pagination.ValueIgnored;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import java.util.Collections;
+import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.observers.TestObserver;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 
 import static io.reactivex.Single.just;
+import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
+import static java.util.stream.Collectors.toList;
+import static net.chmielowski.github.pagination.ValueIgnored.VALUE_IGNORED;
 import static net.chmielowski.github.screen.ListState.initial;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
@@ -41,13 +49,13 @@ public class SearchViewModelTest {
 
     @Test
     public void serviceReturnsEmptyList() throws Exception {
-        final String query = "query";
+        final String query = "first";
 
         when(service.items(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(just(emptyList()));
 
         new SearchViewModel(service)
-                .searchResults(Observable.just(query), Observable.never())
+                .searchResults(query(query), Observable.never())
                 .test()
                 .assertValuesOnly(
                         initial(),
@@ -58,19 +66,55 @@ public class SearchViewModelTest {
 
     @Test
     public void serviceReturnsOneItem() throws Exception {
-        final String query = "query";
+        final String query = "second";
 
         when(service.items(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(just(singletonList(sampleRepository())));
 
         new SearchViewModel(service)
-                .searchResults(Observable.just(query), Observable.never())
+                .searchResults(query(query), Observable.never())
                 .test()
                 .assertValuesOnly(
                         initial(),
                         loading(),
                         loaded(singletonList(new RepositoryViewModel(sampleRepository(), query)))
                 );
+    }
+
+    @Test
+    public void scrolledToTheEndOnce() throws Exception {
+        final String query = "third";
+
+        final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
+        final List<Repositories.Item> secondPage = singletonList(sampleRepository());
+
+        when(service.items(SearchViewModel.Query.firstPage(query)))
+                .thenReturn(just(firstPage));
+        when(service.items(new SearchViewModel.Query(1, query)))
+                .thenReturn(just(secondPage));
+
+        final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
+
+        final TestObserver<ListState> test = new SearchViewModel(service)
+                .searchResults(query(query), scrolledSubject)
+                .test();
+        scrolledSubject.onNext(VALUE_IGNORED);
+
+        test.assertValuesOnly(
+                initial(),
+                loading(),
+                loaded(mapToViewModel(firstPage, query)),
+                loading(),
+                loaded(mapToViewModel(secondPage, query))
+        );
+    }
+
+    private static List<RepositoryViewModel> mapToViewModel(final List<Repositories.Item> results, final String query) {
+        return results.stream().map(it -> new RepositoryViewModel(it, query)).collect(toList());
+    }
+
+    private static Observable<String> query(final String query) {
+        return Observable.create(e -> e.onNext(query));
     }
 
 }

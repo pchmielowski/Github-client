@@ -2,6 +2,7 @@ package net.chmielowski.github.screen;
 
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
+import android.util.Log;
 
 import net.chmielowski.github.data.ReposRepository;
 
@@ -15,9 +16,11 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
 public final class SearchViewModel {
     private final ReposRepository repository;
@@ -43,6 +46,7 @@ public final class SearchViewModel {
     }
 
     @EqualsAndHashCode
+    @ToString
     public static class Query {
         public String text;
         public int page;
@@ -71,16 +75,20 @@ public final class SearchViewModel {
     }
 
     // TODO: eliminate loading field
-    public Observable<ListState> searchResults(final Observable<String> searchQuery,
-                                                final Observable<?> scrolledToEnd) {
+    Observable<ListState> searchResults(final Observable<String> searchQuery,
+                                        final Observable<?> scrolledToEnd) {
         return Observable.merge(
                 searchQuery
                         .doOnNext(query -> lastQuery = query)
                         .map(Query::firstPage),
                 scrolledToEnd
-                        .map(__ -> new Query(page++, lastQuery)) // TODO: mutable
+                        .map(__ -> new Query(++page, lastQuery)) // TODO: mutable
 
         )
+                .doOnNext(v -> System.out.println(String.valueOf(v)))
+                .doOnComplete(() -> {
+                    throw new IllegalStateException("Stream completed");
+                })
 
                 .filter(__ -> notLoadingCurrently())
                 .doOnNext(__ -> searchHistoryVisible.set(false))
