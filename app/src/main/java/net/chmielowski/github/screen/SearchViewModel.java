@@ -9,7 +9,6 @@ import net.chmielowski.github.data.ReposRepository;
 
 import java.util.Collection;
 import java.util.Collections;
-import java.util.LinkedList;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -36,8 +35,9 @@ public final class SearchViewModel {
     private String lastQuery;
 
     @Inject
-    SearchViewModel(final ReposRepository repository) {
+    SearchViewModel(final ReposRepository repository, final QueryHistory queryHistory) {
         this.repository = repository;
+        this.queryHistory = queryHistory;
     }
 
     public Observer<String> search() {
@@ -121,23 +121,7 @@ public final class SearchViewModel {
         searchHistoryVisible.set(false);
     }
 
-    class QueryHistory {
-        // TODO: store subject Realm
-        Collection<String> history = new LinkedList<>();
-        Subject<String> subject = PublishSubject.create();
-
-        void searched(String query) {
-            history.add(query);
-            subject.onNext("");
-        }
-
-        Observable<Collection<String>> observe() {
-            return subject.map(__ -> Collections.unmodifiableCollection(history));
-        }
-    }
-
-    // TODO: inject
-    private final QueryHistory queryHistory = new QueryHistory();
+    private final QueryHistory queryHistory;
 
     private void addToHistory(final Query query) {
         if (query.page == 0) {
