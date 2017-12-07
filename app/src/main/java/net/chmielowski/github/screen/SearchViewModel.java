@@ -2,7 +2,6 @@ package net.chmielowski.github.screen;
 
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
-import android.util.Log;
 
 import net.chmielowski.github.data.ReposRepository;
 
@@ -16,7 +15,6 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Observer;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Action;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import lombok.EqualsAndHashCode;
@@ -80,12 +78,12 @@ public final class SearchViewModel {
         return Observable.merge(
                 searchQuery
                         .doOnNext(query -> lastQuery = query)
+                        .doOnNext(__ -> page = 0)
                         .map(Query::firstPage),
                 scrolledToEnd
                         .map(__ -> new Query(++page, lastQuery)) // TODO: mutable
 
         )
-                .doOnNext(v -> System.out.println(String.valueOf(v)))
                 .doOnComplete(() -> {
                     throw new IllegalStateException("Stream completed");
                 })

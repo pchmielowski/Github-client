@@ -183,6 +183,50 @@ public final class SearchViewModelTest {
         );
     }
 
+    @Test
+    public void scrolledToTheEndOnceAndSendNextQueryAndScrolledToEnd() throws Exception {
+        final String query = "first";
+        final String nextQuery = "second";
+
+        final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
+        final List<Repositories.Item> secondPage = singletonList(sampleRepository());
+        final List<Repositories.Item> firstPageNextQuery = asList(sampleRepository(), sampleRepository(), sampleRepository());
+        final List<Repositories.Item> secondPageNextQuery = asList(sampleRepository(), sampleRepository(), sampleRepository(), sampleRepository());
+
+        when(service.items(SearchViewModel.Query.firstPage(query)))
+                .thenReturn(just(firstPage));
+        when(service.items(new SearchViewModel.Query(1, query)))
+                .thenReturn(just(secondPage));
+        when(service.items(SearchViewModel.Query.firstPage(nextQuery)))
+                .thenReturn(just(firstPageNextQuery));
+        when(service.items(new SearchViewModel.Query(1, nextQuery)))
+                .thenReturn(just(secondPageNextQuery));
+
+        final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
+        final Subject<String> querySubject = PublishSubject.create();
+
+        final TestObserver<ListState> test = new SearchViewModel(service)
+                .searchResults(querySubject, scrolledSubject)
+                .test();
+
+        querySubject.onNext(query);
+        scrolledSubject.onNext(VALUE_IGNORED);
+        querySubject.onNext(nextQuery);
+        scrolledSubject.onNext(VALUE_IGNORED);
+
+        test.assertValuesOnly(
+                initial(),
+                loading(),
+                loaded(mapToViewModel(firstPage, query)),
+                loading(),
+                loaded(mapToViewModel(secondPage, query)),
+                loading(),
+                loaded(mapToViewModel(firstPageNextQuery, nextQuery)),
+                loading(),
+                loaded(mapToViewModel(secondPageNextQuery, nextQuery))
+        );
+    }
+
 
     private static List<RepositoryViewModel> mapToViewModel(final List<Repositories.Item> results, final String query) {
         return results.stream().map(it -> new RepositoryViewModel(it, query)).collect(toList());
