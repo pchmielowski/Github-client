@@ -42,7 +42,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/colorOffline"
                         android:gravity="center"
-                        android:text="You are offline"
+                        android:text="@string/you_are_offline"
                         android:textColor="@android:color/white"/>
 
                     <TextView
@@ -51,7 +51,7 @@
                         android:layout_height="wrap_content"
                         android:background="@color/colorOnline"
                         android:gravity="center"
-                        android:text="You are online again!"
+                        android:text="@string/you_are_online_again"
                         android:textColor="@android:color/white"/>
                 </ViewSwitcher>
 

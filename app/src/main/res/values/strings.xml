@@ -10,4 +10,5 @@
     <string name="you_unlike">You\'ve unliked</string>
     <string name="last_searches">Last searches:</string>
     <string name="you_are_offline">You are offline</string>
+    <string name="you_are_online_again">You are online again!</string>
 </resources>
