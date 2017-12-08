@@ -85,10 +85,11 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
-                model.searchResults(clicks(binding.fab),
+                model.replaceResults(clicks(binding.fab),
                         searchAdapter.observeClicks(),
-                        RxPagination.scrolledCloseToEnd(binding.list, resultsManager),
                         textChanges(binding.search).map(CharSequence::toString)) // TODO: just use CharSequence everywhere
+                        .subscribe(results -> reposAdapter.replace(results)),
+                model.appendResults(RxPagination.scrolledCloseToEnd(binding.list, resultsManager))
                         .subscribe(results -> reposAdapter.append(results)),
                 model.searches().subscribe(queries -> searchAdapter.update(queries)),
                 model.searchVisibleDisposable(textChanges(binding.search)));

@@ -41,7 +41,7 @@ public final class SearchViewModelTest {
     @Test
     public void justInitialValueOnZeroUserActions() throws Exception {
         new SearchViewModel(service, new QueryHistory())
-                .searchResults(Observable.never(), Observable.never())
+                .appendResults(Observable.never(), Observable.never())
                 .test()
                 .assertValuesOnly(initial());
 
@@ -56,7 +56,7 @@ public final class SearchViewModelTest {
                 .thenReturn(just(emptyList()));
 
         new SearchViewModel(service, new QueryHistory())
-                .searchResults(query(query), Observable.never())
+                .appendResults(query(query), Observable.never())
                 .test()
                 .assertValuesOnly(
                         initial(),
@@ -73,7 +73,7 @@ public final class SearchViewModelTest {
                 .thenReturn(just(singletonList(sampleRepository())));
 
         new SearchViewModel(service, new QueryHistory())
-                .searchResults(query(query), Observable.never())
+                .appendResults(query(query), Observable.never())
                 .test()
                 .assertValuesOnly(
                         initial(),
@@ -97,7 +97,7 @@ public final class SearchViewModelTest {
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
 
         final TestObserver<ListState> test = new SearchViewModel(service, new QueryHistory())
-                .searchResults(query(query), scrolledSubject)
+                .appendResults(query(query), scrolledSubject)
                 .test();
         scrolledSubject.onNext(VALUE_IGNORED);
 
@@ -129,7 +129,7 @@ public final class SearchViewModelTest {
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
 
         final TestObserver<ListState> test = new SearchViewModel(service, new QueryHistory())
-                .searchResults(query(query), scrolledSubject)
+                .appendResults(query(query), scrolledSubject)
                 .test();
         scrolledSubject.onNext(VALUE_IGNORED);
         scrolledSubject.onNext(VALUE_IGNORED);
@@ -165,7 +165,7 @@ public final class SearchViewModelTest {
         final Subject<String> querySubject = PublishSubject.create();
 
         final TestObserver<ListState> test = new SearchViewModel(service, new QueryHistory())
-                .searchResults(querySubject, scrolledSubject)
+                .appendResults(scrolledSubject)
                 .test();
 
         querySubject.onNext(query);
@@ -206,7 +206,7 @@ public final class SearchViewModelTest {
         final Subject<String> querySubject = PublishSubject.create();
 
         final TestObserver<ListState> test = new SearchViewModel(service, new QueryHistory())
-                .searchResults(querySubject, scrolledSubject)
+                .appendResults(scrolledSubject)
                 .test();
 
         querySubject.onNext(query);

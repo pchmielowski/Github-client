@@ -91,11 +91,16 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         notifyDataSetChanged();
     }
 
-    public synchronized void append(final ListState state) {
+    public void append(final ListState state) {
         loading = state.loading;
         items.addAll(state.results);
         notifyDataSetChanged();
         // TODO: try to notify only of range inserted
+    }
+
+    public void replace(final ListState state) {
+        loading = state.loading;
+        update(state.results);
     }
 
     final class RepoViewHolder extends RecyclerView.ViewHolder {
