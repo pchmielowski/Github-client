@@ -6,6 +6,7 @@ import android.support.annotation.NonNull;
 import com.jakewharton.rxbinding2.InitialValueObservable;
 
 import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.pagination.ValueIgnored;
 import net.chmielowski.github.utils.Assertions;
 
 import java.util.Collection;
@@ -20,6 +21,8 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import static java.util.Objects.requireNonNull;
 
 public final class SearchViewModel {
     private final ReposRepository repository;
@@ -49,7 +52,8 @@ public final class SearchViewModel {
         public String text;
         public int page;
 
-        Query(final Integer page, final String text) {
+        Query(final int page, @NonNull final String text) {
+            requireNonNull(text);
             this.page = page;
             this.text = text;
         }
@@ -71,8 +75,9 @@ public final class SearchViewModel {
     }
 
     // TODO: eliminate loading field
-    public Observable<ListState> appendResults(final Observable<?> scrolledToEnd) {
+    public Observable<ListState> appendResults(final Observable<ValueIgnored> scrolledToEnd) {
         return scrolledToEnd
+                .doOnNext(__ -> requireNonNull(lastQuery))
                 .compose(Assertions::neverCompletes)
                 .filter(__ -> canLoad())
                 .doOnNext(__ -> page++)
