@@ -37,7 +37,7 @@ public final class SearchViewModelTest {
 
     @Test
     public void justInitialValueOnZeroUserActions() throws Exception {
-        final SearchViewModel model = new SearchViewModel(service, new QueryHistory());
+        final SearchViewModel model = new SearchViewModel(service, new PersistentQueryHistory());
 
         model.replaceResults(Observable.never())
                 .test()
@@ -57,7 +57,7 @@ public final class SearchViewModelTest {
         when(service.items(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(just(emptyList()));
 
-        new SearchViewModel(service, new QueryHistory())
+        new SearchViewModel(service, new PersistentQueryHistory())
                 .replaceResults(query(query))
                 .test()
                 .assertValuesOnly(
@@ -75,7 +75,7 @@ public final class SearchViewModelTest {
                 .thenReturn(just(singletonList(sampleRepository())));
 
         // TODO: mock query history
-        new SearchViewModel(service, new QueryHistory())
+        new SearchViewModel(service, new PersistentQueryHistory())
                 .replaceResults(query(query))
                 .test()
                 .assertValuesOnly(
@@ -96,7 +96,7 @@ public final class SearchViewModelTest {
         when(service.items(new SearchViewModel.Query(1, query)))
                 .thenReturn(just(secondPage));
 
-        final SearchViewModel model = new SearchViewModel(service, new QueryHistory());
+        final SearchViewModel model = new SearchViewModel(service, new PersistentQueryHistory());
         model.replaceResults(query(query)).subscribe();
 
         final TestObserver<ListState> test = model

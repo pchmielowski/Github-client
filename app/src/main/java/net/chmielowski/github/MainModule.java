@@ -10,6 +10,8 @@ import net.chmielowski.github.data.ReposRepository;
 import net.chmielowski.github.data.ReposRepositoryImpl;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RestService;
+import net.chmielowski.github.screen.PersistentQueryHistory;
+import net.chmielowski.github.screen.QueryHistory;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -30,6 +32,9 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 abstract class MainModule {
     @Binds
     abstract ReposRepository bindRepoRepository(ReposRepositoryImpl impl);
+
+    @Binds
+    abstract QueryHistory bindQueryHistory(PersistentQueryHistory impl);
 
     @Provides
     @Singleton
