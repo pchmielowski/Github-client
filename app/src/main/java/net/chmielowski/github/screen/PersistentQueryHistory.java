@@ -1,40 +1,45 @@
 package net.chmielowski.github.screen;
 
 import net.chmielowski.github.pagination.ValueIgnored;
+import net.chmielowski.github.screen.search.RealmFacade;
 
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.BehaviorSubject;
 import io.reactivex.subjects.Subject;
 
+import static io.realm.Sort.DESCENDING;
+import static java.util.stream.Collectors.toList;
+import static net.chmielowski.github.screen.RealmSearchQuery.TIME;
+
 public final class PersistentQueryHistory implements QueryHistory {
+    private final RealmFacade realm;
+
     @Inject
-    PersistentQueryHistory() {
+    PersistentQueryHistory(final RealmFacade realm) {
+        this.realm = realm;
     }
 
-    private final Map<String, Calendar> map = new HashMap<>();
 
-    private final Subject<ValueIgnored> subject = PublishSubject.create();
+    private final Subject<ValueIgnored> subject = BehaviorSubject.create();
 
     @Override
     public void searched(final String query) {
-        map.put(query, Calendar.getInstance());
+        realm.executeInTransaction(realm ->
+                realm.copyToRealmOrUpdate(RealmSearchQuery.from(query)));
         subject.onNext(ValueIgnored.VALUE_IGNORED);
     }
 
     @Override
     public Observable<Collection<String>> observe() {
-        return subject.map(__ -> map.entrySet().stream()
-                .sorted(Comparator.comparing(Map.Entry::getValue))
-                .map(Map.Entry::getKey)
-                .collect(Collectors.toList()));
+        return subject.map(__ ->
+                realm.get(realm -> realm.where(RealmSearchQuery.class)
+                        .findAllSorted(TIME, DESCENDING)
+                        .stream()
+                        .map(query -> query.text)
+                        .collect(toList())));
     }
 }
