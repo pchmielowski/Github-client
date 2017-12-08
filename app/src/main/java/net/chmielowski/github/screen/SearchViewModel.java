@@ -26,10 +26,9 @@ public final class SearchViewModel {
 
     private final Subject<String> justSearchSubject = PublishSubject.create(); // TODO: rename
 
-    public final ObservableBoolean inputVisible = new ObservableBoolean(true);
     public final ObservableBoolean searchVisible = new ObservableBoolean(false);
     public final ObservableBoolean searchHistoryVisible = new ObservableBoolean(true);
-    public final ObservableBoolean loading = new ObservableBoolean(false);
+    private final ObservableBoolean loading = new ObservableBoolean(false); // TODO: just boolean
 
     private int page = 0; // TODO: can we avoid this mutable variable?
     private String lastQuery;
