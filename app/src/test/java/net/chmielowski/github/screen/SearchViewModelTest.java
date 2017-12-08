@@ -52,24 +52,24 @@ public final class SearchViewModelTest {
 
         verifyZeroInteractions(service);
     }
-//
-//    @Test
-//    public void serviceReturnsEmptyList() throws Exception {
-//        final String query = "first";
-//
-//        when(service.items(SearchViewModel.Query.firstPage(query)))
-//                .thenReturn(just(emptyList()));
-//
-//        new SearchViewModel(service, new QueryHistory())
-//                .appendResults(query(query), Observable.never())
-//                .test()
-//                .assertValuesOnly(
-//                        initial(),
-//                        loading(),
-//                        loaded(emptyList())
-//                );
-//    }
-//
+
+    @Test
+    public void serviceReturnsEmptyList() throws Exception {
+        final String query = "first";
+
+        when(service.items(SearchViewModel.Query.firstPage(query)))
+                .thenReturn(just(emptyList()));
+
+        new SearchViewModel(service, new QueryHistory())
+                .replaceResults(query(query))
+                .test()
+                .assertValuesOnly(
+                        initial(),
+                        loading(),
+                        loaded(emptyList())
+                );
+    }
+
 //    @Test
 //    public void serviceReturnsOneItem() throws Exception {
 //        final String query = "second";
