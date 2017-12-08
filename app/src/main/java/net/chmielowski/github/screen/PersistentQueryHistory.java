@@ -13,6 +13,7 @@ import io.reactivex.subjects.Subject;
 
 import static io.realm.Sort.DESCENDING;
 import static java.util.stream.Collectors.toList;
+import static net.chmielowski.github.pagination.ValueIgnored.VALUE_IGNORED;
 import static net.chmielowski.github.screen.RealmSearchQuery.TIME;
 
 public final class PersistentQueryHistory implements QueryHistory {
@@ -24,13 +25,13 @@ public final class PersistentQueryHistory implements QueryHistory {
     }
 
 
-    private final Subject<ValueIgnored> subject = BehaviorSubject.create();
+    private final Subject<ValueIgnored> subject = BehaviorSubject.createDefault(VALUE_IGNORED);
 
     @Override
     public void searched(final String query) {
         realm.executeInTransaction(realm ->
                 realm.copyToRealmOrUpdate(RealmSearchQuery.from(query)));
-        subject.onNext(ValueIgnored.VALUE_IGNORED);
+        subject.onNext(VALUE_IGNORED);
     }
 
     @Override
