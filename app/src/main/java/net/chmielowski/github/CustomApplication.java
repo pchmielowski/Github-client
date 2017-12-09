@@ -51,11 +51,11 @@ public final class CustomApplication extends Application {
         Timber.plant(new Timber.DebugTree());
     }
 
-    public ActivityComponent component(final AppCompatActivity activity) {
+    public ActivityComponent activityComponent(final AppCompatActivity activity) {
         return component.plusActivityComponent(new ActivityModule(activity));
     }
 
-    MainComponent component() {
+    MainComponent mainComponent() {
         return component;
     }
 }

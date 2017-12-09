@@ -12,7 +12,6 @@ import android.support.annotation.NonNull;
 import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -25,7 +24,6 @@ import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.Task;
 
-import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.SendNetworkConnectedBroadcast;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
@@ -46,6 +44,7 @@ import io.reactivex.disposables.Disposable;
 
 import static com.jakewharton.rxbinding2.widget.RxTextView.editorActions;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
+import static net.chmielowski.github.utils.ApplicationUtils.application;
 
 public class SearchActivity extends BaseActivity {
 
@@ -65,7 +64,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ((CustomApplication) getApplication()).component(this).inject(this);
+        application(this).activityComponent(this).inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         binding.setModel(model);
         resultsManager = new LinearLayoutManager(this);
@@ -100,7 +99,7 @@ public class SearchActivity extends BaseActivity {
     private final BroadcastReceiver networkConnectedBroadcastReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(final Context context, final Intent intent) {
-            Log.d("pchm", "SearchActivity onReceive ");
+
         }
     };
 

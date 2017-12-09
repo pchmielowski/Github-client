@@ -9,6 +9,8 @@ import com.google.android.gms.gcm.TaskParams;
 
 import javax.inject.Inject;
 
+import static net.chmielowski.github.utils.ApplicationUtils.application;
+
 public final class SendNetworkConnectedBroadcast extends GcmTaskService {
     public static final String NETWORK_AVAILABLE = "NETWORK_AVAILABLE";
 
@@ -19,7 +21,7 @@ public final class SendNetworkConnectedBroadcast extends GcmTaskService {
     @Override
     public void onCreate() {
         super.onCreate();
-        ((CustomApplication) getApplication()).component().inject(this);
+        application(this).mainComponent().inject(this);
     }
 
     @Override
