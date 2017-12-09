@@ -3,11 +3,10 @@ package net.chmielowski.github.screen;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
-import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.pagination.ValueIgnored;
 import net.chmielowski.github.utils.Assertions;
 
-import java.util.Collection;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -19,38 +18,21 @@ import lombok.ToString;
 import static java.util.Objects.requireNonNull;
 
 public final class SearchViewModel {
-    private final ReposRepository repository;
+    private final RepoService repository;
+
+    private final QueryHistory queryHistory;
 
     public final ObservableBoolean searchMode = new ObservableBoolean(true);
 
-    private int page = 0; // TODO: can we avoid this mutable variable?
+    private int page = 0;
     private String lastQuery;
     private boolean isLoading;
 
     @Inject
-    SearchViewModel(final ReposRepository repository, final QueryHistory queryHistory) {
+    SearchViewModel(final RepoService repository, final QueryHistory queryHistory) {
         this.repository = repository;
         this.queryHistory = queryHistory;
     }
-
-    @EqualsAndHashCode
-    @ToString
-    public static class Query {
-        public String text;
-        public int page;
-
-        Query(final int page, @NonNull final String text) {
-            requireNonNull(text);
-            this.page = page;
-            this.text = text;
-        }
-
-        @NonNull
-        static Query firstPage(final String query) {
-            return new Query(0, query);
-        }
-    }
-
 
     public Observable<ListState> replaceResults(final Observable<?> searchBtnClicked,
                                                 final Observable<String> searchQuery,
@@ -123,9 +105,25 @@ public final class SearchViewModel {
         searchMode.set(false);
     }
 
-    private final QueryHistory queryHistory;
+    @EqualsAndHashCode
+    @ToString
+    public static class Query {
+        public String text;
 
-    public Observable<Collection<String>> searches() {
-        return queryHistory.observe();
+        public int page;
+
+        Query(final int page, @NonNull final String text) {
+            requireNonNull(text);
+            this.page = page;
+            this.text = text;
+        }
+
+        @NonNull
+        static Query firstPage(final String query) {
+            return new Query(0, query);
+        }
+
+
     }
+
 }

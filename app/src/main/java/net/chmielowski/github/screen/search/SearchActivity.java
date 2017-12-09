@@ -33,6 +33,7 @@ import net.chmielowski.github.pagination.RxPagination;
 import net.chmielowski.github.screen.Adapter;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.OpenDetails;
+import net.chmielowski.github.screen.QueryHistory;
 import net.chmielowski.github.screen.SearchViewModel;
 import net.chmielowski.github.screen.SearchesAdapter;
 import net.chmielowski.github.screen.fav.FavsActivity;
@@ -50,16 +51,14 @@ public class SearchActivity extends BaseActivity {
 
     @Inject
     OpenDetails openDetails;
-
     @Inject
     SearchViewModel model;
-
     @Inject
     Adapter resultsAdapter;
-
     @Inject
     SearchesAdapter searchHistoryAdapter;
-
+    @Inject
+    QueryHistory queryHistory;
     private ActivitySearchBinding binding;
     private LinearLayoutManager resultsManager;
 
@@ -93,7 +92,7 @@ public class SearchActivity extends BaseActivity {
                         .subscribe(results -> resultsAdapter.replace(results)),
                 model.appendResults(RxPagination.scrolledCloseToEnd(binding.results, resultsManager))
                         .subscribe(results -> resultsAdapter.append(results)),
-                model.searches().subscribe(queries -> searchHistoryAdapter.update(queries)),
+                queryHistory.observe().subscribe(queries -> searchHistoryAdapter.update(queries)),
                 resultsAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)));
     }
 

@@ -1,6 +1,6 @@
 package net.chmielowski.github.screen;
 
-import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.pagination.ValueIgnored;
 
@@ -28,16 +28,18 @@ import static org.mockito.Mockito.when;
 // TODO: remove redundant tests
 public final class SearchViewModelTest {
 
-    private ReposRepository service;
+    private QueryHistory history;
+    private RepoService service;
 
     @Before
     public void setUp() throws Exception {
-        service = Mockito.mock(ReposRepository.class);
+        service = Mockito.mock(RepoService.class);
+        history = Mockito.mock(QueryHistory.class);
     }
 
     @Test
     public void justInitialValueOnZeroUserActions() throws Exception {
-        final SearchViewModel model = new SearchViewModel(service, new PersistentQueryHistory());
+        final SearchViewModel model = new SearchViewModel(service, history);
 
         model.replaceResults(Observable.never())
                 .test()
@@ -57,7 +59,7 @@ public final class SearchViewModelTest {
         when(service.items(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(just(emptyList()));
 
-        new SearchViewModel(service, new PersistentQueryHistory())
+        new SearchViewModel(service, history)
                 .replaceResults(query(query))
                 .test()
                 .assertValuesOnly(
@@ -75,7 +77,7 @@ public final class SearchViewModelTest {
                 .thenReturn(just(singletonList(sampleRepository())));
 
         // TODO: mock query history
-        new SearchViewModel(service, new PersistentQueryHistory())
+        new SearchViewModel(service, history)
                 .replaceResults(query(query))
                 .test()
                 .assertValuesOnly(
@@ -96,7 +98,7 @@ public final class SearchViewModelTest {
         when(service.items(new SearchViewModel.Query(1, query)))
                 .thenReturn(just(secondPage));
 
-        final SearchViewModel model = new SearchViewModel(service, new PersistentQueryHistory());
+        final SearchViewModel model = new SearchViewModel(service, history);
         model.replaceResults(query(query)).subscribe();
 
         final TestObserver<ListState> test = model
@@ -235,7 +237,7 @@ public final class SearchViewModelTest {
         return results.stream().map(it -> new RepositoryViewModel(it, query)).collect(toList());
     }
 
-    private static Observable<String> query(final String query) {
+    private static Observable<CharSequence> query(final String query) {
         return Observable.create(e -> e.onNext(query));
     }
 

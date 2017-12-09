@@ -6,8 +6,7 @@ import java.util.Collection;
 
 import io.reactivex.Single;
 
-// TODO: rename to service
-public interface ReposRepository {
+public interface RepoService {
     Single<Repositories.Item> item(String id);
 
     Single<Collection<Repositories.Item>> items(SearchViewModel.Query query);

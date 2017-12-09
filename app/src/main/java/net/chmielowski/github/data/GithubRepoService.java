@@ -14,13 +14,13 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public final class ReposRepositoryImpl implements ReposRepository {
+public final class GithubRepoService implements RepoService {
     private final RestService service;
     private final Map<String, Repositories.Item> cache;
 
     @Inject
-    ReposRepositoryImpl(final RestService service,
-                        final Map<String, Repositories.Item> cache) {
+    GithubRepoService(final RestService service,
+                      final Map<String, Repositories.Item> cache) {
         this.service = service;
         this.cache = cache;
     }

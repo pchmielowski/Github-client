@@ -6,8 +6,8 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import net.chmielowski.github.data.ReposRepository;
-import net.chmielowski.github.data.ReposRepositoryImpl;
+import net.chmielowski.github.data.GithubRepoService;
+import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RestService;
 import net.chmielowski.github.screen.PersistentQueryHistory;
@@ -31,7 +31,7 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 @Module
 abstract class MainModule {
     @Binds
-    abstract ReposRepository bindRepoRepository(ReposRepositoryImpl impl);
+    abstract RepoService bindRepoRepository(GithubRepoService impl);
 
     @Binds
     abstract QueryHistory bindQueryHistory(PersistentQueryHistory impl);

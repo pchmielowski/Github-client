@@ -6,6 +6,7 @@ import net.chmielowski.github.screen.search.RealmFacade;
 import java.util.Collection;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.subjects.BehaviorSubject;
@@ -16,6 +17,7 @@ import static java.util.stream.Collectors.toList;
 import static net.chmielowski.github.pagination.ValueIgnored.VALUE_IGNORED;
 import static net.chmielowski.github.screen.RealmSearchQuery.TIME;
 
+@Singleton
 public final class PersistentQueryHistory implements QueryHistory {
     private final RealmFacade realm;
 
@@ -23,7 +25,6 @@ public final class PersistentQueryHistory implements QueryHistory {
     PersistentQueryHistory(final RealmFacade realm) {
         this.realm = realm;
     }
-
 
     private final Subject<ValueIgnored> subject = BehaviorSubject.createDefault(VALUE_IGNORED);
 

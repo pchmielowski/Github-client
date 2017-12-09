@@ -5,7 +5,7 @@ import android.databinding.ObservableField;
 import android.util.Pair;
 
 import net.chmielowski.github.data.LikedRepos;
-import net.chmielowski.github.data.ReposRepository;
+import net.chmielowski.github.data.RepoService;
 
 import javax.inject.Inject;
 
@@ -22,14 +22,14 @@ public final class DetailsViewModel {
     public final ObservableBoolean favourite = new ObservableBoolean(false);
     public final ObservableField<String> description = new ObservableField<>();
 
-    private final ReposRepository service;
+    private final RepoService service;
     private final LikedRepos likedRepos;
 
     private String id;
     public int url;
 
     @Inject
-    DetailsViewModel(final ReposRepository service, final LikedRepos likedRepos) {
+    DetailsViewModel(final RepoService service, final LikedRepos likedRepos) {
         this.service = service;
         this.likedRepos = likedRepos;
     }
