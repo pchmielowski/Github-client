@@ -54,4 +54,8 @@ public final class CustomApplication extends Application {
     public ActivityComponent component(final AppCompatActivity activity) {
         return component.plusActivityComponent(new ActivityModule(activity));
     }
+
+    MainComponent component() {
+        return component;
+    }
 }

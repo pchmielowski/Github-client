@@ -13,4 +13,6 @@ public interface MainComponent {
     void inject(DetailsActivity activity);
 
     ActivityComponent plusActivityComponent(ActivityModule activityModule);
+
+    void inject(SendNetworkConnectedBroadcast broadcast);
 }

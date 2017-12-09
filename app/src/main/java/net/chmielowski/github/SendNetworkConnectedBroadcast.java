@@ -7,12 +7,19 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
 
-public class SendNetworkConnectedBroadcast extends GcmTaskService {
-    public static final String NETWORK_AVAILABLE = "NETWORK_AVAILABLE";
-    private final Context context;
+import javax.inject.Inject;
 
-    public SendNetworkConnectedBroadcast(@ApplicationContext final Context context) {
-        this.context = context;
+public final class SendNetworkConnectedBroadcast extends GcmTaskService {
+    public static final String NETWORK_AVAILABLE = "NETWORK_AVAILABLE";
+
+    @Inject
+    @ApplicationContext
+    Context context;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        ((CustomApplication) getApplication()).component().inject(this);
     }
 
     @Override
