@@ -69,9 +69,9 @@ public class SearchActivity extends BaseActivity {
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         binding.setModel(model);
         resultsManager = new LinearLayoutManager(this);
-        binding.list.setLayoutManager(resultsManager);
-        binding.list.setAdapter(reposAdapter);
-        ViewCompat.setNestedScrollingEnabled(binding.list, false);
+        binding.results.setLayoutManager(resultsManager);
+        binding.results.setAdapter(reposAdapter);
+        ViewCompat.setNestedScrollingEnabled(binding.results, false);
 
         binding.searches.setLayoutManager(new LinearLayoutManager(this));
         binding.searches.setAdapter(searchAdapter);
@@ -89,7 +89,7 @@ public class SearchActivity extends BaseActivity {
                         searchAdapter.observeClicks(),
                         textChanges(binding.search).map(CharSequence::toString)) // TODO: just use CharSequence everywhere
                         .subscribe(results -> reposAdapter.replace(results)),
-                model.appendResults(RxPagination.scrolledCloseToEnd(binding.list, resultsManager))
+                model.appendResults(RxPagination.scrolledCloseToEnd(binding.results, resultsManager))
                         .subscribe(results -> reposAdapter.append(results)),
                 model.searches().subscribe(queries -> searchAdapter.update(queries)),
                 model.searchVisibleDisposable(textChanges(binding.search)));

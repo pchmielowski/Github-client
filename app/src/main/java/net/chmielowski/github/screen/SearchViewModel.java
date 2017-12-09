@@ -29,8 +29,7 @@ public final class SearchViewModel {
 
     private final Subject<String> justSearchSubject = PublishSubject.create(); // TODO: rename
 
-    public final ObservableBoolean searchVisible = new ObservableBoolean(false);
-    public final ObservableBoolean searchHistoryVisible = new ObservableBoolean(true);
+    public final ObservableBoolean searchMode = new ObservableBoolean(true);
 
     private int page = 0; // TODO: can we avoid this mutable variable?
     private String lastQuery;
@@ -93,7 +92,7 @@ public final class SearchViewModel {
                 .doOnNext(query -> {
                     lastQuery = query;
                     page = 0;
-                    searchHistoryVisible.set(false);
+                    searchMode.set(false);
                     queryHistory.searched(query);
                 })
                 .map(Query::firstPage)
@@ -127,14 +126,11 @@ public final class SearchViewModel {
     }
 
     public Disposable searchVisibleDisposable(final InitialValueObservable<CharSequence> observable) {
-        return observable.subscribe(query -> {
-            searchHistoryVisible.set(true);
-            searchVisible.set(query.length() > 0);
-        });
+        return observable.subscribe(query -> searchMode.set(true));
     }
 
     public void clear() {
-        searchHistoryVisible.set(false);
+        searchMode.set(false);
     }
 
     private final QueryHistory queryHistory;
