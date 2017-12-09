@@ -13,9 +13,6 @@ import java.util.stream.Collectors;
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.Observer;
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -24,22 +21,16 @@ import static java.util.Objects.requireNonNull;
 public final class SearchViewModel {
     private final ReposRepository repository;
 
-    private final Subject<String> justSearchSubject = PublishSubject.create(); // TODO: rename
-
     public final ObservableBoolean searchMode = new ObservableBoolean(true);
 
     private int page = 0; // TODO: can we avoid this mutable variable?
     private String lastQuery;
-    private boolean locked;
+    private boolean isLoading;
 
     @Inject
     SearchViewModel(final ReposRepository repository, final QueryHistory queryHistory) {
         this.repository = repository;
         this.queryHistory = queryHistory;
-    }
-
-    public Observer<String> search() {
-        return justSearchSubject;
     }
 
     @EqualsAndHashCode
@@ -113,15 +104,15 @@ public final class SearchViewModel {
     }
 
     private void unlock() {
-        locked = false;
+        isLoading = false;
     }
 
     private void lock() {
-        locked = true;
+        isLoading = true;
     }
 
     private boolean canLoad() {
-        return !locked;
+        return !isLoading;
     }
 
     public void enterSearchMode() {

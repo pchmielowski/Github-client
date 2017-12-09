@@ -55,10 +55,10 @@ public class SearchActivity extends BaseActivity {
     SearchViewModel model;
 
     @Inject
-    Adapter reposAdapter;
+    Adapter resultsAdapter;
 
     @Inject
-    SearchesAdapter searchAdapter;
+    SearchesAdapter searchHistoryAdapter;
 
     private ActivitySearchBinding binding;
     private LinearLayoutManager resultsManager;
@@ -71,11 +71,11 @@ public class SearchActivity extends BaseActivity {
         binding.setModel(model);
         resultsManager = new LinearLayoutManager(this);
         binding.results.setLayoutManager(resultsManager);
-        binding.results.setAdapter(reposAdapter);
+        binding.results.setAdapter(resultsAdapter);
         ViewCompat.setNestedScrollingEnabled(binding.results, false);
 
         binding.searches.setLayoutManager(new LinearLayoutManager(this));
-        binding.searches.setAdapter(searchAdapter);
+        binding.searches.setAdapter(searchHistoryAdapter);
 
         final LayoutTransition transition = binding.layout.getLayoutTransition();
         transition.setInterpolator(LayoutTransition.CHANGE_APPEARING, new OvershootInterpolator(10));
@@ -88,12 +88,13 @@ public class SearchActivity extends BaseActivity {
         return Arrays.asList(
                 model.replaceResults(
                         editorActions(binding.search, action -> action == EditorInfo.IME_ACTION_SEARCH),
-                        searchAdapter.observeClicks(),
+                        searchHistoryAdapter.observeClicks(),
                         textChanges(binding.search))
-                        .subscribe(results -> reposAdapter.replace(results)),
+                        .subscribe(results -> resultsAdapter.replace(results)),
                 model.appendResults(RxPagination.scrolledCloseToEnd(binding.results, resultsManager))
-                        .subscribe(results -> reposAdapter.append(results)),
-                model.searches().subscribe(queries -> searchAdapter.update(queries)));
+                        .subscribe(results -> resultsAdapter.append(results)),
+                model.searches().subscribe(queries -> searchHistoryAdapter.update(queries)),
+                resultsAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)));
     }
 
     // TODO: unregister
@@ -107,7 +108,6 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        searchAdapter.observeClicks().subscribe(model.search());
 
         waitForOnline();
 
