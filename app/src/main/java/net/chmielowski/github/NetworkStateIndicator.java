@@ -20,10 +20,6 @@ public final class NetworkStateIndicator extends FrameLayout {
         binding = ViewNetworkStateIndicatorBinding.inflate(LayoutInflater.from(getContext()), this, true);
     }
 
-    public void hideIndicator() {
-        binding.switcher.setVisibility(View.GONE);
-    }
-
     public void onOffline() {
         setTo(binding.offline);
     }

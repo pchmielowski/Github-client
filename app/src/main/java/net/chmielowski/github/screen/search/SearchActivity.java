@@ -58,6 +58,7 @@ public class SearchActivity extends BaseActivity {
         super.onCreate(savedInstanceState);
         application(this).activityComponent(this).inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
+        binding.setIndicatorViewModel(networkIndicatorViewModel);
         binding.setModel(model);
         resultsManager = new LinearLayoutManager(this);
         binding.results.setLayoutManager(resultsManager);
@@ -93,9 +94,6 @@ public class SearchActivity extends BaseActivity {
                             break;
                         case ONLINE:
                             binding.networkIndicator.onOnline();
-                            break;
-                        case DONT_SHOW:
-                            binding.networkIndicator.hideIndicator();
                             break;
                     }
                 }));

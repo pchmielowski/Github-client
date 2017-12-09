@@ -6,6 +6,10 @@
     <data>
 
         <variable
+            name="indicatorViewModel"
+            type="net.chmielowski.github.screen.search.NetworkIndicatorViewModel"/>
+
+        <variable
             name="model"
             type="net.chmielowski.github.screen.SearchViewModel"/>
     </data>
@@ -25,7 +29,8 @@
             <net.chmielowski.github.NetworkStateIndicator
                 android:id="@+id/network_indicator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:visibility="@{indicatorViewModel.visible}"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
