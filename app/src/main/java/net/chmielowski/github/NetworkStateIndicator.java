@@ -19,18 +19,11 @@ public final class NetworkStateIndicator extends FrameLayout {
 
     public NetworkStateIndicator(final Context context, @Nullable final AttributeSet attrs) {
         super(context, attrs);
-        binding = ViewNetworkStateIndicatorBinding.inflate(LayoutInflater.from(getContext()), this, true);
+        binding = ViewNetworkStateIndicatorBinding
+                .inflate(LayoutInflater.from(getContext()), this, true);
     }
 
-    public void onOffline() {
-        setTo(binding.offline);
-    }
-
-    public void onOnline() {
-        setTo(binding.online);
-    }
-
-    private void setTo(final TextView view) {
+    private void switchTo(final TextView view) {
         final ViewSwitcher indicator = binding.switcher;
         indicator.setVisibility(View.VISIBLE);
         final View current = indicator.getCurrentView();
@@ -44,10 +37,10 @@ public final class NetworkStateIndicator extends FrameLayout {
     public static void setState(final NetworkStateIndicator view, final NetworkState.State state) {
         switch (state) {
             case ONLINE:
-                view.onOnline();
+                view.switchTo(view.binding.online);
                 break;
             case OFFLINE:
-                view.onOffline();
+                view.switchTo(view.binding.offline);
                 break;
         }
     }
