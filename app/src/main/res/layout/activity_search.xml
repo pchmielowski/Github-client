@@ -53,13 +53,15 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:gravity="center_vertical"
-                android:orientation="horizontal">
+                android:orientation="horizontal"
+                app:visibility="@{model.searchMode}">
 
                 <EditText
                     android:id="@+id/search"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:enabled="@{model.searchMode}"
                     android:hint="@string/search"
                     android:imeOptions="actionSearch"
                     android:inputType="text"/>
@@ -101,6 +103,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="bottom|end"
             android:layout_margin="@dimen/fab_margin"
+            android:onClick="@{() -> model.enterSearchMode()}"
             app:srcCompat="@drawable/ic_search"
             app:visibility="@{!model.searchMode}"/>
 

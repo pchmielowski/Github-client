@@ -87,6 +87,7 @@ public final class SearchViewModel {
     // TODO: remove suppression
     @SuppressWarnings("WeakerAccess")
     Observable<ListState> replaceResults(final Observable<String> searchQuery) {
+        // TODO: handle null/empty query
         return searchQuery
                 .compose(Assertions::neverCompletes)
                 .doOnNext(query -> {
@@ -123,6 +124,10 @@ public final class SearchViewModel {
 
     private boolean canLoad() {
         return !locked;
+    }
+
+    public void enterSearchMode() {
+        searchMode.set(true);
     }
 
     public Disposable searchVisibleDisposable(final InitialValueObservable<CharSequence> observable) {
