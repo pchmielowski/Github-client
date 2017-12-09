@@ -9,16 +9,15 @@ import com.google.android.gms.gcm.TaskParams;
 
 public class SendNetworkConnectedBroadcast extends GcmTaskService {
     public static final String NETWORK_AVAILABLE = "NETWORK_AVAILABLE";
-    private final Context instance;
+    private final Context context;
 
-    public SendNetworkConnectedBroadcast() {
-        // TODO: inject
-        instance = CustomApplication.INSTANCE;
+    public SendNetworkConnectedBroadcast(@ApplicationContext final Context context) {
+        this.context = context;
     }
 
     @Override
     public int onRunTask(final TaskParams params) {
-        LocalBroadcastManager.getInstance(instance)
+        LocalBroadcastManager.getInstance(context)
                 .sendBroadcast(new Intent(NETWORK_AVAILABLE));
         return 0;
     }

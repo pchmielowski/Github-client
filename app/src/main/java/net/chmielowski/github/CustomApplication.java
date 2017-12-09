@@ -1,8 +1,6 @@
 package net.chmielowski.github;
 
-import android.annotation.SuppressLint;
 import android.app.Application;
-import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.stetho.Stetho;
@@ -14,8 +12,6 @@ import io.realm.RealmConfiguration;
 import timber.log.Timber;
 
 public final class CustomApplication extends Application {
-    @SuppressLint("StaticFieldLeak")
-    static Context INSTANCE; // TODO: use DI
 
     /*
      * TODO:
@@ -34,8 +30,10 @@ public final class CustomApplication extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        INSTANCE = this;
-        component = DaggerMainComponent.create();
+        component = DaggerMainComponent
+                .builder()
+                .applicationModule(new ApplicationModule(this))
+                .build();
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
