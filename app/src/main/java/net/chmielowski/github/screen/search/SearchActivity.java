@@ -17,12 +17,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
+import android.view.inputmethod.EditorInfo;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.Task;
+import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
@@ -42,7 +44,6 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 
-import static com.jakewharton.rxbinding2.view.RxView.clicks;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
 
 public class SearchActivity extends BaseActivity {
@@ -85,7 +86,8 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
-                model.replaceResults(clicks(binding.fab),
+                model.replaceResults(
+                        RxTextView.editorActions(binding.search, action -> action == EditorInfo.IME_ACTION_SEARCH),
                         searchAdapter.observeClicks(),
                         textChanges(binding.search).map(CharSequence::toString)) // TODO: just use CharSequence everywhere
                         .subscribe(results -> reposAdapter.replace(results)),
