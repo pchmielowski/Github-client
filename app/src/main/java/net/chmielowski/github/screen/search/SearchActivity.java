@@ -174,14 +174,10 @@ public class SearchActivity extends BaseActivity {
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
         if (item.getItemId() == R.id.action_settings) {
-            startFavouritesActivity();
+            startActivity(new Intent(this, FavsActivity.class));
             return true;
         }
         throw new IllegalArgumentException("Unknown menu item");
-    }
-
-    private void startFavouritesActivity() {
-        startActivity(new Intent(this, FavsActivity.class));
     }
 
 }
