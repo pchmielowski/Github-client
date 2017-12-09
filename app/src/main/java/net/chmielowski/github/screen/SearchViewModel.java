@@ -3,11 +3,10 @@ package net.chmielowski.github.screen;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
+import net.chmielowski.github.data.NetworkState;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.pagination.ValueIgnored;
 import net.chmielowski.github.utils.Assertions;
-
-import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
@@ -17,6 +16,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import static java.util.Objects.requireNonNull;
+import static java.util.stream.Collectors.toList;
 
 @Singleton
 public final class SearchViewModel {
@@ -31,9 +31,10 @@ public final class SearchViewModel {
     private boolean isLoading;
 
     @Inject
-    SearchViewModel(final RepoService repository, final QueryHistory queryHistory) {
+    SearchViewModel(final RepoService repository, final QueryHistory queryHistory, final NetworkState networkState) {
         this.repository = repository;
         this.queryHistory = queryHistory;
+        this.networkState = networkState;
     }
 
     public Observable<ListState> replaceResults(final Observable<?> searchBtnClicked,
@@ -74,17 +75,20 @@ public final class SearchViewModel {
                 .startWith(ListState.initial());
     }
 
+    private final NetworkState networkState;
+
     @SuppressWarnings("Convert2MethodRef")
     private Observable<ListState> fetchResults(final Query query) {
-        return repository.items(query)
-                .map(repositories -> repositories.stream()
-                        .map(repo -> new RepositoryViewModel(repo, query.text))
-                        .collect(Collectors.toList()))
-                .map(ListState::loaded)
-                .toObservable()
-                .startWith(ListState.loading())
-                .doOnSubscribe(__ -> lock())
-                .doOnComplete(() -> unlock());
+        return networkState.requireOnline(
+                repository.items(query)
+                        .map(repositories -> repositories.stream()
+                                .map(repo -> new RepositoryViewModel(repo, query.text))
+                                .collect(toList()))
+                        .map(ListState::loaded)
+                        .toObservable()
+                        .startWith(ListState.loading())
+                        .doOnSubscribe(__ -> lock())
+                        .doOnComplete(() -> unlock()));
     }
 
     private void unlock() {

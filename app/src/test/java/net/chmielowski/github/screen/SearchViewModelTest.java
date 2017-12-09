@@ -1,5 +1,6 @@
 package net.chmielowski.github.screen;
 
+import net.chmielowski.github.data.NetworkState;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.pagination.ValueIgnored;
@@ -30,16 +31,18 @@ public final class SearchViewModelTest {
 
     private QueryHistory history;
     private RepoService service;
+    private NetworkState state;
 
     @Before
     public void setUp() throws Exception {
         service = Mockito.mock(RepoService.class);
         history = Mockito.mock(QueryHistory.class);
+        state = Mockito.mock(NetworkState.class);
     }
 
     @Test
     public void justInitialValueOnZeroUserActions() throws Exception {
-        final SearchViewModel model = new SearchViewModel(service, history);
+        final SearchViewModel model = new SearchViewModel(service, history, state);
 
         model.replaceResults(Observable.never())
                 .test()
@@ -59,7 +62,7 @@ public final class SearchViewModelTest {
         when(service.items(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(just(emptyList()));
 
-        new SearchViewModel(service, history)
+        new SearchViewModel(service, history, state)
                 .replaceResults(query(query))
                 .test()
                 .assertValuesOnly(
@@ -77,7 +80,7 @@ public final class SearchViewModelTest {
                 .thenReturn(just(singletonList(sampleRepository())));
 
         // TODO: mock query history
-        new SearchViewModel(service, history)
+        new SearchViewModel(service, history, state)
                 .replaceResults(query(query))
                 .test()
                 .assertValuesOnly(
@@ -98,7 +101,7 @@ public final class SearchViewModelTest {
         when(service.items(new SearchViewModel.Query(1, query)))
                 .thenReturn(just(secondPage));
 
-        final SearchViewModel model = new SearchViewModel(service, history);
+        final SearchViewModel model = new SearchViewModel(service, history, state);
         model.replaceResults(query(query)).subscribe();
 
         final TestObserver<ListState> test = model

@@ -17,12 +17,15 @@ import io.reactivex.schedulers.Schedulers;
 public final class GithubRepoService implements RepoService {
     private final RestService service;
     private final Map<String, Repositories.Item> cache;
+    private final NetworkState networkState;
 
     @Inject
     GithubRepoService(final RestService service,
-                      final Map<String, Repositories.Item> cache) {
+                      final Map<String, Repositories.Item> cache,
+                      final NetworkState networkState) {
         this.service = service;
         this.cache = cache;
+        this.networkState = networkState;
     }
 
     @Override
