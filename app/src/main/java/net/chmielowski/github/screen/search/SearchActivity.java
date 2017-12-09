@@ -93,8 +93,7 @@ public class SearchActivity extends BaseActivity {
                         .subscribe(results -> reposAdapter.replace(results)),
                 model.appendResults(RxPagination.scrolledCloseToEnd(binding.results, resultsManager))
                         .subscribe(results -> reposAdapter.append(results)),
-                model.searches().subscribe(queries -> searchAdapter.update(queries)),
-                model.searchVisibleDisposable(textChanges(binding.search)));
+                model.searches().subscribe(queries -> searchAdapter.update(queries)));
     }
 
     // TODO: unregister

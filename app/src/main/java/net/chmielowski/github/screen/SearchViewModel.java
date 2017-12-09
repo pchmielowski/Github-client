@@ -3,8 +3,6 @@ package net.chmielowski.github.screen;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
-import com.jakewharton.rxbinding2.InitialValueObservable;
-
 import net.chmielowski.github.data.ReposRepository;
 import net.chmielowski.github.pagination.ValueIgnored;
 import net.chmielowski.github.utils.Assertions;
@@ -16,7 +14,6 @@ import javax.inject.Inject;
 
 import io.reactivex.Observable;
 import io.reactivex.Observer;
-import io.reactivex.disposables.Disposable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import lombok.EqualsAndHashCode;
@@ -129,10 +126,6 @@ public final class SearchViewModel {
 
     public void enterSearchMode() {
         searchMode.set(true);
-    }
-
-    public Disposable searchVisibleDisposable(final InitialValueObservable<CharSequence> observable) {
-        return observable.subscribe(query -> searchMode.set(true));
     }
 
     public void clear() {
