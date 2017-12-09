@@ -10,12 +10,9 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
-import android.widget.TextView;
-import android.widget.ViewSwitcher;
 
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
@@ -92,13 +89,13 @@ public class SearchActivity extends BaseActivity {
                 networkIndicatorViewModel.observe().subscribe(state -> {
                     switch (state) {
                         case OFFLINE:
-                            onOffline();
+                            binding.networkIndicator.onOffline();
                             break;
                         case ONLINE:
-                            onOnline();
+                            binding.networkIndicator.onOnline();
                             break;
                         case DONT_SHOW:
-                            hideIndicator();
+                            binding.networkIndicator.hideIndicator();
                             break;
                     }
                 }));
@@ -110,27 +107,6 @@ public class SearchActivity extends BaseActivity {
                 .hideSoftInputFromWindow(binding.search.getWindowToken(), 0);
     }
 
-    private void hideIndicator() {
-        binding.online.setVisibility(View.GONE);
-    }
-
-    void onOffline() {
-        setTo(binding.offline);
-    }
-
-    void onOnline() {
-        setTo(binding.online);
-    }
-
-    private void setTo(final TextView view) {
-        final ViewSwitcher indicator = binding.networkIndicator;
-        indicator.setVisibility(View.VISIBLE);
-        final View current = indicator.getCurrentView();
-        if (current == view) {
-            return;
-        }
-        indicator.showNext();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

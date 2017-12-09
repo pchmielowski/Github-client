@@ -22,32 +22,10 @@
             android:animateLayoutChanges="true"
             android:orientation="vertical">
 
-            <ViewSwitcher
+            <net.chmielowski.github.NetworkStateIndicator
                 android:id="@+id/network_indicator"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:inAnimation="@android:anim/fade_in"
-                android:outAnimation="@android:anim/fade_out"
-                android:visibility="gone">
-
-                <TextView
-                    android:id="@+id/offline"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorOffline"
-                    android:gravity="center"
-                    android:text="@string/you_are_offline"
-                    android:textColor="@android:color/white"/>
-
-                <TextView
-                    android:id="@+id/online"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:background="@color/colorOnline"
-                    android:gravity="center"
-                    android:text="@string/you_are_online_again"
-                    android:textColor="@android:color/white"/>
-            </ViewSwitcher>
+                android:layout_height="wrap_content"/>
 
             <LinearLayout
                 android:layout_width="match_parent"
