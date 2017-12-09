@@ -2,8 +2,9 @@ package net.chmielowski.github;
 
 import android.content.Context;
 import android.net.ConnectivityManager;
+import android.support.v4.content.LocalBroadcastManager;
 
-import java.util.Objects;
+import com.google.android.gms.gcm.GcmNetworkManager;
 
 import dagger.Module;
 import dagger.Provides;
@@ -25,7 +26,17 @@ class ApplicationModule {
     }
 
     @Provides
-    ConnectivityManager provideConnectivityManager() {
-        return Objects.requireNonNull((ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE));
+    static ConnectivityManager provideConnectivityManager(@ApplicationContext final Context context) {
+        return (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
+    }
+
+    @Provides
+    static GcmNetworkManager provideGcmNetworkManager(@ApplicationContext final Context context) {
+        return GcmNetworkManager.getInstance(context);
+    }
+
+    @Provides
+    static LocalBroadcastManager provideBroadcastManager(@ApplicationContext final Context context) {
+        return LocalBroadcastManager.getInstance(context);
     }
 }

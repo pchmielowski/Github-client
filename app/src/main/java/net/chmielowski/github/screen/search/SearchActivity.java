@@ -1,15 +1,11 @@
 package net.chmielowski.github.screen.search;
 
 import android.animation.LayoutTransition;
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.databinding.DataBindingUtil;
-import android.net.ConnectivityManager;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.LocalBroadcastManager;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
 import android.view.Menu;
@@ -21,12 +17,7 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import com.google.android.gms.gcm.GcmNetworkManager;
-import com.google.android.gms.gcm.OneoffTask;
-import com.google.android.gms.gcm.Task;
-
 import net.chmielowski.github.R;
-import net.chmielowski.github.SendNetworkConnectedBroadcast;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.pagination.RxPagination;
 import net.chmielowski.github.screen.Adapter;
@@ -59,6 +50,9 @@ public class SearchActivity extends BaseActivity {
     SearchesAdapter searchHistoryAdapter;
     @Inject
     QueryHistory queryHistory;
+    @Inject
+    NetworkIndicatorViewModel networkIndicatorViewModel;
+
     private ActivitySearchBinding binding;
     private LinearLayoutManager resultsManager;
 
@@ -94,7 +88,20 @@ public class SearchActivity extends BaseActivity {
                 model.appendResults(RxPagination.scrolledCloseToEnd(binding.results, resultsManager))
                         .subscribe(results -> resultsAdapter.append(results)),
                 queryHistory.observe().subscribe(queries -> searchHistoryAdapter.update(queries)),
-                resultsAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)));
+                resultsAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
+                networkIndicatorViewModel.observe().subscribe(state -> {
+                    switch (state) {
+                        case OFFLINE:
+                            onOffline();
+                            break;
+                        case ONLINE:
+                            onOnline();
+                            break;
+                        case DONT_SHOW:
+                            hideIndicator();
+                            break;
+                    }
+                }));
     }
 
     @SuppressWarnings("ConstantConditions")
@@ -103,49 +110,9 @@ public class SearchActivity extends BaseActivity {
                 .hideSoftInputFromWindow(binding.search.getWindowToken(), 0);
     }
 
-    // TODO: unregister
-    private final BroadcastReceiver networkConnectedBroadcastReceiver = new BroadcastReceiver() {
-        @Override
-        public void onReceive(final Context context, final Intent intent) {
-
-        }
-    };
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-
-        waitForOnline();
-
-        LocalBroadcastManager.getInstance(this).registerReceiver(
-                networkConnectedBroadcastReceiver,
-                new IntentFilter(SendNetworkConnectedBroadcast.NETWORK_AVAILABLE));
+    private void hideIndicator() {
+        binding.online.setVisibility(View.GONE);
     }
-
-    @SuppressWarnings("ConstantConditions")
-    boolean isOnline() {
-        return connectivityManager().getActiveNetworkInfo().isConnected();
-    }
-
-    private final static String TAG = "NETWORK_CONNECTED";
-
-
-    void waitForOnline() {
-        final long ONE_HOUR = 3600L;
-        final OneoffTask task = new OneoffTask.Builder()
-                .setService(SendNetworkConnectedBroadcast.class)
-                .setTag(TAG)
-                .setExecutionWindow(0L, ONE_HOUR)
-                .setRequiredNetwork(Task.NETWORK_STATE_CONNECTED)
-                .build();
-        GcmNetworkManager.getInstance(this).schedule(task);
-    }
-
-
-    private ConnectivityManager connectivityManager() {
-        return (ConnectivityManager) getSystemService(CONNECTIVITY_SERVICE);
-    }
-
 
     void onOffline() {
         setTo(binding.offline);
