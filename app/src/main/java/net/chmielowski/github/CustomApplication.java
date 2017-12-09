@@ -1,5 +1,6 @@
 package net.chmielowski.github;
 
+import android.annotation.SuppressLint;
 import android.app.Application;
 import android.content.Context;
 import android.support.v7.app.AppCompatActivity;
@@ -10,8 +11,10 @@ import com.uphyca.stetho_realm.RealmInspectorModulesProvider;
 
 import io.realm.Realm;
 import io.realm.RealmConfiguration;
+import timber.log.Timber;
 
 public final class CustomApplication extends Application {
+    @SuppressLint("StaticFieldLeak")
     static Context INSTANCE; // TODO: use DI
 
     /*
@@ -47,6 +50,7 @@ public final class CustomApplication extends Application {
                         .enableDumpapp(Stetho.defaultDumperPluginsProvider(this))
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
+        Timber.plant(new Timber.DebugTree());
     }
 
     public ActivityComponent component(final AppCompatActivity activity) {
