@@ -24,7 +24,6 @@ import android.widget.ViewSwitcher;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.Task;
-import com.jakewharton.rxbinding2.widget.RxTextView;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
@@ -44,6 +43,7 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 
+import static com.jakewharton.rxbinding2.widget.RxTextView.editorActions;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
 
 public class SearchActivity extends BaseActivity {
@@ -87,9 +87,9 @@ public class SearchActivity extends BaseActivity {
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
                 model.replaceResults(
-                        RxTextView.editorActions(binding.search, action -> action == EditorInfo.IME_ACTION_SEARCH),
+                        editorActions(binding.search, action -> action == EditorInfo.IME_ACTION_SEARCH),
                         searchAdapter.observeClicks(),
-                        textChanges(binding.search).map(CharSequence::toString)) // TODO: just use CharSequence everywhere
+                        textChanges(binding.search))
                         .subscribe(results -> reposAdapter.replace(results)),
                 model.appendResults(RxPagination.scrolledCloseToEnd(binding.results, resultsManager))
                         .subscribe(results -> reposAdapter.append(results)),

@@ -66,7 +66,7 @@ public final class SearchViewModel {
 
     public Observable<ListState> replaceResults(final Observable<?> searchBtnClicked,
                                                 final Observable<String> searchQuery,
-                                                final Observable<String> observeQuery) {
+                                                final Observable<CharSequence> observeQuery) {
         return replaceResults(
                 Observable.merge(
                         searchQuery,
@@ -86,10 +86,11 @@ public final class SearchViewModel {
 
     // TODO: remove suppression
     @SuppressWarnings("WeakerAccess")
-    Observable<ListState> replaceResults(final Observable<String> searchQuery) {
+    Observable<ListState> replaceResults(final Observable<CharSequence> searchQuery) {
         // TODO: handle null/empty query
         return searchQuery
                 .compose(Assertions::neverCompletes)
+                .map(CharSequence::toString)
                 .doOnNext(query -> {
                     lastQuery = query;
                     page = 0;
