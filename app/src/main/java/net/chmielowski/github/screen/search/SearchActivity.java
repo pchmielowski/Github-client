@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.EditorInfo;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
@@ -85,14 +86,21 @@ public class SearchActivity extends BaseActivity {
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
                 model.replaceResults(
-                        editorActions(binding.search, action -> action == EditorInfo.IME_ACTION_SEARCH),
-                        searchHistoryAdapter.observeClicks(),
+                        editorActions(binding.search, action -> action == EditorInfo.IME_ACTION_SEARCH)
+                                .doOnNext(__ -> hideKeyboard()),
+                        searchHistoryAdapter.observeClicks().doOnNext(__ -> hideKeyboard()),
                         textChanges(binding.search))
                         .subscribe(results -> resultsAdapter.replace(results)),
                 model.appendResults(RxPagination.scrolledCloseToEnd(binding.results, resultsManager))
                         .subscribe(results -> resultsAdapter.append(results)),
                 queryHistory.observe().subscribe(queries -> searchHistoryAdapter.update(queries)),
                 resultsAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)));
+    }
+
+    @SuppressWarnings("ConstantConditions")
+    private void hideKeyboard() {
+        ((InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE))
+                .hideSoftInputFromWindow(binding.search.getWindowToken(), 0);
     }
 
     // TODO: unregister

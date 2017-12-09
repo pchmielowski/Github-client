@@ -61,7 +61,6 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
-                    android:enabled="@{model.searchMode}"
                     android:hint="@string/search"
                     android:imeOptions="actionSearch"
                     android:inputType="text"/>
@@ -71,7 +70,8 @@
                     android:layout_height="wrap_content"
                     android:contentDescription="@string/clear"
                     android:onClick="@{()-> model.clear()}"
-                    android:src="@drawable/ic_clear"/>
+                    android:src="@drawable/ic_clear"
+                    app:visibility="@{model.searchMode}"/>
             </LinearLayout>
 
             <TextView
