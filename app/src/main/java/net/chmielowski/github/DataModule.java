@@ -29,7 +29,7 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
 @Module
-abstract class MainModule {
+abstract class DataModule {
     @Binds
     abstract RepoService bindRepoRepository(GithubRepoService impl);
 
