@@ -10,6 +10,7 @@ import net.chmielowski.github.utils.Assertions;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
+import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import lombok.EqualsAndHashCode;
@@ -17,6 +18,7 @@ import lombok.ToString;
 
 import static java.util.Objects.requireNonNull;
 
+@Singleton
 public final class SearchViewModel {
     private final RepoService repository;
 
