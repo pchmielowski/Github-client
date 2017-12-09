@@ -1,4 +1,4 @@
-package net.chmielowski.github.data;
+package net.chmielowski.github.network;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -12,8 +12,6 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.google.android.gms.gcm.GcmNetworkManager;
 import com.google.android.gms.gcm.OneoffTask;
 import com.google.android.gms.gcm.Task;
-
-import net.chmielowski.github.SendNetworkConnectedBroadcast;
 
 import java.util.Optional;
 
@@ -92,7 +90,7 @@ public final class NetworkState {
 
     private final Subject<State> subject = PublishSubject.create();
 
-    public Observable<State> observe() {
+    Observable<State> observe() {
         return subject;
     }
 }

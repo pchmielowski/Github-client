@@ -1,5 +1,6 @@
 package net.chmielowski.github;
 
+import net.chmielowski.github.network.SendNetworkConnectedBroadcast;
 import net.chmielowski.github.screen.details.DetailsActivity;
 
 import javax.inject.Singleton;

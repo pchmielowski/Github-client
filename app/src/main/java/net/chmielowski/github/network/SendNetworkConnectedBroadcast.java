@@ -1,4 +1,4 @@
-package net.chmielowski.github;
+package net.chmielowski.github.network;
 
 import android.content.Context;
 import android.content.Intent;
@@ -6,6 +6,8 @@ import android.support.v4.content.LocalBroadcastManager;
 
 import com.google.android.gms.gcm.GcmTaskService;
 import com.google.android.gms.gcm.TaskParams;
+
+import net.chmielowski.github.ApplicationContext;
 
 import javax.inject.Inject;
 

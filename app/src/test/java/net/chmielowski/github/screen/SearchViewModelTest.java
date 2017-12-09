@@ -1,8 +1,8 @@
 package net.chmielowski.github.screen;
 
-import net.chmielowski.github.data.NetworkState;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
+import net.chmielowski.github.network.NetworkState;
 import net.chmielowski.github.pagination.ValueIgnored;
 
 import org.junit.Before;

@@ -12,7 +12,7 @@ final class ActivityModule {
     @NonNull
     private final AppCompatActivity activity;
 
-    ActivityModule(@NonNull final AppCompatActivity activity) {
+    public ActivityModule(@NonNull final AppCompatActivity activity) {
         this.activity = activity;
     }
 

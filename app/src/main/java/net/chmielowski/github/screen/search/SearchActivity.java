@@ -16,6 +16,7 @@ import android.view.inputmethod.InputMethodManager;
 
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
+import net.chmielowski.github.network.NetworkIndicatorViewModel;
 import net.chmielowski.github.pagination.RxPagination;
 import net.chmielowski.github.screen.Adapter;
 import net.chmielowski.github.screen.BaseActivity;

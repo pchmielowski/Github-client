@@ -2,6 +2,7 @@ package net.chmielowski.github.data;
 
 import android.support.annotation.NonNull;
 
+import net.chmielowski.github.network.NetworkState;
 import net.chmielowski.github.screen.SearchViewModel;
 
 import java.util.Collection;
