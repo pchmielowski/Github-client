@@ -1,6 +1,7 @@
 package net.chmielowski.github;
 
 import android.content.Context;
+import android.databinding.BindingAdapter;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
+import net.chmielowski.github.data.NetworkState;
 import net.chmielowski.github.databinding.ViewNetworkStateIndicatorBinding;
 
 public final class NetworkStateIndicator extends FrameLayout {
@@ -36,5 +38,17 @@ public final class NetworkStateIndicator extends FrameLayout {
             return;
         }
         indicator.showNext();
+    }
+
+    @BindingAdapter("networkState")
+    public static void setState(final NetworkStateIndicator view, final NetworkState.State state) {
+        switch (state) {
+            case ONLINE:
+                view.onOnline();
+                break;
+            case OFFLINE:
+                view.onOffline();
+                break;
+        }
     }
 }

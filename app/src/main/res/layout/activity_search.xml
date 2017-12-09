@@ -30,6 +30,7 @@
                 android:id="@+id/network_indicator"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                app:networkState="@{indicatorViewModel.state}"
                 app:visibility="@{indicatorViewModel.visible}"/>
 
             <LinearLayout

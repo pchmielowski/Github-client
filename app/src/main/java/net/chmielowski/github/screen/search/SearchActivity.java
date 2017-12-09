@@ -87,16 +87,7 @@ public class SearchActivity extends BaseActivity {
                         .subscribe(results -> resultsAdapter.append(results)),
                 queryHistory.observe().subscribe(queries -> searchHistoryAdapter.update(queries)),
                 resultsAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
-                networkIndicatorViewModel.observe().subscribe(state -> {
-                    switch (state) {
-                        case OFFLINE:
-                            binding.networkIndicator.onOffline();
-                            break;
-                        case ONLINE:
-                            binding.networkIndicator.onOnline();
-                            break;
-                    }
-                }));
+                networkIndicatorViewModel.observe().subscribe());
     }
 
     @SuppressWarnings("ConstantConditions")
