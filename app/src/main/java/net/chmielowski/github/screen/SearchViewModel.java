@@ -3,6 +3,7 @@ package net.chmielowski.github.screen;
 import android.databinding.ObservableBoolean;
 import android.support.annotation.NonNull;
 
+import net.chmielowski.github.OnMainThread;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.network.NetworkState;
 import net.chmielowski.github.pagination.ValueIgnored;
@@ -31,7 +32,9 @@ public final class SearchViewModel {
     private boolean isLoading;
 
     @Inject
-    SearchViewModel(final RepoService repository, final QueryHistory queryHistory, final NetworkState networkState) {
+    SearchViewModel(@OnMainThread final RepoService repository,
+                    final QueryHistory queryHistory,
+                    final NetworkState networkState) {
         this.repository = repository;
         this.queryHistory = queryHistory;
         this.networkState = networkState;

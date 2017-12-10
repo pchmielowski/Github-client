@@ -1,8 +1,11 @@
 package net.chmielowski.github.data;
 
+import net.chmielowski.github.Github;
 import net.chmielowski.github.screen.SearchViewModel;
 
 import java.util.Collection;
+
+import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
@@ -11,7 +14,8 @@ public final class MainThreadRepoServiceDecorator implements RepoService {
 
     private final RepoService decorated;
 
-    public MainThreadRepoServiceDecorator(final RepoService decorated) {
+    @Inject
+    MainThreadRepoServiceDecorator(@Github final RepoService decorated) {
         this.decorated = decorated;
     }
 

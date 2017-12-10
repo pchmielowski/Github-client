@@ -7,6 +7,7 @@ import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import net.chmielowski.github.data.GithubRepoService;
+import net.chmielowski.github.data.MainThreadRepoServiceDecorator;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RestService;
@@ -30,6 +31,11 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
 @Module
 abstract class DataModule {
+    @OnMainThread
+    @Binds
+    abstract RepoService bindRepoRepositoryOnMainThread(MainThreadRepoServiceDecorator impl);
+
+    @Github
     @Binds
     abstract RepoService bindRepoRepository(GithubRepoService impl);
 
