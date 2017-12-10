@@ -125,7 +125,7 @@ public final class SearchViewModel {
         }
 
         @NonNull
-        static Query firstPage(final String query) {
+        public static Query firstPage(final String query) {
             return new Query(0, query);
         }
 

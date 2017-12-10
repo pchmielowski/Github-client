@@ -11,7 +11,6 @@ import java.util.Optional;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
 public final class GithubRepoService implements RepoService {
@@ -34,8 +33,7 @@ public final class GithubRepoService implements RepoService {
                         .forEach(item -> {
                             cache.put(item.fullName, item);
                         }))
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread());
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
@@ -47,8 +45,7 @@ public final class GithubRepoService implements RepoService {
                     // TODO: just use owner/name
                     final String[] split = name.split("/");
                     return service.repo(split[0], split[1])
-                            .subscribeOn(Schedulers.io())
-                            .observeOn(AndroidSchedulers.mainThread());
+                            .subscribeOn(Schedulers.io());
                 });
     }
 
