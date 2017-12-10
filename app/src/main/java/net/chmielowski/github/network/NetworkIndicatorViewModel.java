@@ -30,6 +30,7 @@ public final class NetworkIndicatorViewModel {
                     this.state.set(state);
                     switch (state) {
                         case ONLINE:
+                            // TODO: cancel this task if network state changes before it was executed
                             new Handler().postDelayed(() ->
                                     visible.set(false), 3000);
                             break;
