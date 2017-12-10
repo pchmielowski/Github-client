@@ -33,6 +33,7 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 abstract class DataModule {
     @OnMainThread
     @Binds
+    // TODO: rename
     abstract RepoService bindRepoRepositoryOnMainThread(MainThreadRepoServiceDecorator impl);
 
     @Github
