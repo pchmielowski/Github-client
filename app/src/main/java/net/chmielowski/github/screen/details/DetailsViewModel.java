@@ -60,7 +60,7 @@ public final class DetailsViewModel {
                 });
     }
 
-    Single<String> url() {
+    Single<String> avatar() {
         return service.item(id)
                 .map(item -> item.owner.avatarUrl);
     }
