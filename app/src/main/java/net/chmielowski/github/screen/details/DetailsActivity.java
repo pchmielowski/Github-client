@@ -4,7 +4,6 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.util.Pair;
 
@@ -51,17 +50,17 @@ public class DetailsActivity extends BaseActivity {
     @Override
     protected Iterable<Disposable> disposables() {
         return Collections.singletonList(model.observeActions()
-                .map(this::message)
+                .map(this::asMessage)
                 .subscribe(this::show));
     }
 
-    private void show(String message) {
-        Snackbar.make(findViewById(R.id.container), message, BaseTransientBottomBar.LENGTH_LONG)
+    private void show(final String message) {
+        Snackbar.make(findViewById(R.id.container), message, Snackbar.LENGTH_LONG)
                 .show();
     }
 
     @NonNull
-    private String message(Pair<DetailsViewModel.Action, String> action) {
+    private String asMessage(Pair<DetailsViewModel.Action, String> action) {
         return String.format("%s %s",
                 getString(action.first == LIKE ? R.string.now_you_like : R.string.you_unlike),
                 action.second);

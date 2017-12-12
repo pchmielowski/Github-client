@@ -27,7 +27,6 @@ public final class DetailsViewModel {
     private final LikedRepos likedRepos;
 
     private String id;
-    public int url;
 
     @Inject
     DetailsViewModel(@OnMainThread final RepoService service, final LikedRepos likedRepos) {
