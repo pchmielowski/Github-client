@@ -14,6 +14,7 @@ import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 
+import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.network.NetworkIndicatorViewModel;
@@ -34,7 +35,6 @@ import io.reactivex.disposables.Disposable;
 
 import static com.jakewharton.rxbinding2.widget.RxTextView.editorActions;
 import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
-import static net.chmielowski.github.utils.ApplicationUtils.application;
 
 public class SearchActivity extends BaseActivity {
 
@@ -57,7 +57,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        application(this).component(this).inject(this);
+        CustomApplication.get(this).component(this).inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         binding.setIndicatorViewModel(networkIndicatorViewModel);
         binding.setModel(model);

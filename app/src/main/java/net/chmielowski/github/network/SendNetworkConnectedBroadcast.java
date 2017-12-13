@@ -11,7 +11,7 @@ import net.chmielowski.github.ApplicationContext;
 
 import javax.inject.Inject;
 
-import static net.chmielowski.github.utils.ApplicationUtils.application;
+import static net.chmielowski.github.CustomApplication.get;
 
 public final class SendNetworkConnectedBroadcast extends GcmTaskService {
     public static final String NETWORK_AVAILABLE = "NETWORK_AVAILABLE";
@@ -23,7 +23,7 @@ public final class SendNetworkConnectedBroadcast extends GcmTaskService {
     @Override
     public void onCreate() {
         super.onCreate();
-        application(this).mainComponent().inject(this);
+        get(this).mainComponent().inject(this);
     }
 
     @Override

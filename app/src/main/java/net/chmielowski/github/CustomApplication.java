@@ -1,6 +1,7 @@
 package net.chmielowski.github;
 
 import android.app.Application;
+import android.app.Service;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.stetho.Stetho;
@@ -26,6 +27,14 @@ public final class CustomApplication extends Application {
      */
 
     private MainComponent component;
+
+    public static CustomApplication get(final Service service) {
+        return (CustomApplication) service.getApplication();
+    }
+
+    public static CustomApplication get(final AppCompatActivity activity) {
+        return (CustomApplication) activity.getApplication();
+    }
 
     @Override
     public void onCreate() {

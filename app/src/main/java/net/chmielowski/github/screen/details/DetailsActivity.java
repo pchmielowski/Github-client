@@ -9,6 +9,7 @@ import android.util.Pair;
 
 import com.squareup.picasso.Picasso;
 
+import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityDetailsBinding;
 import net.chmielowski.github.screen.BaseActivity;
@@ -20,7 +21,6 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 
 import static net.chmielowski.github.screen.details.DetailsViewModel.Action.LIKE;
-import static net.chmielowski.github.utils.ApplicationUtils.application;
 
 public class DetailsActivity extends BaseActivity {
     public static final String KEY_ID = "REPOSITORY_ID";
@@ -31,7 +31,7 @@ public class DetailsActivity extends BaseActivity {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        application(this).component(this, getIntent().getStringExtra(KEY_ID)).inject(this);
+        CustomApplication.get(this).component(this, getIntent().getStringExtra(KEY_ID)).inject(this);
 
         final ActivityDetailsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_details);
