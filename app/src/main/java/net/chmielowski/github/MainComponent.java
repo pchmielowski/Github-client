@@ -10,9 +10,9 @@ import dagger.Component;
 @Component(modules = {DataModule.class, ApplicationModule.class})
 public interface MainComponent {
 
-//    ActivityComponent plusActivityComponent(ActivityModule activityModule);
-
     RepositoryComponent plusRepositoryComponent(RepositoryModule module);
 
     void inject(SendNetworkConnectedBroadcast broadcast);
+
+    ActivityComponent plusActivityComponent(ActivityModule module);
 }
