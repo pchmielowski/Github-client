@@ -51,8 +51,17 @@ public final class CustomApplication extends Application {
         Timber.plant(new Timber.DebugTree());
     }
 
-    public ActivityComponent activityComponent(final AppCompatActivity activity) {
-        return component.plusActivityComponent(new ActivityModule(activity));
+    public ActivityComponent component(final AppCompatActivity activity,
+                                       final String repository) {
+        return component
+                .plusRepositoryComponent(new RepositoryModule(repository))
+                .plusActivityComponent(new ActivityModule(activity));
+    }
+
+    public ActivityComponent component(final AppCompatActivity activity) {
+        return component
+                .plusRepositoryComponent(new RepositoryModule("dupa")) // TODO: not needed here
+                .plusActivityComponent(new ActivityModule(activity));
     }
 
     public MainComponent mainComponent() {

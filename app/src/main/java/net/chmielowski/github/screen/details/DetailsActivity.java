@@ -31,8 +31,7 @@ public class DetailsActivity extends BaseActivity {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        application(this).activityComponent(this).inject(this);
-        model.setRepo(getIntent().getStringExtra(KEY_ID));
+        application(this).component(this, getIntent().getStringExtra(KEY_ID)).inject(this);
 
         final ActivityDetailsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_details);

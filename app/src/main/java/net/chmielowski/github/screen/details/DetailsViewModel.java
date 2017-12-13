@@ -5,6 +5,7 @@ import android.databinding.ObservableField;
 import android.util.Pair;
 
 import net.chmielowski.github.OnMainThread;
+import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.data.LikedRepos;
 import net.chmielowski.github.data.RepoService;
 
@@ -26,15 +27,14 @@ public final class DetailsViewModel {
     private final RepoService service;
     private final LikedRepos likedRepos;
 
-    private String id;
+    private final String id;
 
     @Inject
-    DetailsViewModel(@OnMainThread final RepoService service, final LikedRepos likedRepos) {
+    DetailsViewModel(@OnMainThread final RepoService service,
+                     final LikedRepos likedRepos,
+                     @RepositoryId final String repo) {
         this.service = service;
         this.likedRepos = likedRepos;
-    }
-
-    void setRepo(final String repo) {
         this.id = repo;
         service.item(repo)
                 .subscribe(item -> {
@@ -43,6 +43,7 @@ public final class DetailsViewModel {
                     name.set(item.name);
                     description.set(item.description);
                 });
+
     }
 
     enum Action {
