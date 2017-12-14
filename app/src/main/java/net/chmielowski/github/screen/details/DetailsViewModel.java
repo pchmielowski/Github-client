@@ -6,6 +6,7 @@ import android.util.Pair;
 
 import net.chmielowski.github.OnMainThread;
 import net.chmielowski.github.RepositoryId;
+import net.chmielowski.github.RepositoryScope;
 import net.chmielowski.github.data.LikedRepos;
 import net.chmielowski.github.data.RepoService;
 
@@ -18,6 +19,7 @@ import io.reactivex.subjects.Subject;
 
 import static net.chmielowski.github.screen.details.DetailsViewModel.Action.LIKE;
 
+@RepositoryScope
 public final class DetailsViewModel {
     public final ObservableField<String> owner = new ObservableField<>();
     public final ObservableField<String> name = new ObservableField<>();
@@ -36,7 +38,6 @@ public final class DetailsViewModel {
         this.service = service;
         this.likedRepos = likedRepos;
         this.id = repo;
-        // TODO: unsubscribe
         service.item(repo)
                 .subscribe(item -> {
                     favourite.set(likedRepos.isLiked(item.fullName));
