@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:tools="http://schemas.android.com/tools"
+        xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools">
+    >
 
     <data>
 
@@ -11,67 +12,76 @@
     </data>
 
     <!--TODO: styles-->
-    <!--TODO: Constrains layout-->
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:padding="@dimen/margin_small">
+        tools:ignore="GradleDependency">
 
-        <LinearLayout
-            android:layout_width="match_parent"
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            tools:ignore="UseCompoundDrawables">
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:visibility="@{model.loading}"/>
 
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                app:visibility="@{model.loading}"/>
+        <ImageView
+            android:id="@+id/avatar"
+            android:layout_width="@dimen/avatar"
+            android:layout_height="@dimen/avatar"
+            android:contentDescription="@string/avatar"
+            android:transitionName="@string/transition_avatar"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
 
-            <ImageView
-                android:id="@+id/avatar"
-                android:layout_width="@dimen/avatar"
-                android:layout_height="@dimen/avatar"
-                android:contentDescription="@string/avatar"
-                android:transitionName="@string/transition_avatar"/>
-
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_small"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{model.owner}"
-                    android:textSize="20sp"
-                    android:textStyle="bold"
-                    android:transitionName="@string/transition_owner"/>
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{model.name}"
-                    android:textSize="20sp"
-                    android:transitionName="@string/transition_name"/>
-            </LinearLayout>
-
-            <ImageView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:contentDescription="@string/add_to_favourites"
-                android:onClick="@{() -> model.addToFavs()}"
-                android:padding="@dimen/margin_small"
-                android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}"/>
-        </LinearLayout>
 
         <TextView
-            android:layout_width="match_parent"
+            android:id="@+id/name"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{model.description}"/>
-    </LinearLayout>
+            android:text="@{model.name}"
+            android:textSize="20sp"
+            android:transitionName="@string/transition_name"
+            app:layout_constraintEnd_toStartOf="@+id/fav"
+            app:layout_constraintStart_toEndOf="@+id/avatar"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/owner"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.owner}"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:transitionName="@string/transition_owner"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/avatar"
+            app:layout_constraintTop_toBottomOf="@+id/name"/>
+
+
+        <ImageView
+            android:id="@+id/fav"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:contentDescription="@string/add_to_favourites"
+            android:onClick="@{() -> model.addToFavs()}"
+            android:padding="@dimen/margin_small"
+            android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+
+        <TextView
+            android:id="@+id/description"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="@{model.description}"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/owner"/>
+    </android.support.constraint.ConstraintLayout>
 </layout>
