@@ -36,6 +36,7 @@ public final class DetailsViewModel {
         this.service = service;
         this.likedRepos = likedRepos;
         this.id = repo;
+        // TODO: unsubscribe
         service.item(repo)
                 .subscribe(item -> {
                     favourite.set(likedRepos.isLiked(item.fullName));
