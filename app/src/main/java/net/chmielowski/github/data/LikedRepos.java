@@ -5,10 +5,10 @@ import net.chmielowski.github.screen.search.RealmFacade;
 import javax.inject.Inject;
 
 public final class LikedRepos {
-    private RealmFacade realmFacade;
+    private final RealmFacade realmFacade;
 
     @Inject
-    LikedRepos(RealmFacade realmFacade) {
+    LikedRepos(final RealmFacade realmFacade) {
         this.realmFacade = realmFacade;
     }
 
