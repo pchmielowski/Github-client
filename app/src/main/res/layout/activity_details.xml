@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools">
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
         <variable
             name="model"
-            type="net.chmielowski.github.screen.details.DetailsViewModel" />
+            type="net.chmielowski.github.screen.details.DetailsViewModel"/>
     </data>
 
     <!--TODO: styles-->
@@ -24,12 +25,17 @@
             android:orientation="horizontal"
             tools:ignore="UseCompoundDrawables">
 
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:visibility="@{model.loading}"/>
+
             <ImageView
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar"
                 android:layout_height="@dimen/avatar"
                 android:contentDescription="@string/avatar"
-                android:transitionName="@string/transition_avatar" />
+                android:transitionName="@string/transition_avatar"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -44,14 +50,14 @@
                     android:text="@{model.owner}"
                     android:textSize="20sp"
                     android:textStyle="bold"
-                    android:transitionName="@string/transition_owner" />
+                    android:transitionName="@string/transition_owner"/>
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{model.name}"
                     android:textSize="20sp"
-                    android:transitionName="@string/transition_name" />
+                    android:transitionName="@string/transition_name"/>
             </LinearLayout>
 
             <ImageView
@@ -60,12 +66,12 @@
                 android:contentDescription="@string/add_to_favourites"
                 android:onClick="@{() -> model.addToFavs()}"
                 android:padding="@dimen/margin_small"
-                android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}" />
+                android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}"/>
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="@{model.description}" />
+            android:text="@{model.description}"/>
     </LinearLayout>
 </layout>

@@ -24,6 +24,7 @@ public final class DetailsViewModel {
     public final ObservableField<String> owner = new ObservableField<>();
     public final ObservableField<String> name = new ObservableField<>();
     public final ObservableBoolean favourite = new ObservableBoolean(false);
+    public final ObservableBoolean loading = new ObservableBoolean(false);
     public final ObservableField<String> description = new ObservableField<>();
 
     private final RepoService service;
@@ -39,6 +40,8 @@ public final class DetailsViewModel {
         this.likedRepos = likedRepos;
         this.id = repo;
         service.item(repo)
+                .doOnSubscribe(__ -> loading.set(true))
+                .doOnSuccess(__ -> loading.set(false))
                 .subscribe(item -> {
                     favourite.set(likedRepos.isLiked(item.fullName));
                     owner.set(item.owner.login);
