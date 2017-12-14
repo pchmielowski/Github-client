@@ -31,7 +31,9 @@ public class DetailsActivity extends BaseActivity {
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CustomApplication.get(this).component(this, getIntent().getStringExtra(KEY_ID)).inject(this);
+        CustomApplication.get(this)
+                .component(this, getIntent().getStringExtra(KEY_ID), savedInstanceState == null)
+                .inject(this);
 
         final ActivityDetailsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_details);
@@ -63,5 +65,13 @@ public class DetailsActivity extends BaseActivity {
         return String.format("%s %s",
                 getString(action.first == LIKE ? R.string.now_you_like : R.string.you_unlike),
                 action.second);
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (isFinishing()) {
+            CustomApplication.get(this).releaseRepositoryComponent();
+        }
     }
 }

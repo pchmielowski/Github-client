@@ -14,7 +14,7 @@ class RepositoryModule {
     @RepositoryId
     @RepositoryScope
     @Provides
-    String string() {
+    String repository() {
         return repository;
     }
 }

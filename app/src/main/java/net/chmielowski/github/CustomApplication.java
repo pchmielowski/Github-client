@@ -2,6 +2,7 @@ package net.chmielowski.github;
 
 import android.app.Application;
 import android.app.Service;
+import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
 import com.facebook.stetho.Stetho;
@@ -27,6 +28,8 @@ public final class CustomApplication extends Application {
      */
 
     private MainComponent component;
+    @Nullable
+    private RepositoryComponent repositoryComponent;
 
     public static CustomApplication get(final Service service) {
         return (CustomApplication) service.getApplication();
@@ -61,9 +64,14 @@ public final class CustomApplication extends Application {
     }
 
     public DetailsActivityComponent component(final AppCompatActivity activity,
-                                              final String repository) {
-        return component
-                .plusRepositoryComponent(new RepositoryModule(repository))
+                                              final String repository,
+                                              final boolean createNew) {
+        if (createNew) {
+            repositoryComponent = component
+                    .plusRepositoryComponent(new RepositoryModule(repository));
+        }
+        assert repositoryComponent != null;
+        return repositoryComponent
                 .plusDetailsActivityComponent(new ActivityModule(activity));
     }
 
@@ -74,5 +82,9 @@ public final class CustomApplication extends Application {
 
     public MainComponent mainComponent() {
         return component;
+    }
+
+    public void releaseRepositoryComponent() {
+        repositoryComponent = null;
     }
 }
