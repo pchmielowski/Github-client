@@ -27,15 +27,19 @@
 
         <activity
             android:name=".screen.search.SearchActivity"
-            android:label="@string/app_name">
+            android:label="@string/title_search">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
                 <category android:name="android.intent.category.LAUNCHER"/>
             </intent-filter>
         </activity>
-        <activity android:name=".screen.details.DetailsActivity"/>
-        <activity android:name=".screen.fav.FavsActivity"/>
+        <activity
+            android:name=".screen.details.DetailsActivity"
+            android:label="@string/title_repository"/>
+        <activity
+            android:name=".screen.fav.FavsActivity"
+            android:label="@string/title_favourites"/>
     </application>
 
 </manifest>
