@@ -74,8 +74,7 @@ public final class SearchViewModel {
                     queryHistory.searched(query);
                 })
                 .map(Query::firstPage)
-                .flatMap(this::fetchResults)
-                .startWith(ListState.initial());
+                .flatMap(this::fetchResults);
     }
 
     private final NetworkState networkState;
