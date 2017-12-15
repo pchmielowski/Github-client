@@ -5,7 +5,7 @@
 
         <variable
             name="model"
-            type="net.chmielowski.github.screen.BoldQueryViewModel" />
+            type="net.chmielowski.github.screen.BoldQueryViewModel"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -29,7 +29,7 @@
                 android:layout_width="@dimen/avatar"
                 android:layout_height="@dimen/avatar"
                 android:contentDescription="@string/avatar"
-                android:transitionName="@string/transition_avatar" />
+                android:transitionName="@string/transition_avatar"/>
 
             <LinearLayout
                 android:layout_width="0dp"
@@ -43,15 +43,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{model.owner}"
-                    android:textStyle="bold"
-                    android:transitionName="@string/transition_owner" />
+                    android:transitionName="@string/transition_owner"/>
 
                 <TextView
                     android:id="@+id/name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="@{model.name}"
-                    android:transitionName="@string/transition_name" />
+                    android:transitionName="@string/transition_name"/>
 
             </LinearLayout>
 
@@ -60,7 +59,7 @@
                 android:layout_height="wrap_content"
                 android:text="@{model.language}"
                 android:textColor="#9e9e9e"
-                android:textSize="20sp" />
+                android:textSize="20sp"/>
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

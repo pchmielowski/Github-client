@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:tools="http://schemas.android.com/tools"
-        xmlns:android="http://schemas.android.com/apk/res/android"
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools"
     >
 
     <data>
@@ -40,27 +40,27 @@
 
 
         <TextView
-            android:id="@+id/name"
+            android:id="@+id/owner"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{model.name}"
-            android:textSize="20sp"
-            android:transitionName="@string/transition_name"
+            android:text="@{model.owner}"
+            android:textSize="@dimen/text_medium"
+            android:transitionName="@string/transition_owner"
             app:layout_constraintEnd_toStartOf="@+id/fav"
             app:layout_constraintStart_toEndOf="@+id/avatar"
             app:layout_constraintTop_toTopOf="parent"/>
 
         <TextView
-            android:id="@+id/owner"
+            android:id="@+id/name"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="@{model.owner}"
-            android:textSize="20sp"
+            android:text="@{model.name}"
+            android:textSize="@dimen/text_medium"
             android:textStyle="bold"
-            android:transitionName="@string/transition_owner"
+            android:transitionName="@string/transition_name"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toEndOf="@+id/avatar"
-            app:layout_constraintTop_toBottomOf="@+id/name"/>
+            app:layout_constraintTop_toBottomOf="@+id/owner"/>
 
 
         <ImageView
@@ -82,6 +82,6 @@
             android:text="@{model.description}"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/owner"/>
+            app:layout_constraintTop_toBottomOf="@+id/name"/>
     </android.support.constraint.ConstraintLayout>
 </layout>
