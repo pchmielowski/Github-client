@@ -27,6 +27,15 @@ public class FavsViewModelTest {
 
     @Test
     public void itemCachedWithSuccess() throws Exception {
+        itemCached(true);
+    }
+
+    @Test
+    public void itemCachedWithFailure() throws Exception {
+        itemCached(false);
+    }
+
+    private void itemCached(final boolean result) {
         final String repository = "repo";
         final SingleSubject<Boolean> subject = SingleSubject.create();
         when(service.cacheItem(repository))
@@ -38,8 +47,8 @@ public class FavsViewModelTest {
                 .test();
         assertThat(model.loading.get(), is(true));
 
-        subject.onSuccess(true);
-        testObserver.assertValue(true);
+        subject.onSuccess(result);
+        testObserver.assertValue(result);
         assertThat(model.loading.get(), is(false));
     }
 }
