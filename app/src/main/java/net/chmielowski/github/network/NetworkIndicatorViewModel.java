@@ -2,34 +2,37 @@ package net.chmielowski.github.network;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.os.Handler;
+import android.support.annotation.Nullable;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.disposables.Disposable;
 
+import static io.reactivex.Completable.timer;
+import static java.util.concurrent.TimeUnit.SECONDS;
 import static net.chmielowski.github.network.BasicNetworkState.State.ONLINE;
 
 @Singleton
 public final class NetworkIndicatorViewModel {
-    private final Handler handler = new Handler();
-    private final int delayMillis;
+    private final int delay;
     public ObservableBoolean visible = new ObservableBoolean(false);
     public ObservableField<BasicNetworkState.State> state = new ObservableField<>(ONLINE);
 
-    private final Runnable hide = () -> visible.set(false);
-
     private final NetworkState networkState;
 
-    private NetworkIndicatorViewModel(final int delayMillis, final NetworkState networkState) {
-        this.delayMillis = delayMillis;
+    @Nullable
+    private Disposable disposable;
+
+    private NetworkIndicatorViewModel(final int delay, final NetworkState networkState) {
+        this.delay = delay;
         this.networkState = networkState;
     }
 
     @Inject
     NetworkIndicatorViewModel(final NetworkState networkState) {
-        this(3000, networkState);
+        this(3, networkState);
     }
 
     public Observable<BasicNetworkState.State> observe() {
@@ -38,10 +41,18 @@ public final class NetworkIndicatorViewModel {
                     this.state.set(state);
                     switch (state) {
                         case ONLINE:
-                            handler.postDelayed(hide, delayMillis);
+                            if (disposable != null) {
+                                throw new IllegalStateException(
+                                        "Went online without going offline before"
+                                );
+                            }
+                            disposable = timer(delay, SECONDS).subscribe(() -> visible.set(false));
                             break;
                         case OFFLINE:
-                            handler.removeCallbacks(hide);
+                            if (disposable != null) {
+                                disposable.dispose();
+                                disposable = null;
+                            }
                             visible.set(true);
                             break;
                     }
