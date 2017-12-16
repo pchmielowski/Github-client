@@ -1,19 +1,17 @@
 package net.chmielowski.github.data;
 
-import net.chmielowski.github.screen.search.RealmFacade;
-
 import javax.inject.Inject;
 
 public final class LikedRepos {
-    private final RealmFacade realmFacade;
+    private final Persistence persistence;
 
     @Inject
-    LikedRepos(final RealmFacade realmFacade) {
-        this.realmFacade = realmFacade;
+    LikedRepos(final Persistence persistence) {
+        this.persistence = persistence;
     }
 
     public void like(final Repositories.Item name) {
-        realmFacade.execute(realm ->
+        persistence.execute(realm ->
                 realm.executeTransaction(transaction -> {
                     transaction.copyToRealmOrUpdate(new RealmRepo(name));
                 }));
@@ -21,7 +19,7 @@ public final class LikedRepos {
 
     @SuppressWarnings("ConstantConditions")
     public boolean isLiked(final String repo) {
-        return realmFacade.get(realm -> {
+        return persistence.get(realm -> {
             final long count = realm.where(RealmRepo.class)
                     .equalTo(RealmRepo.ID, repo)
                     .count();

@@ -45,7 +45,7 @@ public final class FavsActivity extends BaseActivity {
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
                 adapter.observeClicks()
-                        .flatMapMaybe(clicked -> model.fetchItem(clicked.second)
+                        .flatMapMaybe(clicked -> model.cache(clicked.second)
                                 .filter(success -> success) // TODO: handle error
                                 .map(__ -> clicked))
                         .subscribe(clicked -> openDetails.invoke(clicked)),

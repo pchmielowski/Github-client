@@ -15,4 +15,6 @@ public interface RepoService {
 
     // TODO: return Maybe
     Single<Collection<Repositories.Item>> items(SearchViewModel.Query query);
+
+    Single<Boolean> cacheItem(String name);
 }

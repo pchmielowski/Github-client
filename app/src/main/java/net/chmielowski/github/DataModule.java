@@ -8,11 +8,13 @@ import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 import net.chmielowski.github.data.GithubRepoService;
 import net.chmielowski.github.data.MainThreadRepoServiceDecorator;
+import net.chmielowski.github.data.Persistence;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RestService;
 import net.chmielowski.github.screen.PersistentQueryHistory;
 import net.chmielowski.github.screen.QueryHistory;
+import net.chmielowski.github.screen.search.RealmFacade;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,6 +44,9 @@ abstract class DataModule {
 
     @Binds
     abstract QueryHistory bindQueryHistory(PersistentQueryHistory impl);
+
+    @Binds
+    abstract Persistence bindRealmFacade(RealmFacade impl);
 
     @Provides
     @Singleton

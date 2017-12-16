@@ -1,7 +1,7 @@
 package net.chmielowski.github.screen;
 
+import net.chmielowski.github.data.Persistence;
 import net.chmielowski.github.pagination.ValueIgnored;
-import net.chmielowski.github.screen.search.RealmFacade;
 
 import java.util.Collection;
 
@@ -19,10 +19,10 @@ import static net.chmielowski.github.screen.RealmSearchQuery.TIME;
 
 @Singleton
 public final class PersistentQueryHistory implements QueryHistory {
-    private final RealmFacade realm;
+    private final Persistence realm;
 
     @Inject
-    PersistentQueryHistory(final RealmFacade realm) {
+    PersistentQueryHistory(final Persistence realm) {
         this.realm = realm;
     }
 

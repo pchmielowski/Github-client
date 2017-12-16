@@ -31,6 +31,12 @@ public final class MainThreadRepoServiceDecorator implements RepoService {
                 .compose(MainThreadRepoServiceDecorator::onMainThread);
     }
 
+    @Override
+    public Single<Boolean> cacheItem(final String name) {
+        return decorated.cacheItem(name)
+                .compose(MainThreadRepoServiceDecorator::onMainThread);
+    }
+
     private static <T> Single<T> onMainThread(final Single<T> upstream) {
         return upstream.observeOn(AndroidSchedulers.mainThread());
     }

@@ -3,10 +3,10 @@ package net.chmielowski.github.screen.fav;
 import android.databinding.ObservableBoolean;
 
 import net.chmielowski.github.OnMainThread;
+import net.chmielowski.github.data.Persistence;
 import net.chmielowski.github.data.RealmRepo;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.screen.RepositoryViewModel;
-import net.chmielowski.github.screen.search.RealmFacade;
 
 import java.util.Collection;
 import java.util.stream.Collectors;
@@ -17,13 +17,13 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class FavsViewModel {
-    private final RealmFacade realm;
+    private final Persistence realm;
     private final RepoService service;
 
     public final ObservableBoolean loading = new ObservableBoolean();
 
     @Inject
-    FavsViewModel(final RealmFacade realm,
+    FavsViewModel(final Persistence realm,
                   @OnMainThread final RepoService service) {
         this.realm = realm;
         this.service = service;
@@ -39,12 +39,9 @@ public class FavsViewModel {
                         .collect(Collectors.toList())));
     }
 
-    // TODO: display loading
-    Single<Boolean> fetchItem(final String repo) {
-        return service.item(repo)
+    Single<Boolean> cache(final String repo) {
+        return service.cacheItem(repo)
                 .doOnSubscribe(__ -> loading.set(true))
-                .doOnEvent((__, e) -> loading.set(false))
-                .flatMap(item -> Single.just(true))
-                .onErrorReturnItem(false);
+                .doOnSuccess(__ -> loading.set(false));
     }
 }
