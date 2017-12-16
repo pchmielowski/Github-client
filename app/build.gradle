@@ -83,8 +83,11 @@ dependencies {
     implementation 'com.facebook.stetho:stetho:1.4.1'
     implementation 'com.facebook.stetho:stetho-okhttp3:1.5.0'
     implementation 'com.uphyca:stetho_realm:2.0.0'
-    debugCompile 'com.squareup.leakcanary:leakcanary-android:1.5.1'
-    releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
+
+    final def LEAK_CANARY_VERSION = '1.5.1'
+    androidTestCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
+    debugCompile "com.squareup.leakcanary:leakcanary-android:$LEAK_CANARY_VERSION"
+    releaseCompile "com.squareup.leakcanary:leakcanary-android-no-op:$LEAK_CANARY_VERSION"
 
     implementation 'com.squareup.picasso:picasso:2.5.2'
 
