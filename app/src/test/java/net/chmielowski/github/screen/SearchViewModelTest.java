@@ -12,10 +12,10 @@ import org.mockito.Mockito;
 
 import java.util.List;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 
-import static io.reactivex.Single.just;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
@@ -65,7 +65,7 @@ public final class SearchViewModelTest {
         final String query = "first";
 
         when(service.items(SearchViewModel.Query.firstPage(query)))
-                .thenReturn(just(emptyList()));
+                .thenReturn(Maybe.just(emptyList()));
 
         new SearchViewModel(service, history, state)
                 .replaceResults(query(query))
@@ -84,7 +84,7 @@ public final class SearchViewModelTest {
         final String query = "second";
 
         when(service.items(SearchViewModel.Query.firstPage(query)))
-                .thenReturn(just(singletonList(sampleRepository())));
+                .thenReturn(Maybe.just(singletonList(sampleRepository())));
 
         // TODO: mock query history
         new SearchViewModel(service, history, state)
@@ -106,9 +106,9 @@ public final class SearchViewModelTest {
         final List<Repositories.Item> secondPage = singletonList(sampleRepository());
 
         when(service.items(SearchViewModel.Query.firstPage(query)))
-                .thenReturn(just(emptyList()));
+                .thenReturn(Maybe.just(emptyList()));
         when(service.items(new SearchViewModel.Query(1, query)))
-                .thenReturn(just(secondPage));
+                .thenReturn(Maybe.just(secondPage));
 
         final SearchViewModel model = new SearchViewModel(service, history, state);
         model.replaceResults(query(query)).subscribe();

@@ -9,6 +9,7 @@ import java.util.Map;
 
 import javax.inject.Inject;
 
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import retrofit2.Response;
 
@@ -25,10 +26,12 @@ public final class GithubRepoService implements RepoService {
         this.cache = cache;
     }
 
+    @SuppressWarnings("ConstantConditions") // response.body() shouldn't be null if isSuccessful()
     @Override
-    public Single<Collection<Repositories.Item>> items(final SearchViewModel.Query query) {
+    public Maybe<Collection<Repositories.Item>> items(final SearchViewModel.Query query) {
         return service.searchRepositories(query.text, query.page)
-                .map(repositories -> repositories.items)
+                .filter(Response::isSuccessful)
+                .map(response -> response.body().items)
                 .doOnSuccess(this::addToCache);
     }
 

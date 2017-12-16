@@ -9,6 +9,7 @@ import java.util.HashMap;
 
 import io.reactivex.Single;
 import io.reactivex.observers.TestObserver;
+import retrofit2.Response;
 
 import static java.util.Collections.singletonList;
 import static net.chmielowski.github.screen.SearchViewModel.Query.firstPage;
@@ -33,7 +34,7 @@ public class GithubRepoServiceTest {
 
         final String query = "query";
         when(rest.searchRepositories(query, 0))
-                .thenReturn(Single.just(repositories));
+                .thenReturn(Single.just(Response.success(repositories)));
 
         final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
         final TestObserver<Collection<Repositories.Item>> testObserver = service

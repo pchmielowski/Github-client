@@ -7,6 +7,7 @@ import java.util.Collection;
 
 import javax.inject.Qualifier;
 
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
@@ -15,7 +16,7 @@ public interface RepoService {
     Repositories.Item cached(String id);
 
     // TODO: return Maybe
-    Single<Collection<Repositories.Item>> items(SearchViewModel.Query query);
+    Maybe<Collection<Repositories.Item>> items(SearchViewModel.Query query);
 
     Single<Boolean> cacheItem(String name);
 

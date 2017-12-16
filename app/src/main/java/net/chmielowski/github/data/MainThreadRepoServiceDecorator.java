@@ -6,6 +6,7 @@ import java.util.Collection;
 
 import javax.inject.Inject;
 
+import io.reactivex.Maybe;
 import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
@@ -26,19 +27,15 @@ public final class MainThreadRepoServiceDecorator implements RepoService {
     }
 
     @Override
-    public Single<Collection<Repositories.Item>> items(final SearchViewModel.Query query) {
+    public Maybe<Collection<Repositories.Item>> items(final SearchViewModel.Query query) {
         return decorated.items(query)
-                .compose(MainThreadRepoServiceDecorator::onMainThread);
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
     public Single<Boolean> cacheItem(final String name) {
         return decorated.cacheItem(name)
-                .compose(MainThreadRepoServiceDecorator::onMainThread);
-    }
-
-    private static <T> Single<T> onMainThread(final Single<T> upstream) {
-        return upstream
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
