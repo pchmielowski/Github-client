@@ -29,7 +29,7 @@ import io.reactivex.subjects.Subject;
 @ActivityScope
 public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_REPO = 0;
-    private static final int TYPE_SPINNER = 1;
+    static final int TYPE_SPINNER = 1;
 
     private final Context context;
     private final List<RepositoryViewModel> items = new ArrayList<>();
