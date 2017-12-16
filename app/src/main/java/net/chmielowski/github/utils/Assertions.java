@@ -1,7 +1,5 @@
 package net.chmielowski.github.utils;
 
-import net.chmielowski.github.screen.SearchViewModel;
-
 import io.reactivex.Observable;
 
 public final class Assertions {

@@ -1,6 +1,7 @@
 package net.chmielowski.github.screen;
 
 import net.chmielowski.github.data.Persistence;
+import net.chmielowski.github.utils.Assertions;
 import net.chmielowski.github.utils.ValueIgnored;
 
 import java.util.Collection;
@@ -19,26 +20,27 @@ import static net.chmielowski.github.utils.ValueIgnored.VALUE_IGNORED;
 
 @Singleton
 public final class PersistentQueryHistory implements QueryHistory {
-    private final Persistence realm;
+    private final Persistence db;
 
     @Inject
-    PersistentQueryHistory(final Persistence realm) {
-        this.realm = realm;
+    PersistentQueryHistory(final Persistence db) {
+        this.db = db;
     }
 
     private final Subject<ValueIgnored> subject = BehaviorSubject.createDefault(VALUE_IGNORED);
 
     @Override
     public void searched(final String query) {
-        realm.executeInTransaction(realm ->
+        db.executeInTransaction(realm ->
                 realm.copyToRealmOrUpdate(RealmSearchQuery.from(query)));
         subject.onNext(VALUE_IGNORED);
     }
 
     @Override
     public Observable<Collection<String>> observe() {
-        return subject.map(__ ->
-                realm.get(realm -> realm.where(RealmSearchQuery.class)
+        return subject
+                .compose(Assertions::neverCompletes)
+                .map(__ -> db.get(realm -> realm.where(RealmSearchQuery.class)
                         .findAllSorted(TIME, DESCENDING)
                         .stream()
                         .map(query -> query.text)
