@@ -59,7 +59,6 @@ dependencies {
     androidTestCompile "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
-    testCompile 'junit:junit:4.12'
     final MOCKITO_VERSION = '2.7.22'
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
     androidTestCompile "org.mockito:mockito-android:$MOCKITO_VERSION"
