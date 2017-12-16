@@ -10,7 +10,6 @@ import java.util.Map;
 import javax.inject.Inject;
 
 import io.reactivex.Single;
-import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
 
 import static java.util.Objects.requireNonNull;
@@ -29,13 +28,12 @@ public final class GithubRepoService implements RepoService {
     @Override
     public Single<Collection<Repositories.Item>> items(final SearchViewModel.Query query) {
         return service.searchRepositories(query.text, query.page)
-                .map(repositories ->
-                        repositories.items)
-                .doOnSuccess(repositories -> repositories
-                        .forEach(item -> {
-                            cache.put(item.fullName, item);
-                        }))
-                .subscribeOn(Schedulers.io());
+                .map(repositories -> repositories.items)
+                .doOnSuccess(this::addToCache);
+    }
+
+    private void addToCache(final Collection<Repositories.Item> repositories) {
+        repositories.forEach(item -> cache.put(item.fullName, item));
     }
 
     @Override
@@ -50,7 +48,6 @@ public final class GithubRepoService implements RepoService {
         return cache.containsKey(name)
                 ? Single.just(true)
                 : service.repo(split[0], split[1])
-                .subscribeOn(Schedulers.io())
                 .map(Response::isSuccessful);
     }
 

@@ -1,18 +1,21 @@
 package net.chmielowski.github.data;
 
-import net.chmielowski.github.screen.SearchViewModel;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import java.util.Collection;
 import java.util.HashMap;
 
 import io.reactivex.Single;
+import io.reactivex.observers.TestObserver;
 
 import static java.util.Collections.singletonList;
+import static net.chmielowski.github.screen.SearchViewModel.Query.firstPage;
 import static net.chmielowski.github.utils.TestUtils.sampleRepository;
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 public class GithubRepoServiceTest {
     private RestService rest;
@@ -23,19 +26,21 @@ public class GithubRepoServiceTest {
     }
 
     @Test
-    @Ignore
-    public void name() throws Exception {
+    public void fetchSuccessful() throws Exception {
         final Repositories repositories = new Repositories();
-        repositories.items = singletonList(sampleRepository());
-        final String query = "query";
+        final Repositories.Item repository = sampleRepository();
+        repositories.items = singletonList(repository);
 
-        Mockito.when(rest.searchRepositories(query, 0))
+        final String query = "query";
+        when(rest.searchRepositories(query, 0))
                 .thenReturn(Single.just(repositories));
 
+        final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
+        final TestObserver<Collection<Repositories.Item>> testObserver = service
+                .items(firstPage(query))
+                .test();
 
-        new GithubRepoService(rest, new HashMap<>())
-                .items(SearchViewModel.Query.firstPage(query))
-                .test()
-                .assertValue(repositories.items);
+        testObserver.assertValue(repositories.items);
+        assertThat(service.cached(repository.fullName), is(repository));
     }
 }
