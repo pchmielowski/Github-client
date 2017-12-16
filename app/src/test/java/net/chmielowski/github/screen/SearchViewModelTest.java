@@ -57,7 +57,7 @@ public final class SearchViewModelTest {
                 );
     }
 
-     @SuppressWarnings("unchecked")
+    @SuppressWarnings("unchecked")
     private static void setUpOnline(final NetworkState state) {
         when(state.requireOnline(Mockito.any(Observable.class)))
                 .thenAnswer(invocation -> invocation.getArguments()[0]);
