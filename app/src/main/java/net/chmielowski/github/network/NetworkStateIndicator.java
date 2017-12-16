@@ -33,7 +33,7 @@ public final class NetworkStateIndicator extends FrameLayout {
     }
 
     @BindingAdapter("networkState")
-    public static void setState(final NetworkStateIndicator view, final NetworkState.State state) {
+    public static void setState(final NetworkStateIndicator view, final BasicNetworkState.State state) {
         switch (state) {
             case ONLINE:
                 view.switchTo(view.binding.online);

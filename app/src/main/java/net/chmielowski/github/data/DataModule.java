@@ -6,6 +6,8 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import net.chmielowski.github.network.BasicNetworkState;
+import net.chmielowski.github.network.NetworkState;
 import net.chmielowski.github.screen.PersistentQueryHistory;
 import net.chmielowski.github.screen.QueryHistory;
 import net.chmielowski.github.screen.search.RealmFacade;
@@ -44,6 +46,10 @@ public abstract class DataModule {
 
     @Binds
     abstract Favourites bindFavouriteRepos(PersistentFavourites impl);
+
+    // TODO: another module
+    @Binds
+    abstract NetworkState bindNetworkState(BasicNetworkState impl);
 
     @Provides
     @Singleton

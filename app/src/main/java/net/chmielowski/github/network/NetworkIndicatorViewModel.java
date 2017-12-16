@@ -9,13 +9,13 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 
-import static net.chmielowski.github.network.NetworkState.State.ONLINE;
+import static net.chmielowski.github.network.BasicNetworkState.State.ONLINE;
 
 @Singleton
 public final class NetworkIndicatorViewModel {
     public ObservableBoolean visible = new ObservableBoolean(false);
 
-    public ObservableField<NetworkState.State> state = new ObservableField<>(ONLINE);
+    public ObservableField<BasicNetworkState.State> state = new ObservableField<>(ONLINE);
 
     private final NetworkState networkState;
 
@@ -24,7 +24,7 @@ public final class NetworkIndicatorViewModel {
         this.networkState = networkState;
     }
 
-    public Observable<NetworkState.State> observe() {
+    public Observable<BasicNetworkState.State> observe() {
         return networkState.observe()
                 .doOnNext(state -> {
                     this.state.set(state);
