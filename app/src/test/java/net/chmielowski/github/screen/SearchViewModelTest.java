@@ -1,5 +1,7 @@
 package net.chmielowski.github.screen;
 
+import android.support.annotation.NonNull;
+
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.network.NetworkState;
@@ -9,6 +11,7 @@ import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
+import org.mockito.stubbing.Answer;
 
 import java.util.List;
 
@@ -60,8 +63,13 @@ public final class SearchViewModelTest {
     @SuppressWarnings("unchecked")
     private static void setUpOnline(final NetworkState state) {
         when(state.requireOnline(Mockito.any(Observable.class)))
-                .thenAnswer(invocation -> invocation.getArguments()[0]);
+                .thenAnswer(withFirstArgument());
         when(state.isOnline()).thenReturn(true);
+    }
+
+    @NonNull
+    private static Answer withFirstArgument() {
+        return invocation -> invocation.getArguments()[0];
     }
 
     @Test
