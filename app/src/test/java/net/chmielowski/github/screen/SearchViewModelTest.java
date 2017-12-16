@@ -24,7 +24,6 @@ import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
 import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static net.chmielowski.github.utils.ValueIgnored.VALUE_IGNORED;
-import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 // TODO: remove redundant tests
@@ -42,36 +41,19 @@ public final class SearchViewModelTest {
     }
 
     @Test
-    @Ignore
-
-    public void justInitialValueOnZeroUserActions() throws Exception {
-        final SearchViewModel model = new SearchViewModel(service, history, state);
-
-        model.replaceResults(Observable.never())
-                .test()
-                .assertValuesOnly(initial());
-
-        model.appendResults(Observable.never())
-                .test()
-                .assertValuesOnly();
-
-        verifyZeroInteractions(service);
-    }
-
-    @Test
-    @Ignore
-
     public void serviceReturnsEmptyList() throws Exception {
         final String query = "first";
 
         when(service.items(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(Maybe.just(emptyList()));
+        //noinspection unchecked
+        when(state.requireOnline(Mockito.any(Observable.class)))
+                .thenAnswer(invocation -> invocation.getArguments()[0]);
 
         new SearchViewModel(service, history, state)
                 .replaceResults(query(query))
                 .test()
                 .assertValuesOnly(
-                        initial(),
                         loading(),
                         loaded(emptyList())
                 );
