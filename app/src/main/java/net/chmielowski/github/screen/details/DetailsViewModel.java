@@ -8,11 +8,11 @@ import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.RepositoryScope;
 import net.chmielowski.github.data.LikedRepos;
 import net.chmielowski.github.data.RepoService;
+import net.chmielowski.github.data.Repositories;
 
 import javax.inject.Inject;
 
 import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -22,32 +22,31 @@ import static net.chmielowski.github.screen.details.DetailsViewModel.Action.LIKE
 public final class DetailsViewModel {
     public final ObservableField<String> owner = new ObservableField<>();
     public final ObservableField<String> name = new ObservableField<>();
+    public final ObservableField<String> description = new ObservableField<>();
+    public final ObservableField<String> avatar = new ObservableField<>();
+
     public final ObservableBoolean favourite = new ObservableBoolean(false);
     public final ObservableBoolean loading = new ObservableBoolean(false);
-    public final ObservableField<String> description = new ObservableField<>();
 
-    private final RepoService service;
     private final LikedRepos likedRepos;
 
-    private final String id;
+    private final Repositories.Item repo;
 
     @Inject
     DetailsViewModel(@RepoService.OnMainThread final RepoService service,
                      final LikedRepos likedRepos,
-                     @RepositoryId final String repo) {
-        this.service = service;
+                     @RepositoryId final String id) {
         this.likedRepos = likedRepos;
-        this.id = repo;
-        service.item(repo)
-                .doOnSubscribe(__ -> loading.set(true))
-                .doOnSuccess(__ -> loading.set(false))
-                .subscribe(item -> {
-                    favourite.set(likedRepos.isLiked(item.fullName));
-                    owner.set(item.owner.login);
-                    name.set(item.name);
-                    description.set(item.description);
-                });
+        this.repo = service.cached(id);
+        bind(this.repo);
+    }
 
+    private void bind(final Repositories.Item item) {
+        favourite.set(likedRepos.isLiked(item.fullName));
+        owner.set(item.owner.login);
+        name.set(item.name);
+        description.set(item.description);
+        avatar.set(item.owner.avatarUrl);
     }
 
     enum Action {
@@ -57,17 +56,9 @@ public final class DetailsViewModel {
     private Subject<Pair<Action, String>> addedSubject = PublishSubject.create();
 
     public void addToFavs() {
-        service.item(id)
-                .subscribe(item -> {
-                    addedSubject.onNext(Pair.create(LIKE, name.get()));
-                    likedRepos.like(item);
-                    favourite.set(true);
-                });
-    }
-
-    Single<String> avatar() {
-        return service.item(id)
-                .map(item -> item.owner.avatarUrl);
+        addedSubject.onNext(Pair.create(LIKE, name.get()));
+        likedRepos.like(repo);
+        favourite.set(true);
     }
 
     Observable<Pair<Action, String>> observeActions() {

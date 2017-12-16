@@ -6,13 +6,14 @@ import net.chmielowski.github.screen.SearchViewModel;
 
 import java.util.Collection;
 import java.util.Map;
-import java.util.Optional;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
 import io.reactivex.schedulers.Schedulers;
 import retrofit2.Response;
+
+import static java.util.Objects.requireNonNull;
 
 public final class GithubRepoService implements RepoService {
     private final RestService service;
@@ -37,19 +38,10 @@ public final class GithubRepoService implements RepoService {
                 .subscribeOn(Schedulers.io());
     }
 
-    // TODO: maybe
     @Override
     @NonNull
-    public Single<Repositories.Item> item(final String name) {
-        return Optional.ofNullable(cache.get(name))
-                .map(Single::just)
-                .orElseGet(() -> {
-                    // TODO: just use owner/name
-                    final String[] split = name.split("/");
-                    return service.repo(split[0], split[1])
-                            .map(Response::body)
-                            .subscribeOn(Schedulers.io());
-                });
+    public Repositories.Item cached(final String name) {
+        return requireNonNull(cache.get(name), String.format("Repository %s not cached!", name));
     }
 
     @Override

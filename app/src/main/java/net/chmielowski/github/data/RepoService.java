@@ -12,11 +12,7 @@ import io.reactivex.Single;
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 public interface RepoService {
-    // TODO: seperate methods: cacheItem, getCachedItem
-
-
-    // TODO: return Maybe
-    Single<Repositories.Item> item(String id);
+    Repositories.Item cached(String id);
 
     // TODO: return Maybe
     Single<Collection<Repositories.Item>> items(SearchViewModel.Query query);

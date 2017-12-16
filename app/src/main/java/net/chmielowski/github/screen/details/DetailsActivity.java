@@ -39,12 +39,12 @@ public class DetailsActivity extends BaseActivity {
                 .setContentView(this, R.layout.activity_details);
         binding.setModel(model);
 
-        model.avatar()
-                .subscribe(url -> Picasso.with(this)
-                        .load(url)
-                        .placeholder(R.drawable.ic_avatar_placeholder)
-                        .fit()
-                        .into(binding.avatar));
+        // TODO: use DataBinding
+        Picasso.with(this)
+                .load(model.avatar.get())
+                .placeholder(R.drawable.ic_avatar_placeholder)
+                .fit()
+                .into(binding.avatar);
     }
 
     @NonNull

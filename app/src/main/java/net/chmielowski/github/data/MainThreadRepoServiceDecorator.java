@@ -19,9 +19,8 @@ public final class MainThreadRepoServiceDecorator implements RepoService {
     }
 
     @Override
-    public Single<Repositories.Item> item(final String id) {
-        return decorated.item(id)
-                .compose(MainThreadRepoServiceDecorator::onMainThread);
+    public Repositories.Item cached(final String id) {
+        return decorated.cached(id);
     }
 
     @Override
