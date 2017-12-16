@@ -8,23 +8,22 @@ import net.chmielowski.github.network.NetworkState;
 import net.chmielowski.github.utils.ValueIgnored;
 
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
 import java.util.List;
 
-import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.observers.TestObserver;
 
+import static io.reactivex.Maybe.just;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
-import static net.chmielowski.github.screen.ListState.initial;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
+import static net.chmielowski.github.screen.SearchViewModel.Query.firstPage;
 import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static net.chmielowski.github.utils.ValueIgnored.VALUE_IGNORED;
 import static org.mockito.Mockito.when;
@@ -40,24 +39,53 @@ public final class SearchViewModelTest {
     public void setUp() throws Exception {
         service = Mockito.mock(RepoService.class);
         history = Mockito.mock(QueryHistory.class);
-        state = Mockito.mock(NetworkState.class);
+        state = alwaysOnline();
     }
 
     @Test
-    public void serviceReturnsEmptyList() throws Exception {
-        final String query = "first";
+    public void oneQueryInOnline() throws Exception {
+        final String query = "some query";
 
-        when(service.items(SearchViewModel.Query.firstPage(query)))
-                .thenReturn(Maybe.just(emptyList()));
-        setUpOnline(state);
+        when(service.items(firstPage(query)))
+                .thenReturn(just(singletonList(sampleRepository())));
 
-        new SearchViewModel(service, history, state)
+        new SearchViewModel(service, history, alwaysOnline())
                 .replaceResults(query(query))
                 .test()
                 .assertValuesOnly(
                         loading(),
-                        loaded(emptyList())
+                        loaded(singletonList(new RepositoryViewModel(sampleRepository(), query)))
                 );
+    }
+
+    @Test
+    public void scrolledToTheEndOnceInOnline() throws Exception {
+        final String query = "third";
+
+        final List<Repositories.Item> secondPage = singletonList(sampleRepository());
+
+        when(service.items(firstPage(query)))
+                .thenReturn(just(emptyList()));
+        when(service.items(new SearchViewModel.Query(1, query)))
+                .thenReturn(just(secondPage));
+
+        final SearchViewModel model = new SearchViewModel(service, history, alwaysOnline());
+        model.replaceResults(query(query)).subscribe();
+
+        final TestObserver<ListState> test = model
+                .appendResults(emitOnce())
+                .test();
+
+        test.assertValuesOnly(
+                loading(),
+                loaded(mapToViewModel(secondPage, query))
+        );
+    }
+
+    private NetworkState alwaysOnline() {
+        final NetworkState mock = Mockito.mock(NetworkState.class);
+        setUpOnline(mock);
+        return mock;
     }
 
     @SuppressWarnings("unchecked")
@@ -70,52 +98,6 @@ public final class SearchViewModelTest {
     @NonNull
     private static Answer withFirstArgument() {
         return invocation -> invocation.getArguments()[0];
-    }
-
-    @Test
-    @Ignore
-
-    public void serviceReturnsOneItem() throws Exception {
-        final String query = "second";
-
-        when(service.items(SearchViewModel.Query.firstPage(query)))
-                .thenReturn(Maybe.just(singletonList(sampleRepository())));
-
-        // TODO: mock query history
-        new SearchViewModel(service, history, state)
-                .replaceResults(query(query))
-                .test()
-                .assertValuesOnly(
-                        initial(),
-                        loading(),
-                        loaded(singletonList(new RepositoryViewModel(sampleRepository(), query)))
-                );
-    }
-
-    @Test
-    @Ignore
-
-    public void scrolledToTheEndOnce() throws Exception {
-        final String query = "third";
-
-        final List<Repositories.Item> secondPage = singletonList(sampleRepository());
-
-        when(service.items(SearchViewModel.Query.firstPage(query)))
-                .thenReturn(Maybe.just(emptyList()));
-        when(service.items(new SearchViewModel.Query(1, query)))
-                .thenReturn(Maybe.just(secondPage));
-
-        final SearchViewModel model = new SearchViewModel(service, history, state);
-        model.replaceResults(query(query)).subscribe();
-
-        final TestObserver<ListState> test = model
-                .appendResults(emitOnce())
-                .test();
-
-        test.assertValuesOnly(
-                loading(),
-                loaded(mapToViewModel(secondPage, query))
-        );
     }
 
     private static Observable<ValueIgnored> emitOnce() {
