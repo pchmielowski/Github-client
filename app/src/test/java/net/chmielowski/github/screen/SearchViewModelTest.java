@@ -61,6 +61,7 @@ public final class SearchViewModelTest {
     private static void setUpOnline(final NetworkState state) {
         when(state.requireOnline(Mockito.any(Observable.class)))
                 .thenAnswer(invocation -> invocation.getArguments()[0]);
+        when(state.isOnline()).thenReturn(true);
     }
 
     @Test
