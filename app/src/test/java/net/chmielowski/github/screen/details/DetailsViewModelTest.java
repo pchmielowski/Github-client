@@ -31,8 +31,7 @@ public class DetailsViewModelTest {
         when(service.cached(repo.fullName)).thenReturn(repo);
 
         final DetailsViewModel model = new DetailsViewModel(service, liked, repo.fullName);
-        final TestObserver<Action>
-                testObserver = model.observeActions().test();
+        final TestObserver<Action> testObserver = model.observeActions().test();
 
         model.addToFavs();
 
