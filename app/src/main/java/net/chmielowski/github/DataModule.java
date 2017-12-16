@@ -6,7 +6,9 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
+import net.chmielowski.github.data.FavouriteRepos;
 import net.chmielowski.github.data.GithubRepoService;
+import net.chmielowski.github.data.IFavouriteRepos;
 import net.chmielowski.github.data.MainThreadRepoServiceDecorator;
 import net.chmielowski.github.data.Persistence;
 import net.chmielowski.github.data.RepoService;
@@ -47,6 +49,9 @@ abstract class DataModule {
 
     @Binds
     abstract Persistence bindRealmFacade(RealmFacade impl);
+
+    @Binds
+    abstract IFavouriteRepos bindFavouriteRepos(FavouriteRepos impl);
 
     @Provides
     @Singleton

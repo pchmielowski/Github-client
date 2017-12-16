@@ -1,6 +1,6 @@
 package net.chmielowski.github.screen.fav;
 
-import net.chmielowski.github.data.Persistence;
+import net.chmielowski.github.data.IFavouriteRepos;
 import net.chmielowski.github.data.RepoService;
 
 import org.junit.Before;
@@ -16,13 +16,13 @@ import static org.mockito.Mockito.when;
 
 public class FavsViewModelTest {
 
-    private Persistence db;
     private RepoService service;
+    private IFavouriteRepos favourites;
 
     @Before
     public void setUp() throws Exception {
-        db = Mockito.mock(Persistence.class);
         service = Mockito.mock(RepoService.class);
+        favourites = Mockito.mock(IFavouriteRepos.class);
     }
 
     @Test
@@ -41,7 +41,7 @@ public class FavsViewModelTest {
         when(service.cacheItem(repository))
                 .thenReturn(subject);
 
-        final FavsViewModel model = new FavsViewModel(db, service);
+        final FavsViewModel model = new FavsViewModel(service, favourites);
         final TestObserver<Boolean> testObserver = model
                 .cache(repository)
                 .test();
