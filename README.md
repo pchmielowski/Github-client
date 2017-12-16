@@ -9,7 +9,7 @@ Simple Android Github client
 
 ## Libraries
 * architecture:
-  * RxJava
+  * RxJava, RxBinding, RxAndroid
   * Dagger
   * Data Binding
   
@@ -24,3 +24,4 @@ Simple Android Github client
 
 * other
   * Picasso
+  * Lombok

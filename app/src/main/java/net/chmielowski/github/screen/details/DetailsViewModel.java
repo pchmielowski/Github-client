@@ -2,7 +2,6 @@ package net.chmielowski.github.screen.details;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
-import android.util.Pair;
 
 import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.RepositoryScope;
@@ -15,8 +14,10 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 
-import static net.chmielowski.github.screen.details.DetailsViewModel.Action.LIKE;
+import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type.LIKE;
 
 @RepositoryScope
 public final class DetailsViewModel {
@@ -49,19 +50,34 @@ public final class DetailsViewModel {
         avatar.set(item.owner.avatarUrl);
     }
 
-    enum Action {
-        LIKE, UNLIKE
+    @EqualsAndHashCode
+    @ToString
+    final static class Action {
+        final String repo;
+
+        enum Type {
+            LIKE, UNLIKE
+
+        }
+
+        final Type type;
+
+        Action(final Type type, final String repo) {
+            this.repo = repo;
+            this.type = type;
+        }
     }
 
-    private Subject<Pair<Action, String>> addedSubject = PublishSubject.create();
+
+    private Subject<Action> addedSubject = PublishSubject.create();
 
     public void addToFavs() {
-        addedSubject.onNext(Pair.create(LIKE, name.get()));
+        addedSubject.onNext(new Action(LIKE, name.get()));
         likedRepos.like(repo);
         favourite.set(true);
     }
 
-    Observable<Pair<Action, String>> observeActions() {
+    Observable<Action> observeActions() {
         return addedSubject;
     }
 }

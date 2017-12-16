@@ -5,7 +5,6 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
-import android.util.Pair;
 
 import com.squareup.picasso.Picasso;
 
@@ -20,7 +19,7 @@ import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 
-import static net.chmielowski.github.screen.details.DetailsViewModel.Action.LIKE;
+import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type.LIKE;
 
 public class DetailsActivity extends BaseActivity {
     public static final String KEY_ID = "REPOSITORY_ID";
@@ -61,10 +60,10 @@ public class DetailsActivity extends BaseActivity {
     }
 
     @NonNull
-    private String asMessage(Pair<DetailsViewModel.Action, String> action) {
+    private String asMessage(final DetailsViewModel.Action action) {
         return String.format("%s %s",
-                getString(action.first == LIKE ? R.string.now_you_like : R.string.you_unlike),
-                action.second);
+                getString(action.type == LIKE ? R.string.now_you_like : R.string.you_unlike),
+                action.repo);
     }
 
     @Override
