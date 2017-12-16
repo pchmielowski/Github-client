@@ -6,7 +6,7 @@ import android.util.Pair;
 
 import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.RepositoryScope;
-import net.chmielowski.github.data.LikedRepos;
+import net.chmielowski.github.data.Favourites;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
 
@@ -28,13 +28,13 @@ public final class DetailsViewModel {
     public final ObservableBoolean favourite = new ObservableBoolean(false);
     public final ObservableBoolean loading = new ObservableBoolean(false);
 
-    private final LikedRepos likedRepos;
+    private final Favourites likedRepos;
 
     private final Repositories.Item repo;
 
     @Inject
     DetailsViewModel(@RepoService.OnMainThread final RepoService service,
-                     final LikedRepos likedRepos,
+                     final Favourites likedRepos,
                      @RepositoryId final String id) {
         this.likedRepos = likedRepos;
         this.repo = service.cached(id);
