@@ -3,6 +3,7 @@ package net.chmielowski.github.network;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import io.reactivex.subjects.CompletableSubject;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
@@ -10,28 +11,33 @@ import static net.chmielowski.github.network.BasicNetworkState.State.OFFLINE;
 import static net.chmielowski.github.network.BasicNetworkState.State.ONLINE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 public class NetworkIndicatorViewModelTest {
-    private Subject<BasicNetworkState.State> subject = PublishSubject.create();
 
     @Test
     public void goOfflineAndOnlineAgain() throws Exception {
         final NetworkState state = Mockito.mock(NetworkState.class);
-        final NetworkIndicatorViewModel model = new NetworkIndicatorViewModel(0, state);
+        final Subject<BasicNetworkState.State> networkState = PublishSubject.create();
+        when(state.observe())
+                .thenReturn(networkState);
 
-        Mockito.when(state.observe())
-                .thenReturn(subject);
+        final CompletableSubject timer = CompletableSubject.create();
+
+        final NetworkIndicatorViewModel model = new NetworkIndicatorViewModel(state, timer);
 
         model.start();
-
         assertThat(model.visible.get(), is(false));
 
-        subject.onNext(OFFLINE);
+        networkState.onNext(OFFLINE);
         assertThat(model.visible.get(), is(true));
         assertThat(model.state.get(), is(OFFLINE));
 
-        subject.onNext(ONLINE);
+        networkState.onNext(ONLINE);
         assertThat(model.visible.get(), is(true));
         assertThat(model.state.get(), is(ONLINE));
+
+        timer.onComplete();
+        assertThat(model.visible.get(), is(false));
     }
 }
