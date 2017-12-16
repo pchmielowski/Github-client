@@ -33,13 +33,11 @@ public final class SearchViewModelTest {
 
     private QueryHistory history;
     private RepoService service;
-    private NetworkState state;
 
     @Before
     public void setUp() throws Exception {
         service = Mockito.mock(RepoService.class);
         history = Mockito.mock(QueryHistory.class);
-        state = alwaysOnline();
     }
 
     @Test
@@ -56,6 +54,19 @@ public final class SearchViewModelTest {
                         loading(),
                         loaded(singletonList(new RepositoryViewModel(sampleRepository(), query)))
                 );
+    }
+
+    @Test
+    public void oneQueryInOffline() throws Exception {
+        final String query = "some query";
+
+        when(service.items(firstPage(query)))
+                .thenReturn(just(singletonList(sampleRepository())));
+
+        new SearchViewModel(service, history, alwaysOffline())
+                .replaceResults(query(query))
+                .test()
+                .assertEmpty();
     }
 
     @Test
@@ -82,17 +93,22 @@ public final class SearchViewModelTest {
         );
     }
 
+    @SuppressWarnings("unchecked")
     private NetworkState alwaysOnline() {
         final NetworkState mock = Mockito.mock(NetworkState.class);
-        setUpOnline(mock);
+        when(mock.requireOnline(Mockito.any(Observable.class)))
+                .thenAnswer(withFirstArgument());
+        when(mock.isOnline()).thenReturn(true);
         return mock;
     }
 
     @SuppressWarnings("unchecked")
-    private static void setUpOnline(final NetworkState state) {
-        when(state.requireOnline(Mockito.any(Observable.class)))
-                .thenAnswer(withFirstArgument());
-        when(state.isOnline()).thenReturn(true);
+    private NetworkState alwaysOffline() {
+        final NetworkState mock = Mockito.mock(NetworkState.class);
+        when(mock.requireOnline(Mockito.any(Observable.class)))
+                .thenReturn(Observable.never());
+        when(mock.isOnline()).thenReturn(false);
+        return mock;
     }
 
     @NonNull
