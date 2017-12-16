@@ -46,9 +46,7 @@ public final class SearchViewModelTest {
 
         when(service.items(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(Maybe.just(emptyList()));
-        //noinspection unchecked
-        when(state.requireOnline(Mockito.any(Observable.class)))
-                .thenAnswer(invocation -> invocation.getArguments()[0]);
+        setUpOnline(state);
 
         new SearchViewModel(service, history, state)
                 .replaceResults(query(query))
@@ -57,6 +55,12 @@ public final class SearchViewModelTest {
                         loading(),
                         loaded(emptyList())
                 );
+    }
+
+    @SuppressWarnings("unchecked")
+    private static void setUpOnline(final NetworkState state) {
+        when(state.requireOnline(Mockito.any(Observable.class)))
+                .thenAnswer(invocation -> invocation.getArguments()[0]);
     }
 
     @Test
