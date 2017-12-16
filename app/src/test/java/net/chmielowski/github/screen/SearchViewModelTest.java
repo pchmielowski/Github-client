@@ -13,8 +13,10 @@ import org.mockito.Mockito;
 import org.mockito.stubbing.Answer;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 import io.reactivex.Observable;
+import io.reactivex.observers.BaseTestConsumer;
 import io.reactivex.observers.TestObserver;
 
 import static io.reactivex.Maybe.just;
@@ -33,6 +35,7 @@ public final class SearchViewModelTest {
 
     private QueryHistory history;
     private RepoService service;
+    private final String QUERY_TEXT = "some query";
 
     @Before
     public void setUp() throws Exception {
@@ -42,31 +45,31 @@ public final class SearchViewModelTest {
 
     @Test
     public void oneQueryInOnline() throws Exception {
-        final String query = "some query";
-
-        when(service.items(firstPage(query)))
-                .thenReturn(just(singletonList(sampleRepository())));
-
-        new SearchViewModel(service, history, alwaysOnline())
-                .replaceResults(query(query))
-                .test()
-                .assertValuesOnly(
+        oneQuery(alwaysOnline(),
+                observer -> observer.assertValuesOnly(
                         loading(),
-                        loaded(singletonList(new RepositoryViewModel(sampleRepository(), query)))
-                );
+                        loaded(singletonList(new RepositoryViewModel(sampleRepository(), QUERY_TEXT)))
+                )
+        );
     }
 
     @Test
     public void oneQueryInOffline() throws Exception {
-        final String query = "some query";
+        oneQuery(alwaysOffline(),
+                BaseTestConsumer::assertEmpty
+        );
+    }
 
-        when(service.items(firstPage(query)))
+    private void oneQuery(final NetworkState networkState,
+                          final Consumer<TestObserver<ListState>> assertion) {
+        when(service.items(firstPage(QUERY_TEXT)))
                 .thenReturn(just(singletonList(sampleRepository())));
 
-        new SearchViewModel(service, history, alwaysOffline())
-                .replaceResults(query(query))
-                .test()
-                .assertEmpty();
+        final TestObserver<ListState> test = new SearchViewModel(service, history, networkState)
+                .replaceResults(query(QUERY_TEXT))
+                .test();
+
+        assertion.accept(test);
     }
 
     @Test
