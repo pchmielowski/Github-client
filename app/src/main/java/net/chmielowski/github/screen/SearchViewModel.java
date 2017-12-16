@@ -59,37 +59,38 @@ public final class SearchViewModel {
                 .flatMap(this::fetchResults);
     }
 
-    // TODO: remove suppression
-    @SuppressWarnings("WeakerAccess")
     Observable<ListState> replaceResults(final Observable<CharSequence> searchQuery) {
         // TODO: handle null/empty query
         return searchQuery
                 .compose(Assertions::neverCompletes)
                 .map(CharSequence::toString)
-                .doOnNext(query -> {
-                    lastQuery = query;
-                    page = 0;
-                    searchMode.set(false);
-                    queryHistory.searched(query);
-                })
-                .map(Query::firstPage)
-                .flatMap(this::fetchResults);
+                .compose(upstream -> networkState.requireOnline(
+                        upstream.doOnNext(this::updateView)
+                                .map(Query::firstPage)
+                                .flatMap(this::fetchResults)
+                ));
+    }
+
+    private void updateView(final String query) {
+        lastQuery = query;
+        page = 0;
+        searchMode.set(false);
+        queryHistory.searched(query);
     }
 
     private final NetworkState networkState;
 
     @SuppressWarnings("Convert2MethodRef")
     private Observable<ListState> fetchResults(final Query query) {
-        return networkState.requireOnline(
-                repository.items(query)
-                        .map(repositories -> repositories.stream()
-                                .map(repo -> new RepositoryViewModel(repo, query.text))
-                                .collect(toList()))
-                        .map(ListState::loaded)
-                        .toObservable()
-                        .startWith(ListState.loading())
-                        .doOnSubscribe(__ -> lock())
-                        .doOnComplete(() -> unlock()));
+        return repository.items(query)
+                .map(repositories -> repositories.stream()
+                        .map(repo -> new RepositoryViewModel(repo, query.text))
+                        .collect(toList()))
+                .map(ListState::loaded)
+                .toObservable()
+                .startWith(ListState.loading())
+                .doOnSubscribe(__ -> lock())
+                .doOnComplete(() -> unlock());
     }
 
     private void unlock() {

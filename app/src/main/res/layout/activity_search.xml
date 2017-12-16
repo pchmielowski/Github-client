@@ -19,6 +19,7 @@
         android:layout_height="match_parent"
         tools:context="net.chmielowski.github.screen.search.SearchActivity">
 
+        <!--TODO Constraint layout-->
         <LinearLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
