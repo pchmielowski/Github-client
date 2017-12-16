@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import javax.inject.Inject;
 import javax.inject.Singleton;
 
-import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 import static io.reactivex.Completable.timer;
@@ -25,7 +24,7 @@ public final class NetworkIndicatorViewModel {
     @Nullable
     private Disposable disposable;
 
-    private NetworkIndicatorViewModel(final int delay, final NetworkState networkState) {
+    NetworkIndicatorViewModel(final int delay, final NetworkState networkState) {
         this.delay = delay;
         this.networkState = networkState;
     }
@@ -35,9 +34,9 @@ public final class NetworkIndicatorViewModel {
         this(3, networkState);
     }
 
-    public Observable<BasicNetworkState.State> observe() {
+    public Disposable start() {
         return networkState.observe()
-                .doOnNext(state -> {
+                .subscribe(state -> {
                     this.state.set(state);
                     switch (state) {
                         case ONLINE:
