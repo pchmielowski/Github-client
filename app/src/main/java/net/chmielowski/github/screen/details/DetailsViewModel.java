@@ -4,7 +4,6 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.util.Pair;
 
-import net.chmielowski.github.OnMainThread;
 import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.RepositoryScope;
 import net.chmielowski.github.data.LikedRepos;
@@ -33,7 +32,7 @@ public final class DetailsViewModel {
     private final String id;
 
     @Inject
-    DetailsViewModel(@OnMainThread final RepoService service,
+    DetailsViewModel(@RepoService.OnMainThread final RepoService service,
                      final LikedRepos likedRepos,
                      @RepositoryId final String repo) {
         this.service = service;

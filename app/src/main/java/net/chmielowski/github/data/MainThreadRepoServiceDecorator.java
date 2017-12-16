@@ -1,6 +1,5 @@
 package net.chmielowski.github.data;
 
-import net.chmielowski.github.Github;
 import net.chmielowski.github.screen.SearchViewModel;
 
 import java.util.Collection;

@@ -2,7 +2,6 @@ package net.chmielowski.github.screen.fav;
 
 import android.databinding.ObservableBoolean;
 
-import net.chmielowski.github.OnMainThread;
 import net.chmielowski.github.data.IFavouriteRepos;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.screen.RepositoryViewModel;
@@ -21,7 +20,7 @@ public class FavsViewModel {
     private final IFavouriteRepos favourites;
 
     @Inject
-    FavsViewModel(@OnMainThread final RepoService service,
+    FavsViewModel(@RepoService.OnMainThread final RepoService service,
                   final IFavouriteRepos favourites) {
         this.service = service;
         this.favourites = favourites;

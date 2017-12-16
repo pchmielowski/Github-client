@@ -1,4 +1,4 @@
-package net.chmielowski.github;
+package net.chmielowski.github.data;
 
 import android.support.annotation.NonNull;
 
@@ -6,14 +6,6 @@ import com.facebook.stetho.okhttp3.StethoInterceptor;
 import com.google.gson.GsonBuilder;
 import com.jakewharton.retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
-import net.chmielowski.github.data.FavouriteRepos;
-import net.chmielowski.github.data.GithubRepoService;
-import net.chmielowski.github.data.IFavouriteRepos;
-import net.chmielowski.github.data.MainThreadRepoServiceDecorator;
-import net.chmielowski.github.data.Persistence;
-import net.chmielowski.github.data.RepoService;
-import net.chmielowski.github.data.Repositories;
-import net.chmielowski.github.data.RestService;
 import net.chmielowski.github.screen.PersistentQueryHistory;
 import net.chmielowski.github.screen.QueryHistory;
 import net.chmielowski.github.screen.search.RealmFacade;
@@ -34,13 +26,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
 @Module
-abstract class DataModule {
-    @OnMainThread
+public abstract class DataModule {
+    @RepoService.OnMainThread
     @Binds
     // TODO: rename
     abstract RepoService bindRepoRepositoryOnMainThread(MainThreadRepoServiceDecorator impl);
 
-    @Github
+    @RepoService.Github
     @Binds
     abstract RepoService bindRepoRepository(GithubRepoService impl);
 

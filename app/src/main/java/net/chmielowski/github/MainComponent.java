@@ -1,5 +1,6 @@
 package net.chmielowski.github;
 
+import net.chmielowski.github.data.DataModule;
 import net.chmielowski.github.network.SendNetworkConnectedBroadcast;
 
 import javax.inject.Singleton;
