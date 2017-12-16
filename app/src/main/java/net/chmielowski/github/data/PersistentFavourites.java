@@ -7,12 +7,12 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
-public final class FavouriteRepos implements IFavouriteRepos{
+public final class PersistentFavourites implements Favourites {
 
     private final Persistence db;
 
     @Inject
-    FavouriteRepos(final Persistence db) {
+    PersistentFavourites(final Persistence db) {
         this.db = db;
     }
 

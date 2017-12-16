@@ -43,7 +43,7 @@ public abstract class DataModule {
     abstract Persistence bindRealmFacade(RealmFacade impl);
 
     @Binds
-    abstract IFavouriteRepos bindFavouriteRepos(FavouriteRepos impl);
+    abstract Favourites bindFavouriteRepos(PersistentFavourites impl);
 
     @Provides
     @Singleton

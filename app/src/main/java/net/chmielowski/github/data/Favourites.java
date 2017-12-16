@@ -4,6 +4,6 @@ import net.chmielowski.github.screen.RepositoryViewModel;
 
 import java.util.List;
 
-public interface IFavouriteRepos {
+public interface Favourites {
     List<RepositoryViewModel> all();
 }

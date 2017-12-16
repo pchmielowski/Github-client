@@ -1,6 +1,6 @@
 package net.chmielowski.github.screen.fav;
 
-import net.chmielowski.github.data.IFavouriteRepos;
+import net.chmielowski.github.data.Favourites;
 import net.chmielowski.github.data.RepoService;
 
 import org.junit.Before;
@@ -17,12 +17,12 @@ import static org.mockito.Mockito.when;
 public class FavsViewModelTest {
 
     private RepoService service;
-    private IFavouriteRepos favourites;
+    private Favourites favourites;
 
     @Before
     public void setUp() throws Exception {
         service = Mockito.mock(RepoService.class);
-        favourites = Mockito.mock(IFavouriteRepos.class);
+        favourites = Mockito.mock(Favourites.class);
     }
 
     @Test
