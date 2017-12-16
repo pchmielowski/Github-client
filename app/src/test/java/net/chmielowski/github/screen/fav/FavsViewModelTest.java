@@ -3,31 +3,43 @@ package net.chmielowski.github.screen.fav;
 import net.chmielowski.github.data.Persistence;
 import net.chmielowski.github.data.RepoService;
 
-import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import io.reactivex.observers.TestObserver;
 import io.reactivex.subjects.SingleSubject;
 
 import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
+import static org.mockito.Mockito.when;
 
 public class FavsViewModelTest {
-    @Test
-    public void name() throws Exception {
-        final Persistence db = Mockito.mock(Persistence.class);
-        final RepoService service = Mockito.mock(RepoService.class);
 
+    private Persistence db;
+    private RepoService service;
+
+    @Before
+    public void setUp() throws Exception {
+        db = Mockito.mock(Persistence.class);
+        service = Mockito.mock(RepoService.class);
+    }
+
+    @Test
+    public void itemCachedWithSuccess() throws Exception {
+        final String repository = "repo";
         final SingleSubject<Boolean> subject = SingleSubject.create();
-        Mockito.when(service.cacheItem("repo"))
+        when(service.cacheItem(repository))
                 .thenReturn(subject);
 
         final FavsViewModel model = new FavsViewModel(db, service);
+        final TestObserver<Boolean> testObserver = model
+                .cache(repository)
+                .test();
+        assertThat(model.loading.get(), is(true));
 
-        model.cache("repo")
-                .subscribe();
-
-        Assert.assertThat(model.loading.get(), is(true));
         subject.onSuccess(true);
-        Assert.assertThat(model.loading.get(), is(false));
+        testObserver.assertValue(true);
+        assertThat(model.loading.get(), is(false));
     }
 }
