@@ -13,15 +13,23 @@ import static net.chmielowski.github.network.BasicNetworkState.State.ONLINE;
 
 @Singleton
 public final class NetworkIndicatorViewModel {
+    private final Handler handler = new Handler();
+    private final int delayMillis;
     public ObservableBoolean visible = new ObservableBoolean(false);
-
     public ObservableField<BasicNetworkState.State> state = new ObservableField<>(ONLINE);
+
+    private final Runnable hide = () -> visible.set(false);
 
     private final NetworkState networkState;
 
+    private NetworkIndicatorViewModel(final int delayMillis, final NetworkState networkState) {
+        this.delayMillis = delayMillis;
+        this.networkState = networkState;
+    }
+
     @Inject
     NetworkIndicatorViewModel(final NetworkState networkState) {
-        this.networkState = networkState;
+        this(3000, networkState);
     }
 
     public Observable<BasicNetworkState.State> observe() {
@@ -30,11 +38,10 @@ public final class NetworkIndicatorViewModel {
                     this.state.set(state);
                     switch (state) {
                         case ONLINE:
-                            // TODO: cancel this task if network state changes before it was executed
-                            new Handler().postDelayed(() ->
-                                    visible.set(false), 3000);
+                            handler.postDelayed(hide, delayMillis);
                             break;
                         case OFFLINE:
+                            handler.removeCallbacks(hide);
                             visible.set(true);
                             break;
                     }
