@@ -20,67 +20,81 @@
         tools:context="net.chmielowski.github.screen.search.SearchActivity">
 
         <!--TODO Constraint layout-->
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
             android:id="@+id/layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:animateLayoutChanges="true"
-            android:orientation="vertical">
+            tools:ignore="GradleDependency">
 
             <net.chmielowski.github.network.NetworkStateIndicator
                 android:id="@+id/network_indicator"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
                 app:networkState="@{indicatorViewModel.state}"
                 app:visibility="@{indicatorViewModel.visible}"/>
 
-            <LinearLayout
-                android:layout_width="match_parent"
+
+            <EditText
+                android:id="@+id/search"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:gravity="center_vertical"
-                android:orientation="horizontal"
-                app:visibility="@{model.searchMode}">
+                android:hint="@string/search"
+                android:imeOptions="actionSearch"
+                android:inputType="text"
+                app:layout_constraintEnd_toStartOf="@+id/imageView"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/network_indicator"/>
 
-                <EditText
-                    android:id="@+id/search"
-                    android:layout_width="0dp"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:hint="@string/search"
-                    android:imeOptions="actionSearch"
-                    android:inputType="text"/>
+            <ImageView
+                android:id="@+id/imageView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="10dp"
+                android:contentDescription="@string/clear"
+                android:onClick="@{()-> model.clear()}"
+                android:src="@drawable/ic_clear"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/search"
+                app:layout_constraintTop_toTopOf="@+id/search"
+                app:visibility="@{model.searchMode}"/>
 
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:contentDescription="@string/clear"
-                    android:onClick="@{()-> model.clear()}"
-                    android:src="@drawable/ic_clear"
-                    app:visibility="@{model.searchMode}"/>
-            </LinearLayout>
 
             <TextView
                 android:id="@+id/searches_label"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="11dp"
                 android:gravity="center"
                 android:text="@string/last_searches"
                 android:textStyle="bold"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/imageView"
                 app:visibility="@{model.searchMode}"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/searches"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searches_label"
                 app:visibility="@{model.searchMode}"/>
 
             <android.support.v7.widget.RecyclerView
                 android:id="@+id/results"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/searches"
                 app:visibility="@{!model.searchMode}"/>
 
-        </LinearLayout>
+        </android.support.constraint.ConstraintLayout>
 
         <android.support.design.widget.FloatingActionButton
             android:id="@+id/fab"
