@@ -6,6 +6,8 @@ import android.support.v7.widget.RecyclerView;
 import com.jakewharton.rxbinding2.support.v7.widget.RecyclerViewScrollEvent;
 import com.jakewharton.rxbinding2.support.v7.widget.RxRecyclerView;
 
+import net.chmielowski.github.utils.ValueIgnored;
+
 import io.reactivex.Observable;
 
 public final class RxPagination {

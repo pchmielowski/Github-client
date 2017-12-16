@@ -5,8 +5,8 @@ import android.support.annotation.NonNull;
 
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.network.NetworkState;
-import net.chmielowski.github.pagination.ValueIgnored;
 import net.chmielowski.github.utils.Assertions;
+import net.chmielowski.github.utils.ValueIgnored;
 
 import javax.inject.Inject;
 import javax.inject.Singleton;

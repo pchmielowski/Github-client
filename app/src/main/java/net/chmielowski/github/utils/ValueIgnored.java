@@ -1,4 +1,4 @@
-package net.chmielowski.github.pagination;
+package net.chmielowski.github.utils;
 
 public enum ValueIgnored {
     VALUE_IGNORED

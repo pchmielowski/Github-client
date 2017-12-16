@@ -3,7 +3,7 @@ package net.chmielowski.github.screen;
 import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.network.NetworkState;
-import net.chmielowski.github.pagination.ValueIgnored;
+import net.chmielowski.github.utils.ValueIgnored;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -18,11 +18,11 @@ import static io.reactivex.Single.just;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
-import static net.chmielowski.github.pagination.ValueIgnored.VALUE_IGNORED;
 import static net.chmielowski.github.screen.ListState.initial;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
 import static net.chmielowski.github.utils.TestUtils.sampleRepository;
+import static net.chmielowski.github.utils.ValueIgnored.VALUE_IGNORED;
 import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
