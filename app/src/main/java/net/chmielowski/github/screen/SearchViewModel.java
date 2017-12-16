@@ -64,11 +64,10 @@ public final class SearchViewModel {
         return searchQuery
                 .compose(Assertions::neverCompletes)
                 .map(CharSequence::toString)
-                .compose(upstream -> networkState.requireOnline(
-                        upstream.doOnNext(this::updateView)
-                                .map(Query::firstPage)
-                                .flatMap(this::fetchResults)
-                ));
+                .filter(__ -> networkState.isOnline())
+                .doOnNext(this::updateView)
+                .map(Query::firstPage)
+                .flatMap(this::fetchResults);
     }
 
     private void updateView(final String query) {

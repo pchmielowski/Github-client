@@ -51,6 +51,18 @@ public final class BasicNetworkState implements NetworkState {
         return isOnline ? observable : Observable.empty();
     }
 
+    @Override
+    public boolean isOnline() {
+        final boolean isOnline = Optional.ofNullable(connectivityManager.getActiveNetworkInfo())
+                .map(NetworkInfo::isConnected)
+                .orElse(false);
+        if (!isOnline) {
+            subject.onNext(State.OFFLINE);
+            waitForOnline();
+        }
+        return isOnline;
+    }
+
 
     private final static String TAG = "NETWORK_CONNECTED";
 
@@ -78,12 +90,6 @@ public final class BasicNetworkState implements NetworkState {
 
     }
 
-
-    private boolean isOnline() {
-        return Optional.ofNullable(connectivityManager.getActiveNetworkInfo())
-                .map(NetworkInfo::isConnected)
-                .orElse(false);
-    }
 
     public enum State {
         ONLINE, OFFLINE
