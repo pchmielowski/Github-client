@@ -27,6 +27,7 @@ android {
             includeAndroidResources = true
         }
         unitTests.all {
+            //noinspection GrDeprecatedAPIUsage
             jacoco {
                 includeNoLocationClasses = true
             }
