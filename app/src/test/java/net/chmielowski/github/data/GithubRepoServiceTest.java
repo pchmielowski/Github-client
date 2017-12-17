@@ -50,14 +50,14 @@ public class GithubRepoServiceTest {
     }
 
     @Test
-    public void fetchFailed() throws Exception {
+    public void fetchFailedWith500() throws Exception {
         final Repositories repositories = new Repositories();
         final Repositories.Item repository = sampleRepository();
         repositories.items = singletonList(repository);
 
         final String query = "query";
         when(rest.searchRepositories(query, 0))
-                .thenReturn(just(error(404, create(parse("text/plain"), "fake error"))));
+                .thenReturn(just(error(500, create(parse("text/plain"), "server error"))));
 
         final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
         final TestObserver<Collection<Repositories.Item>> testObserver = service
@@ -71,5 +71,23 @@ public class GithubRepoServiceTest {
             fail("Exception not thrown");
         } catch (NullPointerException ignored) {
         }
+    }
+
+    @Test
+    public void fetchFailedWith404() throws Exception {
+        final Repositories repositories = new Repositories();
+        final Repositories.Item repository = sampleRepository();
+        repositories.items = singletonList(repository);
+
+        final String query = "query";
+        when(rest.searchRepositories(query, 0))
+                .thenReturn(just(error(404, create(parse("text/plain"), "client error"))));
+
+        final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
+        final TestObserver<Collection<Repositories.Item>> testObserver = service
+                .items(firstPage(query))
+                .test();
+
+        testObserver.assertError(IllegalStateException.class);
     }
 }
