@@ -18,9 +18,10 @@ Simple Android Github client
   * Retrofit
   * Gson
 
-* debugging:
+* debugging and testing:
   * Stetho
   * LeakCanary
+  * Robolectric
 
 * other
   * Picasso
