@@ -19,6 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
 
+@SuppressWarnings("unchecked")
 @Config(application = TestApplication.class)
 @RunWith(RobolectricTestRunner.class)
 public class AdapterTest {
@@ -37,17 +38,10 @@ public class AdapterTest {
 
         action.accept(adapter);
 
-
         assertThat(adapter.getItemCount(), is(1));
         assertThat(adapter.getItemViewType(0), is(TYPE_SPINNER));
     }
 
-    @NonNull
-    private static Adapter createAdapter() {
-        return new Adapter(application.getBaseContext());
-    }
-
-    @SuppressWarnings("unchecked")
     @Test
     public void loadedEmptyList() throws Exception {
         final Adapter adapter = createAdapter();
@@ -56,5 +50,10 @@ public class AdapterTest {
         adapter.replace(loaded(emptyList()));
 
         assertThat(adapter.getItemCount(), is(0));
+    }
+
+    @NonNull
+    private static Adapter createAdapter() {
+        return new Adapter(application.getBaseContext());
     }
 }
