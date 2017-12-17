@@ -12,6 +12,7 @@ import javax.inject.Inject;
 import javax.inject.Singleton;
 
 import io.reactivex.Observable;
+import io.reactivex.Single;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -119,6 +120,14 @@ public final class SearchViewModel {
             throw new IllegalStateException("Not in search mode");
         }
         searchMode.set(false);
+    }
+
+    public Single<Boolean> onBackPressed() {
+        final boolean changeMode = searchMode.get() && lastQuery != null;
+        if (changeMode) {
+            searchMode.set(false);
+        }
+        return Single.just(changeMode);
     }
 
     @EqualsAndHashCode

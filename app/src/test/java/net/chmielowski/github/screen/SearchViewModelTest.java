@@ -33,6 +33,8 @@ import static net.chmielowski.github.screen.ListState.loading;
 import static net.chmielowski.github.screen.SearchViewModel.Query.firstPage;
 import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static net.chmielowski.github.utils.ValueIgnored.VALUE_IGNORED;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
 // TODO: remove redundant tests
@@ -67,8 +69,7 @@ public final class SearchViewModelTest {
 
     private void oneQuery(final NetworkState networkState,
                           final Consumer<TestObserver<ListState>> assertion) {
-        when(service.items(firstPage(QUERY_TEXT)))
-                .thenReturn(just(singletonList(sampleRepository())));
+        setupServiceToReturnSingletonListOnFirstQuery();
 
         final TestObserver<ListState> test = new SearchViewModel(service, history, networkState)
                 .replaceResults(query(QUERY_TEXT))
@@ -200,6 +201,56 @@ public final class SearchViewModelTest {
                 loading(),
                 loaded(mapToViewModel(secondPage, query))
         );
+    }
+
+    @Test
+    public void backPressedBeforeAnyAction() throws Exception {
+        final SearchViewModel model = createViewModel();
+
+        final boolean modeBefore = model.searchMode.get();
+
+        model.onBackPressed()
+                .test()
+                .assertValue(false);
+
+        assertThat(model.searchMode.get(), is(modeBefore));
+    }
+
+    @Test
+    public void backPressedAfterSearch() throws Exception {
+        final SearchViewModel model = createViewModel();
+
+        setupServiceToReturnSingletonListOnFirstQuery();
+        performFirstSearch(model);
+
+        final boolean modeBefore = model.searchMode.get();
+        model.onBackPressed()
+                .test()
+                .assertResult(false);
+
+        assertThat(model.searchMode.get(), is(modeBefore));
+    }
+
+    @Test
+    public void backPressedAfterSearchAndEnterSearchMode() throws Exception {
+        final SearchViewModel model = createViewModel();
+
+        setupServiceToReturnSingletonListOnFirstQuery();
+        performFirstSearch(model);
+
+        model.enterSearchMode();
+
+        final boolean modeBefore = model.searchMode.get();
+        model.onBackPressed()
+                .test()
+                .assertResult(true);
+
+        assertThat(model.searchMode.get(), is(!modeBefore));
+    }
+
+    private void setupServiceToReturnSingletonListOnFirstQuery() {
+        when(service.items(firstPage(QUERY_TEXT)))
+                .thenReturn(just(singletonList(sampleRepository())));
     }
 
     @NonNull

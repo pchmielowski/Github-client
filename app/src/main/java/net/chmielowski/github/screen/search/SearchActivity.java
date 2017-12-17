@@ -74,6 +74,13 @@ public class SearchActivity extends BaseActivity {
         binding.layout.setLayoutTransition(transition);
     }
 
+    @Override
+    public void onBackPressed() {
+        model.onBackPressed()
+                .filter(consumed -> consumed)
+                .subscribe(__ -> super.onBackPressed());
+    }
+
     @NonNull
     @Override
     protected Iterable<Disposable> disposables() {
