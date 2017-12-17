@@ -24,6 +24,7 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 import static io.reactivex.Maybe.just;
+import static io.reactivex.Observable.never;
 import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
@@ -76,6 +77,19 @@ public final class SearchViewModelTest {
                 .test();
 
         assertion.accept(test);
+    }
+
+    @Test
+    public void clearsQueryAfterSearch() {
+        setupServiceToReturnSingletonListOnFirstQuery();
+
+        final SearchViewModel model = createViewModel();
+
+        model.query.set(QUERY_TEXT);
+        model.replaceResults(Observable.just(VALUE_IGNORED), never())
+                .subscribe();
+
+        assertThat(model.query.get(), is(""));
     }
 
     @Test
@@ -275,7 +289,7 @@ public final class SearchViewModelTest {
     private NetworkState alwaysOffline() {
         final NetworkState mock = Mockito.mock(NetworkState.class);
         when(mock.requireOnline(Mockito.any(Observable.class)))
-                .thenReturn(Observable.never());
+                .thenReturn(never());
         when(mock.isOnline()).thenReturn(false);
         return mock;
     }

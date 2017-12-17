@@ -34,7 +34,6 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 
 import static com.jakewharton.rxbinding2.widget.RxTextView.editorActions;
-import static com.jakewharton.rxbinding2.widget.RxTextView.textChanges;
 
 public class SearchActivity extends BaseActivity {
 
@@ -88,8 +87,7 @@ public class SearchActivity extends BaseActivity {
                 model.replaceResults(
                         editorActions(binding.search, action -> action == EditorInfo.IME_ACTION_SEARCH)
                                 .doOnNext(__ -> hideKeyboard()),
-                        searchHistoryAdapter.observeClicks().doOnNext(__ -> hideKeyboard()),
-                        textChanges(binding.search))
+                        searchHistoryAdapter.observeClicks().doOnNext(__ -> hideKeyboard()))
                         .subscribe(results -> resultsAdapter.replace(results)),
                 model.appendResults(RxPagination.scrolledCloseToEnd(binding.results, resultsManager))
                         .subscribe(results -> resultsAdapter.append(results)),

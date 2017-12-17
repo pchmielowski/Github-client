@@ -47,7 +47,8 @@ public final class SearchViewModel {
         return replaceResults(
                 Observable.merge(
                         searchQuery,
-                        searchBtnClicked.map(__ -> query.get())));
+                        searchBtnClicked.map(__ ->
+                                requireNonNull(query.get(), "Query is null"))));
     }
 
     Observable<ListState> replaceResults(final Observable<CharSequence> searchQuery) {
@@ -56,7 +57,7 @@ public final class SearchViewModel {
                 .compose(Assertions::neverCompletes)
                 .map(CharSequence::toString)
                 .filter(__ -> networkState.isOnline())
-                .doOnNext(this::updateView)
+                .doOnNext(this::updateState)
                 .map(Query::firstPage)
                 .flatMap(this::fetchResults);
     }
@@ -71,14 +72,15 @@ public final class SearchViewModel {
                 .flatMap(this::fetchResults);
     }
 
-    private void updateView(final String query) {
-        lastQuery = query;
+    private void updateState(final String text) {
+        query.set("");
+        lastQuery = text;
         page = 0;
         if (!searchMode.get()) {
             throw new IllegalStateException("Not in search mode");
         }
         searchMode.set(false);
-        queryHistory.searched(query);
+        queryHistory.searched(text);
     }
 
     private final NetworkState networkState;
