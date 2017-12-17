@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        xmlns:tools="http://schemas.android.com/tools">
 
     <data>
 
@@ -15,52 +17,65 @@
         android:elevation="@dimen/elevation"
         android:orientation="vertical">
 
-        <!--TODO: constraint layout-->
-        <!--TODO: extract styles-->
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center_vertical"
-            android:orientation="horizontal"
-            android:padding="@dimen/margin_small">
+            tools:ignore="GradleDependency">
 
             <ImageView
                 android:id="@+id/avatar"
                 android:layout_width="@dimen/avatar"
                 android:layout_height="@dimen/avatar"
+                android:layout_marginBottom="8dp"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
                 android:contentDescription="@string/avatar"
-                android:transitionName="@string/transition_avatar"/>
+                android:transitionName="@string/transition_avatar"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
 
-            <LinearLayout
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/margin_small"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/owner"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{model.owner}"
-                    android:transitionName="@string/transition_owner"/>
-
-                <TextView
-                    android:id="@+id/name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@{model.name}"
-                    android:transitionName="@string/transition_name"/>
-
-            </LinearLayout>
 
             <TextView
+                android:id="@+id/owner"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@{model.language}"
-                android:textColor="#9e9e9e"
-                android:textSize="20sp"/>
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="@{model.owner}"
+                android:transitionName="@string/transition_owner"
+                app:layout_constraintBottom_toTopOf="@+id/name"
+                app:layout_constraintStart_toEndOf="@+id/avatar"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Owner"/>
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="8dp"
+                android:text="@{model.name}"
+                android:transitionName="@string/transition_name"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/owner"
+                app:layout_constraintTop_toBottomOf="@+id/owner"
+                tools:text="Name"/>
+
+
+            <TextView
+                android:id="@+id/textView"
+                style="@style/GrayText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="8dp"
+                android:text="@{model.language}"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="C++"/>
+
+        </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </layout>
