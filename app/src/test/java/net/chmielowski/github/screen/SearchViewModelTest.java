@@ -302,7 +302,7 @@ public final class SearchViewModelTest {
     private static Observable<ValueIgnored> emitOnce() {
         return Observable.create(e -> e.onNext(VALUE_IGNORED));
     }
-//
+//    TODO: uncomment
 //    @Test
 //    public void scrolledToTheEndOnceAndSendNextQueryAndScrolledToEnd() throws Exception {
 //        final String query = "first";
