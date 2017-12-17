@@ -33,7 +33,7 @@ public class DetailsViewModelTest {
         final DetailsViewModel model = new DetailsViewModel(service, liked, repo.fullName);
         final TestObserver<Action> testObserver = model.observeActions().test();
 
-        model.addToFavs();
+        model.toggleLike();
 
         testObserver.assertValue(new Action(LIKE, repo.name));
     }

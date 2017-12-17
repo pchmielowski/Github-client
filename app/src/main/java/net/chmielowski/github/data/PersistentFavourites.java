@@ -7,6 +7,9 @@ import java.util.stream.Collectors;
 
 import javax.inject.Inject;
 
+import io.reactivex.Single;
+import io.realm.RealmResults;
+
 public final class PersistentFavourites implements Favourites {
 
     private final Persistence persistence;
@@ -27,11 +30,21 @@ public final class PersistentFavourites implements Favourites {
     }
 
     @Override
-    public void like(final Repositories.Item name) {
-        persistence.execute(realm ->
-                realm.executeTransaction(transaction -> {
-                    transaction.copyToRealmOrUpdate(new RealmRepo(name));
-                }));
+    public Single<Boolean> toggle(final Repositories.Item repo) {
+        final Boolean like = persistence.get(realm -> {
+            final RealmResults<RealmRepo> found = realm.where(RealmRepo.class)
+                    .equalTo(RealmRepo.ID, repo.fullName)
+                    .findAll();
+            if (found.isEmpty()) {
+                realm.executeTransaction(transaction ->
+                        transaction.copyToRealmOrUpdate(new RealmRepo(repo)));
+                return true;
+            }
+            realm.executeTransaction(transaction ->
+                    found.deleteAllFromRealm());
+            return false;
+        });
+        return Single.just(like);
     }
 
     @Override

@@ -18,6 +18,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type.LIKE;
+import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type.UNLIKE;
 
 @RepositoryScope
 public final class DetailsViewModel {
@@ -71,10 +72,12 @@ public final class DetailsViewModel {
 
     private Subject<Action> addedSubject = PublishSubject.create();
 
-    public void addToFavs() {
-        addedSubject.onNext(new Action(LIKE, name.get()));
-        likedRepos.like(repo);
-        favourite.set(true);
+    public void toggleLike() {
+        likedRepos.toggle(repo)
+                .subscribe(like -> {
+                    favourite.set(like);
+                    addedSubject.onNext(new Action(like ? LIKE : UNLIKE, name.get()));
+                });
     }
 
     Observable<Action> observeActions() {

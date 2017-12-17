@@ -4,10 +4,12 @@ import net.chmielowski.github.screen.RepositoryViewModel;
 
 import java.util.List;
 
+import io.reactivex.Single;
+
 public interface Favourites {
     List<RepositoryViewModel> all();
 
-    void like(Repositories.Item name);
+    Single<Boolean> toggle(Repositories.Item name);
 
     @SuppressWarnings("ConstantConditions")
     boolean isLiked(String repo);

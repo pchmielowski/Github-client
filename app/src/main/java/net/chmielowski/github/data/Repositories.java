@@ -6,7 +6,7 @@ import java.util.Collection;
 
 import lombok.EqualsAndHashCode;
 
-// Seems like Android Studio can not deduce, that here we need public
+// Seems toggle Android Studio can not deduce, that here we need public
 @SuppressWarnings("WeakerAccess")
 @EqualsAndHashCode
 public final class Repositories {
