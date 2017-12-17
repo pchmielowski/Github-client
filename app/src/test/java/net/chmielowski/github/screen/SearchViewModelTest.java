@@ -16,6 +16,7 @@ import org.mockito.stubbing.Answer;
 import java.util.List;
 import java.util.function.Consumer;
 
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.observers.BaseTestConsumer;
 import io.reactivex.observers.TestObserver;
@@ -135,9 +136,29 @@ public final class SearchViewModelTest {
         );
     }
 
-    @NonNull
-    private SearchViewModel createViewModel() {
-        return new SearchViewModel(service, history, alwaysOnline());
+    @Test
+    public void scrolledToTheEndTwiceBeforeLoadingFinished() throws Exception {
+        final String query = "fourth";
+
+        final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
+
+        when(service.items(firstPage(query)))
+                .thenReturn(just(firstPage));
+        when(service.items(new Query(1, query)))
+                .thenReturn(Maybe.never());
+
+        final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
+
+        final SearchViewModel model = createViewModel();
+        final TestObserver<ListState> test = model
+                .appendResults(scrolledSubject)
+                .test();
+
+        performFirstSearch(query, model);
+        scrolledSubject.onNext(VALUE_IGNORED);
+        scrolledSubject.onNext(VALUE_IGNORED);
+
+        test.assertValuesOnly(loading());
     }
 
     @Test
@@ -185,6 +206,11 @@ public final class SearchViewModelTest {
                 loading(),
                 loaded(mapToViewModel(secondPage, query))
         );
+    }
+
+    @NonNull
+    private SearchViewModel createViewModel() {
+        return new SearchViewModel(service, history, alwaysOnline());
     }
 
     private static void performFirstSearch(final String query, final SearchViewModel model) {
