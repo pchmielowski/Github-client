@@ -10,17 +10,17 @@ import lombok.ToString;
 
 @ToString
 @EqualsAndHashCode
-public class ListState {
+public final class ListState {
     public final List<RepositoryViewModel> results;
     public final boolean loading;
 
-    public ListState(final List<RepositoryViewModel> results, final boolean loading) {
+    private ListState(final List<RepositoryViewModel> results, final boolean loading) {
         this.results = results;
         this.loading = loading;
     }
 
     @NonNull
-    public static ListState loaded(final List<RepositoryViewModel> data) {
+    static ListState loaded(final List<RepositoryViewModel> data) {
         return new ListState(data, false);
     }
 
@@ -29,8 +29,4 @@ public class ListState {
         return new ListState(Collections.emptyList(), true);
     }
 
-    @NonNull
-    public static ListState initial() {
-        return new ListState(Collections.emptyList(), false);
-    }
 }

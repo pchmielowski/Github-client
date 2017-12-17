@@ -87,8 +87,8 @@ public final class SearchViewModelTest {
         when(service.items(new Query(1, query)))
                 .thenReturn(just(secondPage));
 
-        final SearchViewModel model = new SearchViewModel(service, history, alwaysOnline());
-        model.replaceResults(query(query)).subscribe();
+        final SearchViewModel model = createViewModel();
+        performFirstSearch(query, model);
 
         final TestObserver<ListState> test = model
                 .appendResults(emitOnce())
@@ -118,11 +118,12 @@ public final class SearchViewModelTest {
 
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
 
-        final SearchViewModel model = new SearchViewModel(service, history, alwaysOnline());
-        model.replaceResults(query(query)).subscribe();
+        final SearchViewModel model = createViewModel();
         final TestObserver<ListState> test = model
                 .appendResults(scrolledSubject)
                 .test();
+
+        performFirstSearch(query, model);
         scrolledSubject.onNext(VALUE_IGNORED);
         scrolledSubject.onNext(VALUE_IGNORED);
 
@@ -132,6 +133,62 @@ public final class SearchViewModelTest {
                 loading(),
                 loaded(mapToViewModel(thirdPage, query))
         );
+    }
+
+    @NonNull
+    private SearchViewModel createViewModel() {
+        return new SearchViewModel(service, history, alwaysOnline());
+    }
+
+    @Test
+    public void scrolledToTheEndOnceAndSendNextQuery() throws Exception {
+        final String query = "first";
+        final String nextQuery = "second";
+
+        final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
+        final List<Repositories.Item> secondPage = singletonList(sampleRepository());
+        final List<Repositories.Item> firstPageNextQuery = asList(sampleRepository(), sampleRepository(), sampleRepository());
+
+        when(service.items(SearchViewModel.Query.firstPage(query)))
+                .thenReturn(just(firstPage));
+        when(service.items(new SearchViewModel.Query(1, query)))
+                .thenReturn(just(secondPage));
+        when(service.items(SearchViewModel.Query.firstPage(nextQuery)))
+                .thenReturn(just(firstPageNextQuery));
+
+        final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
+        final Subject<CharSequence> querySubject = PublishSubject.create();
+
+        final SearchViewModel model = createViewModel();
+
+        final TestObserver<ListState> replaceObserver = model
+                .replaceResults(querySubject)
+                .test();
+
+        final TestObserver<ListState> appendObserver = model
+                .appendResults(scrolledSubject)
+                .test();
+
+        querySubject.onNext(query);
+        scrolledSubject.onNext(VALUE_IGNORED);
+        model.enterSearchMode();
+        querySubject.onNext(nextQuery);
+
+        replaceObserver.assertValuesOnly(
+                loading(),
+                loaded(mapToViewModel(firstPage, query)),
+                loading(),
+                loaded(mapToViewModel(firstPageNextQuery, nextQuery))
+        );
+
+        appendObserver.assertValuesOnly(
+                loading(),
+                loaded(mapToViewModel(secondPage, query))
+        );
+    }
+
+    private static void performFirstSearch(final String query, final SearchViewModel model) {
+        model.replaceResults(query(query)).subscribe();
     }
 
     @SuppressWarnings("unchecked")
@@ -160,44 +217,6 @@ public final class SearchViewModelTest {
     private static Observable<ValueIgnored> emitOnce() {
         return Observable.create(e -> e.onNext(VALUE_IGNORED));
     }
-//
-//    @Test
-//    public void scrolledToTheEndOnceAndSendNextQuery() throws Exception {
-//        final String query = "first";
-//        final String nextQuery = "second";
-//
-//        final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
-//        final List<Repositories.Item> secondPage = singletonList(sampleRepository());
-//        final List<Repositories.Item> firstPageNextQuery = asList(sampleRepository(), sampleRepository(), sampleRepository());
-//
-//        when(service.items(SearchViewModel.Query.firstPage(query)))
-//                .thenReturn(just(firstPage));
-//        when(service.items(new SearchViewModel.Query(1, query)))
-//                .thenReturn(just(secondPage));
-//        when(service.items(SearchViewModel.Query.firstPage(nextQuery)))
-//                .thenReturn(just(firstPageNextQuery));
-//
-//        final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
-//        final Subject<String> querySubject = PublishSubject.create();
-//
-//        final TestObserver<ListState> test = new SearchViewModel(service, new QueryHistory())
-//                .appendResults(scrolledSubject)
-//                .test();
-//
-//        querySubject.onNext(query);
-//        scrolledSubject.onNext(VALUE_IGNORED);
-//        querySubject.onNext(nextQuery);
-//
-//        test.assertValuesOnly(
-//                initial(),
-//                loading(),
-//                loaded(mapToViewModel(firstPage, query)),
-//                loading(),
-//                loaded(mapToViewModel(secondPage, query)),
-//                loading(),
-//                loaded(mapToViewModel(firstPageNextQuery, nextQuery))
-//        );
-//    }
 //
 //    @Test
 //    public void scrolledToTheEndOnceAndSendNextQueryAndScrolledToEnd() throws Exception {
