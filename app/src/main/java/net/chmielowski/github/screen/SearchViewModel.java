@@ -73,6 +73,9 @@ public final class SearchViewModel {
     private void updateView(final String query) {
         lastQuery = query;
         page = 0;
+        if (!searchMode.get()) {
+            throw new IllegalStateException("Not in search mode");
+        }
         searchMode.set(false);
         queryHistory.searched(query);
     }
@@ -105,10 +108,16 @@ public final class SearchViewModel {
     }
 
     public void enterSearchMode() {
+        if (searchMode.get()) {
+            throw new IllegalStateException("Already in search mode");
+        }
         searchMode.set(true);
     }
 
     public void exitSearchMode() {
+        if (!searchMode.get()) {
+            throw new IllegalStateException("Not in search mode");
+        }
         searchMode.set(false);
     }
 
