@@ -40,7 +40,7 @@ public final class SearchViewModelTest {
 
     private QueryHistory history;
     private RepoService service;
-    private final String QUERY_TEXT = "some query";
+    private static final String QUERY_TEXT = "some query";
 
     @Before
     public void setUp() throws Exception {
@@ -79,17 +79,15 @@ public final class SearchViewModelTest {
 
     @Test
     public void scrolledToTheEndOnceInOnline() throws Exception {
-        final String query = "third";
-
         final List<Repositories.Item> secondPage = singletonList(sampleRepository());
 
-        when(service.items(firstPage(query)))
+        when(service.items(firstPage(QUERY_TEXT)))
                 .thenReturn(just(emptyList()));
-        when(service.items(new Query(1, query)))
+        when(service.items(new Query(1, QUERY_TEXT)))
                 .thenReturn(just(secondPage));
 
         final SearchViewModel model = createViewModel();
-        performFirstSearch(query, model);
+        performFirstSearch(model);
 
         final TestObserver<ListState> test = model
                 .appendResults(emitOnce())
@@ -97,24 +95,22 @@ public final class SearchViewModelTest {
 
         test.assertValuesOnly(
                 loading(),
-                loaded(mapToViewModel(secondPage, query))
+                loaded(mapToViewModel(secondPage, QUERY_TEXT))
         );
     }
 
     @Test
     public void scrolledToTheEndTwice() throws Exception {
-        final String query = "fourth";
-
         final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
         final List<Repositories.Item> secondPage = asList(sampleRepository(), sampleRepository(),
                 sampleRepository());
         final List<Repositories.Item> thirdPage = singletonList(sampleRepository());
 
-        when(service.items(firstPage(query)))
+        when(service.items(firstPage(QUERY_TEXT)))
                 .thenReturn(just(firstPage));
-        when(service.items(new Query(1, query)))
+        when(service.items(new Query(1, QUERY_TEXT)))
                 .thenReturn(just(secondPage));
-        when(service.items(new Query(2, query)))
+        when(service.items(new Query(2, QUERY_TEXT)))
                 .thenReturn(just(thirdPage));
 
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
@@ -124,27 +120,25 @@ public final class SearchViewModelTest {
                 .appendResults(scrolledSubject)
                 .test();
 
-        performFirstSearch(query, model);
+        performFirstSearch(model);
         scrolledSubject.onNext(VALUE_IGNORED);
         scrolledSubject.onNext(VALUE_IGNORED);
 
         test.assertValuesOnly(
                 loading(),
-                loaded(mapToViewModel(secondPage, query)),
+                loaded(mapToViewModel(secondPage, QUERY_TEXT)),
                 loading(),
-                loaded(mapToViewModel(thirdPage, query))
+                loaded(mapToViewModel(thirdPage, QUERY_TEXT))
         );
     }
 
     @Test
     public void scrolledToTheEndTwiceBeforeLoadingFinished() throws Exception {
-        final String query = "fourth";
-
         final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
 
-        when(service.items(firstPage(query)))
+        when(service.items(firstPage(QUERY_TEXT)))
                 .thenReturn(just(firstPage));
-        when(service.items(new Query(1, query)))
+        when(service.items(new Query(1, QUERY_TEXT)))
                 .thenReturn(Maybe.never());
 
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
@@ -154,7 +148,7 @@ public final class SearchViewModelTest {
                 .appendResults(scrolledSubject)
                 .test();
 
-        performFirstSearch(query, model);
+        performFirstSearch(model);
         scrolledSubject.onNext(VALUE_IGNORED);
         scrolledSubject.onNext(VALUE_IGNORED);
 
@@ -213,8 +207,8 @@ public final class SearchViewModelTest {
         return new SearchViewModel(service, history, alwaysOnline());
     }
 
-    private static void performFirstSearch(final String query, final SearchViewModel model) {
-        model.replaceResults(query(query)).subscribe();
+    private static void performFirstSearch(final SearchViewModel model) {
+        model.replaceResults(query(QUERY_TEXT)).subscribe();
     }
 
     @SuppressWarnings("unchecked")
