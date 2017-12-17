@@ -20,7 +20,7 @@ public class FavsViewModel {
     private final Favourites favourites;
 
     @Inject
-    FavsViewModel(@RepoService.OnMainThread final RepoService service,
+    FavsViewModel(@RepoService.WorkOnBackground final RepoService service,
                   final Favourites favourites) {
         this.service = service;
         this.favourites = favourites;

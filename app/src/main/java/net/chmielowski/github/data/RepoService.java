@@ -21,7 +21,7 @@ public interface RepoService {
 
     @Qualifier
     @Retention(RUNTIME)
-    @interface OnMainThread {
+    @interface WorkOnBackground {
     }
 
     @Qualifier

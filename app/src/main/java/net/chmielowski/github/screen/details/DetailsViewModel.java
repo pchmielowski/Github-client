@@ -35,7 +35,7 @@ public final class DetailsViewModel {
     private final Repositories.Item repo;
 
     @Inject
-    DetailsViewModel(@RepoService.OnMainThread final RepoService service,
+    DetailsViewModel(@RepoService.WorkOnBackground final RepoService service,
                      final Favourites likedRepos,
                      @RepositoryId final String id) {
         this.likedRepos = likedRepos;

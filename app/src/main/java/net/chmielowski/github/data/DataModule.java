@@ -29,10 +29,9 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
 @Module
 public abstract class DataModule {
-    @RepoService.OnMainThread
+    @RepoService.WorkOnBackground
     @Binds
-    // TODO: rename
-    abstract RepoService bindRepoRepositoryOnMainThread(MainThreadRepoServiceDecorator impl);
+    abstract RepoService bindRepoService(WorkingOnBackgroundRepoService impl);
 
     @RepoService.Github
     @Binds

@@ -32,7 +32,7 @@ public final class SearchViewModel {
     private boolean isLoading;
 
     @Inject
-    SearchViewModel(@RepoService.OnMainThread final RepoService repository,
+    SearchViewModel(@RepoService.WorkOnBackground final RepoService repository,
                     final QueryHistory queryHistory,
                     final NetworkState networkState) {
         this.repository = repository;

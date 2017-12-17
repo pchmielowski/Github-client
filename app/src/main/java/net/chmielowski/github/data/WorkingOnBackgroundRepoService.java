@@ -11,13 +11,12 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-// TODO: rename class and annotation
-public final class MainThreadRepoServiceDecorator implements RepoService {
+public final class WorkingOnBackgroundRepoService implements RepoService {
 
     private final RepoService decorated;
 
     @Inject
-    MainThreadRepoServiceDecorator(@Github final RepoService decorated) {
+    WorkingOnBackgroundRepoService(@Github final RepoService decorated) {
         this.decorated = decorated;
     }
 
