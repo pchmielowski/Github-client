@@ -43,12 +43,11 @@ public final class SearchViewModel {
     }
 
     public Observable<ListState> replaceResults(final Observable<?> searchBtnClicked,
-                                                final Observable<String> searchQuery,
-                                                final Observable<CharSequence> observeQuery) {
+                                                final Observable<String> searchQuery) {
         return replaceResults(
                 Observable.merge(
                         searchQuery,
-                        searchBtnClicked.withLatestFrom(Observable.just(true), (__, ignored) -> query.get())));
+                        searchBtnClicked.map(__ -> query.get())));
     }
 
     Observable<ListState> replaceResults(final Observable<CharSequence> searchQuery) {
