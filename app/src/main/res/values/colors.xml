@@ -5,4 +5,5 @@
     <color name="colorAccent">#FF4081</color>
     <color name="colorOnline">#00dd00</color>
     <color name="colorOffline">#ffee00</color>
+    <color name="transparenWhite">#88ffffff</color>
 </resources>

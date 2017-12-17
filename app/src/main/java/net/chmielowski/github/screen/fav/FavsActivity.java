@@ -46,7 +46,7 @@ public final class FavsActivity extends BaseActivity {
         return Arrays.asList(
                 adapter.observeClicks()
                         .flatMapMaybe(clicked -> model.cache(clicked.second)
-                                .filter(success -> success) // TODO: handle error
+                                .filter(success -> success)
                                 .map(__ -> clicked))
                         .subscribe(clicked -> openDetails.invoke(clicked)),
                 model.data().subscribe(results -> adapter.update(results))
