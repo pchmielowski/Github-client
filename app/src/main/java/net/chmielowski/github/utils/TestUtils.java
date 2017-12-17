@@ -9,13 +9,13 @@ public class TestUtils {
     public static Repositories.Item sampleRepository() {
         final Repositories.Item item = new Repositories.Item();
         item.description = "description";
-        item.fullName = "full name";
         item.language = "language";
         item.name = "name";
         final Repositories.Item.Owner owner = new Repositories.Item.Owner();
         owner.avatarUrl = "avatar url";
         owner.login = "login";
         item.owner = owner;
+        item.fullName = owner.login + "/" + item.name;
         return item;
     }
 }

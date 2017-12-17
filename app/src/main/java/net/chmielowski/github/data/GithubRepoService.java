@@ -51,12 +51,20 @@ public final class GithubRepoService implements RepoService {
         return requireNonNull(cache.get(name), String.format("Repository %s not cached!", name));
     }
 
+    @SuppressWarnings("ConstantConditions")
     @Override
     public Single<Boolean> cacheItem(final String name) {
         final String[] split = name.split("/");
         return cache.containsKey(name)
                 ? Single.just(true)
                 : service.repo(split[0], split[1])
+                .doOnSuccess(response -> {
+                    if (!response.isSuccessful()) {
+                        return;
+                    }
+                    final Repositories.Item item = response.body();
+                    cache.put(item.fullName, item);
+                })
                 .map(Response::isSuccessful);
     }
 

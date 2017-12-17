@@ -11,5 +11,5 @@ public interface RestService {
     Single<Response<Repositories>> searchRepositories(@Query("q") String query, @Query("page") int page);
 
     @GET("repos/{owner}/{repo}")
-    Single<Response<Repositories.Item>> repo(@Path("owner") String id, @Path("repo") String repo);
+    Single<Response<Repositories.Item>> repo(@Path("owner") String owner, @Path("repo") String repo);
 }
