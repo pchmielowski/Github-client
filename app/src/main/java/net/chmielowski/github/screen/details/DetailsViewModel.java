@@ -28,7 +28,6 @@ public final class DetailsViewModel {
     public final ObservableField<String> avatar = new ObservableField<>();
 
     public final ObservableBoolean favourite = new ObservableBoolean(false);
-    public final ObservableBoolean loading = new ObservableBoolean(false);
 
     private final Favourites likedRepos;
 
