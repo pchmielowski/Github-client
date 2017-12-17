@@ -13,7 +13,7 @@ import io.realm.Realm;
 import io.realm.RealmConfiguration;
 import timber.log.Timber;
 
-public final class CustomApplication extends Application {
+public class CustomApplication extends Application {
 
     /*
      * TODO:
@@ -46,6 +46,9 @@ public final class CustomApplication extends Application {
                 .builder()
                 .applicationModule(new ApplicationModule(this))
                 .build();
+        if (isTest()) {
+            return;
+        }
         if (LeakCanary.isInAnalyzerProcess(this)) {
             return;
         }
@@ -61,6 +64,10 @@ public final class CustomApplication extends Application {
                         .enableWebKitInspector(RealmInspectorModulesProvider.builder(this).build())
                         .build());
         Timber.plant(new Timber.DebugTree());
+    }
+
+    protected boolean isTest() {
+        return false;
     }
 
     public DetailsActivityComponent component(final AppCompatActivity activity,
