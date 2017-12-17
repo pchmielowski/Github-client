@@ -17,14 +17,8 @@ public class CustomApplication extends Application {
 
     /*
      * TODO:
-     *  pagination
-     *  pull to refresh
-     *  collapsing action bar on details screen
-     *  removing from favourites
      *  "no results"
      *  more info on details
-     *
-     *  tests
      */
 
     private MainComponent component;
