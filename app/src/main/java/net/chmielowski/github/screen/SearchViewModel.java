@@ -108,7 +108,7 @@ public final class SearchViewModel {
         searchMode.set(true);
     }
 
-    public void clear() {
+    public void exitSearchMode() {
         searchMode.set(false);
     }
 
