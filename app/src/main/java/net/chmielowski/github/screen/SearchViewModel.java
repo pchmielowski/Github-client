@@ -1,6 +1,7 @@
 package net.chmielowski.github.screen;
 
 import android.databinding.ObservableBoolean;
+import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
 import net.chmielowski.github.data.RepoService;
@@ -25,6 +26,7 @@ public final class SearchViewModel {
 
     private final QueryHistory queryHistory;
 
+    public final ObservableField<String> query = new ObservableField<>();
     public final ObservableBoolean searchMode = new ObservableBoolean(true);
 
     private int page = 0;
@@ -46,18 +48,7 @@ public final class SearchViewModel {
         return replaceResults(
                 Observable.merge(
                         searchQuery,
-                        searchBtnClicked.withLatestFrom(observeQuery, (__, query) -> query)));
-    }
-
-    // TODO: eliminate loading field
-    public Observable<ListState> appendResults(final Observable<ValueIgnored> scrolledToEnd) {
-        return scrolledToEnd
-                .doOnNext(__ -> requireNonNull(lastQuery))
-                .compose(Assertions::neverCompletes)
-                .filter(__ -> isNotLoading())
-                .doOnNext(__ -> page++)
-                .map(__ -> new Query(page, lastQuery))
-                .flatMap(this::fetchResults);
+                        searchBtnClicked.withLatestFrom(Observable.just(true), (__, ignored) -> query.get())));
     }
 
     Observable<ListState> replaceResults(final Observable<CharSequence> searchQuery) {
@@ -68,6 +59,16 @@ public final class SearchViewModel {
                 .filter(__ -> networkState.isOnline())
                 .doOnNext(this::updateView)
                 .map(Query::firstPage)
+                .flatMap(this::fetchResults);
+    }
+
+    public Observable<ListState> appendResults(final Observable<ValueIgnored> scrolledToEnd) {
+        return scrolledToEnd
+                .doOnNext(__ -> requireNonNull(lastQuery))
+                .compose(Assertions::neverCompletes)
+                .filter(__ -> isNotLoading())
+                .doOnNext(__ -> page++)
+                .map(__ -> new Query(page, lastQuery))
                 .flatMap(this::fetchResults);
     }
 
