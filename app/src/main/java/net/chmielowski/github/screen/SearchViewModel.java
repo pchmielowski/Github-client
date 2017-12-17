@@ -53,7 +53,7 @@ public final class SearchViewModel {
         return scrolledToEnd
                 .doOnNext(__ -> requireNonNull(lastQuery))
                 .compose(Assertions::neverCompletes)
-                .filter(__ -> canLoad())
+                .filter(__ -> isNotLoading())
                 .doOnNext(__ -> page++)
                 .map(__ -> new Query(page, lastQuery))
                 .flatMap(this::fetchResults);
@@ -103,7 +103,7 @@ public final class SearchViewModel {
         isLoading = true;
     }
 
-    private boolean canLoad() {
+    private boolean isNotLoading() {
         return !isLoading;
     }
 
