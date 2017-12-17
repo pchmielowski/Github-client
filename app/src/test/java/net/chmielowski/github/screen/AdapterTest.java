@@ -2,9 +2,12 @@ package net.chmielowski.github.screen;
 
 import android.support.annotation.NonNull;
 
+import net.chmielowski.github.TestApplication;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.Config;
 
 import java.util.function.Consumer;
 
@@ -16,6 +19,7 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
 
+@Config(application = TestApplication.class)
 @RunWith(RobolectricTestRunner.class)
 public class AdapterTest {
     @Test
