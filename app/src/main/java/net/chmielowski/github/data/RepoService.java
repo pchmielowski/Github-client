@@ -15,7 +15,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public interface RepoService {
     Repositories.Item cached(String id);
 
-    // TODO: return Maybe
     Maybe<Collection<Repositories.Item>> items(SearchViewModel.Query query);
 
     Single<Boolean> cacheItem(String name);

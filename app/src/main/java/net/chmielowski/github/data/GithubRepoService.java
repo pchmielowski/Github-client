@@ -29,7 +29,13 @@ public final class GithubRepoService implements RepoService {
     @SuppressWarnings("ConstantConditions") // response.body() shouldn't be null if isSuccessful()
     @Override
     public Maybe<Collection<Repositories.Item>> items(final SearchViewModel.Query query) {
+        // TODO: handle SocketTimeoutException
         return service.searchRepositories(query.text, query.page)
+                .doOnSuccess(response -> {
+                    if (response.code() / 100 == 4) {
+                        throw new IllegalStateException("Response code is 4**");
+                    }
+                })
                 .filter(Response::isSuccessful)
                 .map(response -> response.body().items)
                 .doOnSuccess(this::addToCache);
