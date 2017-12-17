@@ -10,71 +10,80 @@
             type="net.chmielowski.github.screen.details.DetailsViewModel"/>
     </data>
 
-    <android.support.constraint.ConstraintLayout
-        android:id="@+id/container"
+    <android.support.v7.widget.CardView
+        android:id="@+id/card"
+        android:transitionName="@string/transition_card"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:ignore="GradleDependency">
+        android:layout_margin="@dimen/margin_small">
 
-        <ProgressBar
-            android:id="@+id/progressBar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:visibility="@{model.loading}"/>
-
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="@dimen/avatar"
-            android:layout_height="@dimen/avatar"
-            android:contentDescription="@string/avatar"
-            android:transitionName="@string/transition_avatar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:id="@+id/owner"
-            style="@style/MediumText"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{model.owner}"
-            android:transitionName="@string/transition_owner"
-            app:layout_constraintEnd_toStartOf="@+id/fav"
-            app:layout_constraintStart_toEndOf="@+id/avatar"
-            app:layout_constraintTop_toTopOf="parent"/>
-
-        <TextView
-            android:id="@+id/name"
-            style="@style/MediumText.Bold"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{model.name}"
-            android:transitionName="@string/transition_name"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/avatar"
-            app:layout_constraintTop_toBottomOf="@+id/owner"/>
-
-        <ImageView
-            android:id="@+id/fav"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:contentDescription="@string/add_to_favourites"
-            android:onClick="@{() -> model.toggleLike()}"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/container"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
             android:padding="@dimen/margin_small"
-            android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"/>
+            tools:ignore="GradleDependency">
 
-        <TextView
-            android:id="@+id/description"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:text="@{model.description}"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/name"/>
-    </android.support.constraint.ConstraintLayout>
+            <ProgressBar
+                android:id="@+id/progressBar"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:visibility="@{model.loading}"/>
+
+            <ImageView
+                android:id="@+id/avatar"
+                android:layout_width="@dimen/avatar"
+                android:layout_height="@dimen/avatar"
+                android:contentDescription="@string/avatar"
+                android:transitionName="@string/transition_avatar"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/owner"
+                style="@style/MediumText"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{model.owner}"
+                android:transitionName="@string/transition_owner"
+                app:layout_constraintEnd_toStartOf="@+id/fav"
+                app:layout_constraintStart_toEndOf="@+id/avatar"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/name"
+                style="@style/MediumText.Bold"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{model.name}"
+                android:transitionName="@string/transition_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/avatar"
+                app:layout_constraintTop_toBottomOf="@+id/owner"/>
+
+            <ImageView
+                android:id="@+id/fav"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:contentDescription="@string/add_to_favourites"
+                android:onClick="@{() -> model.toggleLike()}"
+                android:padding="@dimen/margin_small"
+                android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/description"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="@{model.description}"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/name"/>
+        </android.support.constraint.ConstraintLayout>
+    </android.support.v7.widget.CardView>
 </layout>

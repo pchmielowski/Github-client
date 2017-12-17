@@ -16,4 +16,5 @@
     <string name="title_search">Search for repo</string>
     <string name="title_repository">Repository</string>
     <string name="title_favourites">Favourites</string>
+    <string name="transition_card">card</string>
 </resources>

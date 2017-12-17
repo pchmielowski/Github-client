@@ -28,6 +28,7 @@ public final class OpenDetails {
 
         @SuppressWarnings("unchecked") final ActivityOptionsCompat options = makeSceneTransitionAnimation(
                 activity,
+                Pair.create(clickedItem.first.card, activity.getString(R.string.transition_card)),
                 Pair.create(clickedItem.first.name, activity.getString(R.string.transition_name)),
                 Pair.create(clickedItem.first.avatar, activity.getString(R.string.transition_avatar)),
                 Pair.create(clickedItem.first.owner, activity.getString(R.string.transition_owner))
