@@ -24,7 +24,7 @@ import static org.mockito.Mockito.when;
 import static retrofit2.Response.error;
 import static retrofit2.Response.success;
 
-public class GithubRepoServiceTest {
+public class WebRepositoryDataSourceTest {
     private RestService rest;
 
     @Before
@@ -42,7 +42,7 @@ public class GithubRepoServiceTest {
         when(rest.searchRepositories(query, 0))
                 .thenReturn(just(success(repositories)));
 
-        final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
+        final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
         final TestObserver<Collection<Repositories.Item>> testObserver = service
                 .repositories(firstPage(query))
                 .test();
@@ -61,7 +61,7 @@ public class GithubRepoServiceTest {
         when(rest.searchRepositories(query, 0))
                 .thenReturn(just(error(500, create(parse("text/plain"), "server error"))));
 
-        final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
+        final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
         final TestObserver<Collection<Repositories.Item>> testObserver = service
                 .repositories(firstPage(query))
                 .test();
@@ -85,7 +85,7 @@ public class GithubRepoServiceTest {
         when(rest.searchRepositories(query, 0))
                 .thenReturn(just(error(404, create(parse("text/plain"), "client error"))));
 
-        final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
+        final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
         final TestObserver<Collection<Repositories.Item>> testObserver = service
                 .repositories(firstPage(query))
                 .test();
@@ -99,7 +99,7 @@ public class GithubRepoServiceTest {
         Mockito.when(rest.repo(repo.owner.login, repo.name))
                 .thenReturn(just(success(repo)));
 
-        final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
+        final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
 
         service.cacheRepository(repo.fullName).subscribe();
 

@@ -33,7 +33,7 @@ public abstract class DataModule {
 
     @RepositoryDataSource.Github
     @Binds
-    abstract RepositoryDataSource bindRepoRepository(GithubRepoService impl);
+    abstract RepositoryDataSource bindRepoRepository(WebRepositoryDataSource impl);
 
     @Binds
     abstract QueryHistory bindQueryHistory(PersistentQueryHistory impl);

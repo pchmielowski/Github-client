@@ -15,13 +15,13 @@ import retrofit2.Response;
 
 import static java.util.Objects.requireNonNull;
 
-public final class GithubRepoService implements RepositoryDataSource {
+public final class WebRepositoryDataSource implements RepositoryDataSource {
     private final RestService service;
     private final Map<String, Repositories.Item> cache;
 
     @Inject
-    GithubRepoService(final RestService service,
-                      final Map<String, Repositories.Item> cache) {
+    WebRepositoryDataSource(final RestService service,
+                            final Map<String, Repositories.Item> cache) {
         this.service = service;
         this.cache = cache;
     }
