@@ -2,7 +2,7 @@ package net.chmielowski.github.data;
 
 import android.support.annotation.NonNull;
 
-import net.chmielowski.github.screen.SearchViewModel;
+import net.chmielowski.github.screen.search.SearchViewModel;
 
 import java.net.SocketTimeoutException;
 import java.util.Collection;

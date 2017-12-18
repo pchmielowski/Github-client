@@ -1,4 +1,4 @@
-package net.chmielowski.github.screen;
+package net.chmielowski.github.screen.search;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
@@ -6,6 +6,9 @@ import android.support.annotation.NonNull;
 
 import net.chmielowski.github.data.RepositoryDataSource;
 import net.chmielowski.github.network.NetworkState;
+import net.chmielowski.github.screen.ListState;
+import net.chmielowski.github.screen.QueryHistory;
+import net.chmielowski.github.screen.RepositoryViewModel;
 import net.chmielowski.github.utils.Assertions;
 import net.chmielowski.github.utils.ValueIgnored;
 
@@ -21,7 +24,7 @@ import lombok.ToString;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
-import static net.chmielowski.github.screen.SearchViewModel.ErrorMessage.EMPTY_QUERY;
+import static net.chmielowski.github.screen.search.SearchViewModel.ErrorMessage.EMPTY_QUERY;
 
 @Singleton
 public final class SearchViewModel {
@@ -31,23 +34,22 @@ public final class SearchViewModel {
 
     public final ObservableField<String> query = new ObservableField<>("");
     public final ObservableBoolean searchMode = new ObservableBoolean(true);
-    public final ObservableBoolean emptyQuery = new ObservableBoolean(false);
 
     private int page = 0;
     private String lastQuery;
     private boolean isLoading;
 
     @Inject
-    SearchViewModel(@RepositoryDataSource.WorkOnBackground final RepositoryDataSource repository,
-                    final QueryHistory queryHistory,
-                    final NetworkState networkState) {
+    public SearchViewModel(@RepositoryDataSource.WorkOnBackground final RepositoryDataSource repository,
+                           final QueryHistory queryHistory,
+                           final NetworkState networkState) {
         this.repository = repository;
         this.queryHistory = queryHistory;
         this.networkState = networkState;
     }
 
-    public Observable<ListState> replaceResults(final Observable<?> searchBtnClicked,
-                                                final Observable<String> searchQuery) {
+    Observable<ListState> replaceResults(final Observable<?> searchBtnClicked,
+                                         final Observable<String> searchQuery) {
         return replaceResults(
                 Observable.merge(
                         searchQuery,
@@ -74,7 +76,7 @@ public final class SearchViewModel {
         return !empty;
     }
 
-    public Observable<ListState> appendResults(final Observable<ValueIgnored> scrolledToEnd) {
+    Observable<ListState> appendResults(final Observable<ValueIgnored> scrolledToEnd) {
         return scrolledToEnd
                 .doOnNext(__ -> requireNonNull(lastQuery))
                 .compose(Assertions::neverCompletes)
@@ -137,7 +139,7 @@ public final class SearchViewModel {
         searchMode.set(false);
     }
 
-    public Single<Boolean> onBackPressed() {
+    Single<Boolean> onBackPressed() {
         final boolean changeMode = searchMode.get() && lastQuery != null;
         if (changeMode) {
             searchMode.set(false);
@@ -145,7 +147,7 @@ public final class SearchViewModel {
         return Single.just(changeMode);
     }
 
-    enum ErrorMessage {
+    public enum ErrorMessage {
         EMPTY_QUERY
     }
 

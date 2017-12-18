@@ -8,11 +8,14 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.LinearLayoutManager;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.animation.OvershootInterpolator;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.EditText;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
@@ -23,7 +26,6 @@ import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.OpenDetails;
 import net.chmielowski.github.screen.QueryHistory;
 import net.chmielowski.github.screen.SearchResultsAdapter;
-import net.chmielowski.github.screen.SearchViewModel;
 import net.chmielowski.github.screen.SearchesAdapter;
 import net.chmielowski.github.screen.fav.FavsActivity;
 
@@ -84,6 +86,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected Iterable<Disposable> disposables() {
         return Arrays.asList(
+                model.error().subscribe(this::showError),
                 model.replaceResults(
                         editorActions(binding.search, action -> action == EditorInfo.IME_ACTION_SEARCH)
                                 .doOnNext(__ -> hideKeyboard()),
@@ -94,6 +97,31 @@ public class SearchActivity extends BaseActivity {
                 queryHistory.observe().subscribe(queries -> searchHistoryAdapter.update(queries)),
                 resultsAdapter.observeClicks().subscribe(clickedItem -> openDetails.invoke(clickedItem)),
                 networkIndicatorViewModel.start());
+    }
+
+    private void showError(final SearchViewModel.ErrorMessage message) {
+        switch (message) {
+            case EMPTY_QUERY:
+                final EditText search = binding.search;
+                search.setError("Query can not be empty");
+                search.addTextChangedListener(new TextWatcher() {
+                    @Override
+                    public void beforeTextChanged(final CharSequence sequence, final int i, final int i1, final int i2) {
+
+                    }
+
+                    @Override
+                    public void onTextChanged(final CharSequence sequence, final int i, final int i1, final int i2) {
+                        search.setError(null);
+                    }
+
+                    @Override
+                    public void afterTextChanged(final Editable editable) {
+
+                    }
+                });
+                break;
+        }
     }
 
     @SuppressWarnings("ConstantConditions")

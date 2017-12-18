@@ -11,7 +11,7 @@
 
         <variable
             name="model"
-            type="net.chmielowski.github.screen.SearchViewModel"/>
+            type="net.chmielowski.github.screen.search.SearchViewModel"/>
     </data>
 
     <android.support.design.widget.CoordinatorLayout

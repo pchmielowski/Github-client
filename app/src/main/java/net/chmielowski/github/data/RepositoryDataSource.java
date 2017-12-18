@@ -1,6 +1,6 @@
 package net.chmielowski.github.data;
 
-import net.chmielowski.github.screen.SearchViewModel;
+import net.chmielowski.github.screen.search.SearchViewModel;
 
 import java.lang.annotation.Retention;
 import java.util.Collection;

@@ -12,8 +12,8 @@ import static java.util.Collections.emptyList;
 @ToString
 @EqualsAndHashCode
 public final class ListState {
-    public final List<RepositoryViewModel> results;
-    public final boolean loading;
+    final List<RepositoryViewModel> results;
+    final boolean loading;
 
     private ListState(final List<RepositoryViewModel> results, final boolean loading) {
         this.results = results;
@@ -21,17 +21,17 @@ public final class ListState {
     }
 
     @NonNull
-    static ListState loaded(final List<RepositoryViewModel> data) {
+    public static ListState loaded(final List<RepositoryViewModel> data) {
         return new ListState(data, false);
     }
 
     @NonNull
-    static ListState empty() {
+    public static ListState empty() {
         return loaded(emptyList());
     }
 
     @NonNull
-    static ListState loading() {
+    public static ListState loading() {
         return new ListState(emptyList(), true);
     }
 }

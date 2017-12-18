@@ -16,7 +16,7 @@ public final class RepositoryViewModel {
     public final String owner;
     public final String id;
     final String avatar;
-    public final String language;
+    final String language;
 
     private RepositoryViewModel(final String name,
                                 final String query,
@@ -32,7 +32,7 @@ public final class RepositoryViewModel {
         this.language = language;
     }
 
-    RepositoryViewModel(final Repositories.Item repo, final String query) {
+    public RepositoryViewModel(final Repositories.Item repo, final String query) {
         this(repo.name, query, repo.owner.login, repo.fullName, repo.owner.avatarUrl, repo.language);
     }
 

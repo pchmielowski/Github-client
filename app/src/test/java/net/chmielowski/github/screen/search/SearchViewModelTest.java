@@ -1,11 +1,14 @@
-package net.chmielowski.github.screen;
+package net.chmielowski.github.screen.search;
 
 import android.support.annotation.NonNull;
 
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RepositoryDataSource;
 import net.chmielowski.github.network.NetworkState;
-import net.chmielowski.github.screen.SearchViewModel.Query;
+import net.chmielowski.github.screen.ListState;
+import net.chmielowski.github.screen.QueryHistory;
+import net.chmielowski.github.screen.RepositoryViewModel;
+import net.chmielowski.github.screen.search.SearchViewModel.Query;
 import net.chmielowski.github.utils.ValueIgnored;
 
 import org.junit.Before;
@@ -32,8 +35,8 @@ import static java.util.stream.Collectors.toList;
 import static net.chmielowski.github.screen.ListState.empty;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
-import static net.chmielowski.github.screen.SearchViewModel.ErrorMessage.EMPTY_QUERY;
-import static net.chmielowski.github.screen.SearchViewModel.Query.firstPage;
+import static net.chmielowski.github.screen.search.SearchViewModel.ErrorMessage.EMPTY_QUERY;
+import static net.chmielowski.github.screen.search.SearchViewModel.Query.firstPage;
 import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static net.chmielowski.github.utils.ValueIgnored.VALUE_IGNORED;
 import static org.hamcrest.CoreMatchers.is;
@@ -99,6 +102,7 @@ public final class SearchViewModelTest {
     public void showsErrorOnEmptyQuery() throws Exception {
         emptyQuery("");
     }
+
     @Test
     public void showsErrorOnQueryWithSpacesOnly() throws Exception {
         emptyQuery("         ");
