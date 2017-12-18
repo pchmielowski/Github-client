@@ -65,13 +65,17 @@ public final class WebRepositoryDataSource implements RepositoryDataSource {
      * - with the value if response is successful
      * - without value if response code is 5**, 6** or {@link SocketTimeoutException} was thrown
      *
-     * @throws IllegalStateException if response code is 4**
+     * @throws IllegalStateException if response code is 4** (but not 403 which can happen)
      *                               Also rethrows any {@link Throwable} whis is not {@link SocketTimeoutException}
      */
     private <T> Maybe<Response<T>> makeRequest(final Single<Response<T>> request) {
         return request
                 .doOnSuccess(response -> {
-                    if (response.code() / 100 == 4) {
+                    final int code = response.code();
+                    if (code == 403) {
+                        return;
+                    }
+                    if (code / 100 == 4) {
                         throw new IllegalStateException("Response code is 4**");
                     }
                 })
