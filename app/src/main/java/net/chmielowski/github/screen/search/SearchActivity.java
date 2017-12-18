@@ -115,7 +115,7 @@ public class SearchActivity extends BaseActivity {
             startActivity(new Intent(this, FavsActivity.class));
             return true;
         }
-        throw new IllegalArgumentException("Unknown menu cached");
+        throw new IllegalArgumentException("Unknown menu repositoryFromCache");
     }
 
 }

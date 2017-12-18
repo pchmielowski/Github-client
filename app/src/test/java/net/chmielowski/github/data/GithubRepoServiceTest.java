@@ -44,11 +44,11 @@ public class GithubRepoServiceTest {
 
         final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
         final TestObserver<Collection<Repositories.Item>> testObserver = service
-                .items(firstPage(query))
+                .repositories(firstPage(query))
                 .test();
 
         testObserver.assertValue(repositories.items);
-        assertThat(service.cached(repository.fullName), is(repository));
+        assertThat(service.repositoryFromCache(repository.fullName), is(repository));
     }
 
     @Test
@@ -63,13 +63,13 @@ public class GithubRepoServiceTest {
 
         final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
         final TestObserver<Collection<Repositories.Item>> testObserver = service
-                .items(firstPage(query))
+                .repositories(firstPage(query))
                 .test();
 
         testObserver.assertNoValues();
         testObserver.assertComplete();
         try {
-            service.cached(repository.fullName);
+            service.repositoryFromCache(repository.fullName);
             fail("Exception not thrown");
         } catch (NullPointerException ignored) {
         }
@@ -87,7 +87,7 @@ public class GithubRepoServiceTest {
 
         final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
         final TestObserver<Collection<Repositories.Item>> testObserver = service
-                .items(firstPage(query))
+                .repositories(firstPage(query))
                 .test();
 
         testObserver.assertError(IllegalStateException.class);
@@ -101,8 +101,8 @@ public class GithubRepoServiceTest {
 
         final GithubRepoService service = new GithubRepoService(rest, new HashMap<>());
 
-        service.cacheItem(repo.fullName).subscribe();
+        service.cacheRepository(repo.fullName).subscribe();
 
-        Assert.assertThat(service.cached(repo.fullName), notNullValue());
+        Assert.assertThat(service.repositoryFromCache(repo.fullName), notNullValue());
     }
 }

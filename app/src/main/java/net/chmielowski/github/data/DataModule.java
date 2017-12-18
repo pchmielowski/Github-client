@@ -27,13 +27,13 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 
 @Module
 public abstract class DataModule {
-    @RepoService.WorkOnBackground
+    @RepositoryDataSource.WorkOnBackground
     @Binds
-    abstract RepoService bindRepoService(WorkingOnBackgroundRepoService impl);
+    abstract RepositoryDataSource bindRepoService(WorkingOnBackgroundRepoService impl);
 
-    @RepoService.Github
+    @RepositoryDataSource.Github
     @Binds
-    abstract RepoService bindRepoRepository(GithubRepoService impl);
+    abstract RepositoryDataSource bindRepoRepository(GithubRepoService impl);
 
     @Binds
     abstract QueryHistory bindQueryHistory(PersistentQueryHistory impl);

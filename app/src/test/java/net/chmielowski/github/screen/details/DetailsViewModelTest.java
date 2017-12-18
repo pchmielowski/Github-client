@@ -1,8 +1,8 @@
 package net.chmielowski.github.screen.details;
 
 import net.chmielowski.github.data.Favourites;
-import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
+import net.chmielowski.github.data.RepositoryDataSource;
 import net.chmielowski.github.screen.details.DetailsViewModel.Action;
 import net.chmielowski.github.utils.TestUtils;
 
@@ -29,11 +29,11 @@ public class DetailsViewModelTest {
     }
 
     private void toggleLike(final boolean becomeLiked, final Action.Type expectedAction) {
-        final RepoService service = Mockito.mock(RepoService.class);
+        final RepositoryDataSource service = Mockito.mock(RepositoryDataSource.class);
         final Favourites liked = Mockito.mock(Favourites.class);
 
         final Repositories.Item repo = TestUtils.sampleRepository();
-        when(service.cached(repo.fullName)).thenReturn(repo);
+        when(service.repositoryFromCache(repo.fullName)).thenReturn(repo);
         when(liked.toggle(repo)).thenReturn(just(becomeLiked));
 
         final DetailsViewModel model = new DetailsViewModel(service, liked, repo.fullName);

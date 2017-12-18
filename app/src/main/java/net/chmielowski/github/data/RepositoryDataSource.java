@@ -12,13 +12,12 @@ import io.reactivex.Single;
 
 import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
-// TODO: DataSource
-public interface RepoService {
-    Repositories.Item cached(String id);
+public interface RepositoryDataSource {
+    Maybe<Collection<Repositories.Item>> repositories(SearchViewModel.Query query);
 
-    Maybe<Collection<Repositories.Item>> items(SearchViewModel.Query query);
+    Single<Boolean> cacheRepository(String name);
 
-    Single<Boolean> cacheItem(String name);
+    Repositories.Item repositoryFromCache(String name);
 
     @Qualifier
     @Retention(RUNTIME)

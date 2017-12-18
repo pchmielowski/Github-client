@@ -15,7 +15,7 @@ import retrofit2.Response;
 
 import static java.util.Objects.requireNonNull;
 
-public final class GithubRepoService implements RepoService {
+public final class GithubRepoService implements RepositoryDataSource {
     private final RestService service;
     private final Map<String, Repositories.Item> cache;
 
@@ -28,7 +28,7 @@ public final class GithubRepoService implements RepoService {
 
     @SuppressWarnings("ConstantConditions") // response.body() shouldn't be null if isSuccessful()
     @Override
-    public Maybe<Collection<Repositories.Item>> items(final SearchViewModel.Query query) {
+    public Maybe<Collection<Repositories.Item>> repositories(final SearchViewModel.Query query) {
         // TODO: handle SocketTimeoutException
         return service.searchRepositories(query.text, query.page)
                 .doOnSuccess(response -> {
@@ -47,13 +47,13 @@ public final class GithubRepoService implements RepoService {
 
     @Override
     @NonNull
-    public Repositories.Item cached(final String name) {
-        return requireNonNull(cache.get(name), String.format("Repository %s not cached!", name));
+    public Repositories.Item repositoryFromCache(final String name) {
+        return requireNonNull(cache.get(name), String.format("Repository %s not repositoryFromCache!", name));
     }
 
     @SuppressWarnings("ConstantConditions")
     @Override
-    public Single<Boolean> cacheItem(final String name) {
+    public Single<Boolean> cacheRepository(final String name) {
         final String[] split = name.split("/");
         return cache.containsKey(name)
                 ? Single.just(true)

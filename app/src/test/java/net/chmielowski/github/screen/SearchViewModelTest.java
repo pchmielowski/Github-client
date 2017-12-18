@@ -2,8 +2,8 @@ package net.chmielowski.github.screen;
 
 import android.support.annotation.NonNull;
 
-import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
+import net.chmielowski.github.data.RepositoryDataSource;
 import net.chmielowski.github.network.NetworkState;
 import net.chmielowski.github.screen.SearchViewModel.Query;
 import net.chmielowski.github.utils.ValueIgnored;
@@ -42,12 +42,12 @@ import static org.mockito.Mockito.when;
 public final class SearchViewModelTest {
 
     private QueryHistory history;
-    private RepoService service;
+    private RepositoryDataSource service;
     private static final String QUERY_TEXT = "some query";
 
     @Before
     public void setUp() throws Exception {
-        service = Mockito.mock(RepoService.class);
+        service = Mockito.mock(RepositoryDataSource.class);
         history = Mockito.mock(QueryHistory.class);
     }
 
@@ -96,9 +96,9 @@ public final class SearchViewModelTest {
     public void scrolledToTheEndOnceInOnline() throws Exception {
         final List<Repositories.Item> secondPage = singletonList(sampleRepository());
 
-        when(service.items(firstPage(QUERY_TEXT)))
+        when(service.repositories(firstPage(QUERY_TEXT)))
                 .thenReturn(just(emptyList()));
-        when(service.items(new Query(1, QUERY_TEXT)))
+        when(service.repositories(new Query(1, QUERY_TEXT)))
                 .thenReturn(just(secondPage));
 
         final SearchViewModel model = createViewModel();
@@ -121,11 +121,11 @@ public final class SearchViewModelTest {
                 sampleRepository());
         final List<Repositories.Item> thirdPage = singletonList(sampleRepository());
 
-        when(service.items(firstPage(QUERY_TEXT)))
+        when(service.repositories(firstPage(QUERY_TEXT)))
                 .thenReturn(just(firstPage));
-        when(service.items(new Query(1, QUERY_TEXT)))
+        when(service.repositories(new Query(1, QUERY_TEXT)))
                 .thenReturn(just(secondPage));
-        when(service.items(new Query(2, QUERY_TEXT)))
+        when(service.repositories(new Query(2, QUERY_TEXT)))
                 .thenReturn(just(thirdPage));
 
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
@@ -151,9 +151,9 @@ public final class SearchViewModelTest {
     public void scrolledToTheEndTwiceBeforeLoadingFinished() throws Exception {
         final List<Repositories.Item> firstPage = asList(sampleRepository(), sampleRepository());
 
-        when(service.items(firstPage(QUERY_TEXT)))
+        when(service.repositories(firstPage(QUERY_TEXT)))
                 .thenReturn(just(firstPage));
-        when(service.items(new Query(1, QUERY_TEXT)))
+        when(service.repositories(new Query(1, QUERY_TEXT)))
                 .thenReturn(Maybe.never());
 
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
@@ -179,11 +179,11 @@ public final class SearchViewModelTest {
         final List<Repositories.Item> secondPage = singletonList(sampleRepository());
         final List<Repositories.Item> firstPageNextQuery = asList(sampleRepository(), sampleRepository(), sampleRepository());
 
-        when(service.items(SearchViewModel.Query.firstPage(query)))
+        when(service.repositories(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(just(firstPage));
-        when(service.items(new SearchViewModel.Query(1, query)))
+        when(service.repositories(new SearchViewModel.Query(1, query)))
                 .thenReturn(just(secondPage));
-        when(service.items(SearchViewModel.Query.firstPage(nextQuery)))
+        when(service.repositories(SearchViewModel.Query.firstPage(nextQuery)))
                 .thenReturn(just(firstPageNextQuery));
 
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
@@ -263,7 +263,7 @@ public final class SearchViewModelTest {
     }
 
     private void setupServiceToReturnSingletonListOnFirstQuery() {
-        when(service.items(firstPage(QUERY_TEXT)))
+        when(service.repositories(firstPage(QUERY_TEXT)))
                 .thenReturn(just(singletonList(sampleRepository())));
     }
 
@@ -313,13 +313,13 @@ public final class SearchViewModelTest {
 //        final List<Repositories.Item> firstPageNextQuery = asList(sampleRepository(), sampleRepository(), sampleRepository());
 //        final List<Repositories.Item> secondPageNextQuery = asList(sampleRepository(), sampleRepository(), sampleRepository(), sampleRepository());
 //
-//        when(service.items(SearchViewModel.Query.firstPage(query)))
+//        when(service.repositories(SearchViewModel.Query.firstPage(query)))
 //                .thenReturn(just(firstPage));
-//        when(service.items(new SearchViewModel.Query(1, query)))
+//        when(service.repositories(new SearchViewModel.Query(1, query)))
 //                .thenReturn(just(secondPage));
-//        when(service.items(SearchViewModel.Query.firstPage(nextQuery)))
+//        when(service.repositories(SearchViewModel.Query.firstPage(nextQuery)))
 //                .thenReturn(just(firstPageNextQuery));
-//        when(service.items(new SearchViewModel.Query(1, nextQuery)))
+//        when(service.repositories(new SearchViewModel.Query(1, nextQuery)))
 //                .thenReturn(just(secondPageNextQuery));
 //
 //        final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();

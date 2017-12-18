@@ -11,30 +11,30 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public final class WorkingOnBackgroundRepoService implements RepoService {
+public final class WorkingOnBackgroundRepoService implements RepositoryDataSource {
 
-    private final RepoService decorated;
+    private final RepositoryDataSource decorated;
 
     @Inject
-    WorkingOnBackgroundRepoService(@Github final RepoService decorated) {
+    WorkingOnBackgroundRepoService(@Github final RepositoryDataSource decorated) {
         this.decorated = decorated;
     }
 
     @Override
-    public Repositories.Item cached(final String id) {
-        return decorated.cached(id);
+    public Repositories.Item repositoryFromCache(final String name) {
+        return decorated.repositoryFromCache(name);
     }
 
     @Override
-    public Maybe<Collection<Repositories.Item>> items(final SearchViewModel.Query query) {
-        return decorated.items(query)
+    public Maybe<Collection<Repositories.Item>> repositories(final SearchViewModel.Query query) {
+        return decorated.repositories(query)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     @Override
-    public Single<Boolean> cacheItem(final String name) {
-        return decorated.cacheItem(name)
+    public Single<Boolean> cacheRepository(final String name) {
+        return decorated.cacheRepository(name)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

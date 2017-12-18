@@ -4,7 +4,7 @@ import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.NonNull;
 
-import net.chmielowski.github.data.RepoService;
+import net.chmielowski.github.data.RepositoryDataSource;
 import net.chmielowski.github.network.NetworkState;
 import net.chmielowski.github.utils.Assertions;
 import net.chmielowski.github.utils.ValueIgnored;
@@ -22,7 +22,7 @@ import static java.util.stream.Collectors.toList;
 
 @Singleton
 public final class SearchViewModel {
-    private final RepoService repository;
+    private final RepositoryDataSource repository;
 
     private final QueryHistory queryHistory;
 
@@ -34,7 +34,7 @@ public final class SearchViewModel {
     private boolean isLoading;
 
     @Inject
-    SearchViewModel(@RepoService.WorkOnBackground final RepoService repository,
+    SearchViewModel(@RepositoryDataSource.WorkOnBackground final RepositoryDataSource repository,
                     final QueryHistory queryHistory,
                     final NetworkState networkState) {
         this.repository = repository;
@@ -87,7 +87,7 @@ public final class SearchViewModel {
 
     @SuppressWarnings("Convert2MethodRef")
     private Observable<ListState> fetchResults(final Query query) {
-        return repository.items(query)
+        return repository.repositories(query)
                 .map(repositories -> repositories.stream()
                         .map(repo -> new RepositoryViewModel(repo, query.text))
                         .collect(toList()))

@@ -6,8 +6,8 @@ import android.databinding.ObservableField;
 import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.RepositoryScope;
 import net.chmielowski.github.data.Favourites;
-import net.chmielowski.github.data.RepoService;
 import net.chmielowski.github.data.Repositories;
+import net.chmielowski.github.data.RepositoryDataSource;
 
 import javax.inject.Inject;
 
@@ -34,11 +34,11 @@ public final class DetailsViewModel {
     private final Repositories.Item repo;
 
     @Inject
-    DetailsViewModel(@RepoService.WorkOnBackground final RepoService service,
+    DetailsViewModel(@RepositoryDataSource.WorkOnBackground final RepositoryDataSource service,
                      final Favourites likedRepos,
                      @RepositoryId final String id) {
         this.likedRepos = likedRepos;
-        this.repo = service.cached(id);
+        this.repo = service.repositoryFromCache(id);
         bind(this.repo);
     }
 
