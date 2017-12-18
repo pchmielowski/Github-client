@@ -1,20 +1,24 @@
 <resources>
     <string name="app_name">Github</string>
-    <string name="action_favourite">Favourite</string>
-    <string name="transition_name">transition_name</string>
-    <string name="add_to_favourites">Add to favourites</string>
-    <string name="avatar">avatar</string>
-    <string name="transition_owner">transition_owner</string>
-    <string name="transition_avatar">transition_avatar</string>
-    <string name="now_you_like">Added to favourites: </string>
-    <string name="you_unlike">You\'ve unliked</string>
-    <string name="last_searches">Last searches:</string>
-    <string name="you_are_offline">You are offline</string>
-    <string name="you_are_online_again">You are online again!</string>
-    <string name="search">Search…</string>
-    <string name="clear">Clear</string>
+    
     <string name="title_search">Find repository</string>
     <string name="title_repository">Repository</string>
     <string name="title_favourites">Favourites</string>
+
+    <string name="msg_added_to_favs">Added to favourites: </string>
+    <string name="msg_you_unlike">You\'ve unliked</string>
+    <string name="msg_you_are_offline">You are offline</string>
+    <string name="msg_you_are_online_again">You are online again!</string>
+
+    <string name="label_favourite">Favourite</string>
+    <string name="label_add_to_favourites">Add to favourites</string>
+    <string name="label_avatar">avatar</string>
+    <string name="label_last_searches">Last searches:</string>
+    <string name="label_search">Search…</string>
+    <string name="label_clear">Clear</string>
+
+    <string name="transition_name">transition_name</string>
+    <string name="transition_owner">transition_owner</string>
+    <string name="transition_avatar">transition_avatar</string>
     <string name="transition_card">card</string>
 </resources>

@@ -53,7 +53,7 @@ public class DetailsActivity extends BaseActivity {
     @NonNull
     private String asMessage(final DetailsViewModel.Action action) {
         return String.format("%s %s",
-                getString(action.type == LIKE ? R.string.now_you_like : R.string.you_unlike),
+                getString(action.type == LIKE ? R.string.msg_added_to_favs : R.string.msg_you_unlike),
                 action.repo);
     }
 
