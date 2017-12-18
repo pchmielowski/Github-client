@@ -8,7 +8,7 @@ import javax.inject.Singleton;
 import dagger.Component;
 
 @Singleton
-@Component(modules = {DataModule.class, ApplicationModule.class})
+@Component(modules = {DataModule.class, ApplicationModule.class, NetworkModule.class})
 public interface MainComponent {
 
     RepositoryComponent plusRepositoryComponent(RepositoryModule module);
