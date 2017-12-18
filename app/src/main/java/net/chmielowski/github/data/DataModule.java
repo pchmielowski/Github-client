@@ -47,8 +47,8 @@ public abstract class DataModule {
     @Provides
     @Singleton
     @NonNull
-    static RestService provideRestService(final Retrofit retrofit) {
-        return retrofit.create(RestService.class);
+    static Server provideRestService(final Retrofit retrofit) {
+        return retrofit.create(Server.class);
     }
 
     @Provides

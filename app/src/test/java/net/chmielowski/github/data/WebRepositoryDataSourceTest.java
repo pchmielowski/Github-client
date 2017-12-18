@@ -25,11 +25,11 @@ import static retrofit2.Response.error;
 import static retrofit2.Response.success;
 
 public class WebRepositoryDataSourceTest {
-    private RestService rest;
+    private Server rest;
 
     @Before
     public void setUp() throws Exception {
-        rest = Mockito.mock(RestService.class);
+        rest = Mockito.mock(Server.class);
     }
 
     @Test
@@ -39,7 +39,7 @@ public class WebRepositoryDataSourceTest {
         repositories.items = singletonList(repository);
 
         final String query = "query";
-        when(rest.searchRepositories(query, 0))
+        when(rest.find(query, 0))
                 .thenReturn(just(success(repositories)));
 
         final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
@@ -58,7 +58,7 @@ public class WebRepositoryDataSourceTest {
         repositories.items = singletonList(repository);
 
         final String query = "query";
-        when(rest.searchRepositories(query, 0))
+        when(rest.find(query, 0))
                 .thenReturn(just(error(500, create(parse("text/plain"), "server error"))));
 
         final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
@@ -82,7 +82,7 @@ public class WebRepositoryDataSourceTest {
         repositories.items = singletonList(repository);
 
         final String query = "query";
-        when(rest.searchRepositories(query, 0))
+        when(rest.find(query, 0))
                 .thenReturn(just(error(404, create(parse("text/plain"), "client error"))));
 
         final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
@@ -96,7 +96,7 @@ public class WebRepositoryDataSourceTest {
     @Test
     public void cacheItem() throws Exception {
         final Repositories.Item repo = sampleRepository();
-        Mockito.when(rest.repo(repo.owner.login, repo.name))
+        Mockito.when(rest.repository(repo.owner.login, repo.name))
                 .thenReturn(just(success(repo)));
 
         final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());

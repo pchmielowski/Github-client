@@ -36,7 +36,7 @@ public class FavsViewModelTest {
     }
 
     private void itemCached(final boolean result) {
-        final String repository = "repo";
+        final String repository = "repository";
         final SingleSubject<Boolean> subject = SingleSubject.create();
         when(service.cacheRepository(repository))
                 .thenReturn(subject);
