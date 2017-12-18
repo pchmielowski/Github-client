@@ -4,10 +4,13 @@ import android.text.Spannable;
 import android.text.SpannableStringBuilder;
 import android.text.style.StyleSpan;
 
-// TODO: find better name
-public final class BoldQueryViewModel {
+public final class ResultWithEmphasedQuery {
 
     private final RepositoryViewModel model;
+
+    ResultWithEmphasedQuery(final RepositoryViewModel model) {
+        this.model = model;
+    }
 
     public SpannableStringBuilder name() {
         final RepositoryViewModel.FormattedText name = model.name();
@@ -36,6 +39,4 @@ public final class BoldQueryViewModel {
     public String language() {
         return model.language;
     }
-
-    BoldQueryViewModel(final RepositoryViewModel model) {this.model = model;}
 }

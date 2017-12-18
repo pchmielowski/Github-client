@@ -115,7 +115,7 @@ public final class SearchResultsAdapter extends RecyclerView.Adapter<RecyclerVie
         }
 
         private void bind(final RepositoryViewModel model) {
-            binding.setModel(new BoldQueryViewModel(model));
+            binding.setModel(new ResultWithEmphasedQuery(model));
         }
 
     }
