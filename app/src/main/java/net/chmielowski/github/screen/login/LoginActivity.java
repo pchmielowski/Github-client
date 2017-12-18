@@ -16,6 +16,8 @@ import net.chmielowski.github.databinding.ActivityLoginBinding;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.search.SearchActivity;
 
+import java.util.Arrays;
+
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
@@ -23,7 +25,6 @@ import io.reactivex.disposables.Disposable;
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 import static com.jakewharton.rxbinding2.widget.RxTextView.editorActions;
 import static io.reactivex.Observable.merge;
-import static java.util.Collections.singletonList;
 
 
 public final class LoginActivity extends BaseActivity {
@@ -44,7 +45,9 @@ public final class LoginActivity extends BaseActivity {
     @NonNull
     @Override
     protected Iterable<Disposable> disposables() {
-        return singletonList(
+        return Arrays.asList(
+                RxView.clicks(binding.noLogin)
+                        .subscribe(__ -> goToSearch()),
                 merge(
                         editorActions(binding.password, action -> action == EditorInfo.IME_ACTION_SEND),
                         RxView.clicks(binding.login)
@@ -55,10 +58,14 @@ public final class LoginActivity extends BaseActivity {
 
     private void onLogin(final Boolean success) {
         if (success) {
-            startActivity(new Intent(this, SearchActivity.class));
-            finish();
+            goToSearch();
         } else {
             Snackbar.make(binding.getRoot(), "Login failed", LENGTH_SHORT).show();
         }
+    }
+
+    private void goToSearch() {
+        startActivity(new Intent(this, SearchActivity.class));
+        finish();
     }
 }

@@ -24,4 +24,5 @@
     <string name="transition_card">card</string>
     <string name="label_login">Login</string>
     <string name="label_password">Password</string>
+    <string name="label_without_login">Click here to continue without login (number of requests will be limited).</string>
 </resources>
