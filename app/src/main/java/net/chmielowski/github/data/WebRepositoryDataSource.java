@@ -16,13 +16,13 @@ import retrofit2.Response;
 import static java.util.Objects.requireNonNull;
 
 public final class WebRepositoryDataSource implements RepositoryDataSource {
-    private final Server service;
+    private final Server server;
     private final Map<String, Repositories.Item> cache;
 
     @Inject
-    WebRepositoryDataSource(final Server service,
+    WebRepositoryDataSource(final Server server,
                             final Map<String, Repositories.Item> cache) {
-        this.service = service;
+        this.server = server;
         this.cache = cache;
     }
 
@@ -30,7 +30,7 @@ public final class WebRepositoryDataSource implements RepositoryDataSource {
     @Override
     public Maybe<Collection<Repositories.Item>> repositories(final SearchViewModel.Query query) {
         // TODO: handle SocketTimeoutException
-        return service.find(query.text, query.page)
+        return server.find(query.text, query.page)
                 .doOnSuccess(response -> {
                     if (response.code() / 100 == 4) {
                         throw new IllegalStateException("Response code is 4**");
@@ -57,7 +57,7 @@ public final class WebRepositoryDataSource implements RepositoryDataSource {
         final String[] split = name.split("/");
         return cache.containsKey(name)
                 ? Single.just(true)
-                : service.repository(split[0], split[1])
+                : server.repository(split[0], split[1])
                 .doOnSuccess(response -> {
                     if (!response.isSuccessful()) {
                         return;

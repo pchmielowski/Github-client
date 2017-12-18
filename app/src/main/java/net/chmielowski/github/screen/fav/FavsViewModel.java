@@ -14,15 +14,16 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 
 public class FavsViewModel {
-    private final RepositoryDataSource service;
 
     public final ObservableBoolean loading = new ObservableBoolean();
+
+    private final RepositoryDataSource data;
     private final Favourites favourites;
 
     @Inject
-    FavsViewModel(@RepositoryDataSource.WorkOnBackground final RepositoryDataSource service,
+    FavsViewModel(@RepositoryDataSource.WorkOnBackground final RepositoryDataSource data,
                   final Favourites favourites) {
-        this.service = service;
+        this.data = data;
         this.favourites = favourites;
     }
 
@@ -31,7 +32,7 @@ public class FavsViewModel {
     }
 
     Single<Boolean> cache(final String repo) {
-        return service.cacheRepository(repo)
+        return data.cacheRepository(repo)
                 .doOnSubscribe(__ -> loading.set(true))
                 .doOnSuccess(__ -> loading.set(false));
     }
