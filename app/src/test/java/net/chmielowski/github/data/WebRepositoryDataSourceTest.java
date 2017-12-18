@@ -12,8 +12,8 @@ import io.reactivex.observers.TestObserver;
 
 import static io.reactivex.Single.just;
 import static java.util.Collections.singletonList;
+import static net.chmielowski.github.TestUtils.sampleRepository;
 import static net.chmielowski.github.screen.search.SearchViewModel.Query.firstPage;
-import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static okhttp3.MediaType.parse;
 import static okhttp3.ResponseBody.create;
 import static org.hamcrest.CoreMatchers.is;

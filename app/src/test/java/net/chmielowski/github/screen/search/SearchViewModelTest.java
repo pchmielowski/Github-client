@@ -2,6 +2,7 @@ package net.chmielowski.github.screen.search;
 
 import android.support.annotation.NonNull;
 
+import net.chmielowski.github.TestUtils;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RepositoryDataSource;
 import net.chmielowski.github.network.NetworkState;
@@ -14,7 +15,6 @@ import net.chmielowski.github.utils.ValueIgnored;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
-import org.mockito.stubbing.Answer;
 
 import java.util.List;
 import java.util.function.Consumer;
@@ -32,12 +32,12 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static net.chmielowski.github.TestUtils.sampleRepository;
 import static net.chmielowski.github.screen.ListState.empty;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
 import static net.chmielowski.github.screen.search.SearchViewModel.ErrorMessage.EMPTY_QUERY;
 import static net.chmielowski.github.screen.search.SearchViewModel.Query.firstPage;
-import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static net.chmielowski.github.utils.ValueIgnored.VALUE_IGNORED;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -320,7 +320,7 @@ public final class SearchViewModelTest {
     private NetworkState alwaysOnline() {
         final NetworkState mock = Mockito.mock(NetworkState.class);
         when(mock.requireOnline(Mockito.any(Observable.class)))
-                .thenAnswer(withFirstArgument());
+                .thenAnswer(TestUtils.withFirstArgument());
         when(mock.isOnline()).thenReturn(true);
         return mock;
     }
@@ -332,11 +332,6 @@ public final class SearchViewModelTest {
                 .thenReturn(never());
         when(mock.isOnline()).thenReturn(false);
         return mock;
-    }
-
-    @NonNull
-    private static Answer withFirstArgument() {
-        return invocation -> invocation.getArguments()[0];
     }
 
     private static Observable<ValueIgnored> emitOnce() {

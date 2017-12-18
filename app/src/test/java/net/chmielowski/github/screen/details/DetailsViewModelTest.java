@@ -1,10 +1,10 @@
 package net.chmielowski.github.screen.details;
 
+import net.chmielowski.github.TestUtils;
 import net.chmielowski.github.data.Favourites;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RepositoryDataSource;
 import net.chmielowski.github.screen.details.DetailsViewModel.Action;
-import net.chmielowski.github.utils.TestUtils;
 
 import org.junit.Test;
 import org.mockito.Mockito;

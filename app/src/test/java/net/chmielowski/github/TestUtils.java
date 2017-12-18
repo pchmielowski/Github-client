@@ -1,10 +1,16 @@
-package net.chmielowski.github.utils;
+package net.chmielowski.github;
 
 import android.support.annotation.NonNull;
 
 import net.chmielowski.github.data.Repositories;
 
-public class TestUtils {
+import org.mockito.stubbing.Answer;
+
+public final class TestUtils {
+    private TestUtils() {
+        throw new AssertionError("No instances!");
+    }
+
     @NonNull
     public static Repositories.Item sampleRepository() {
         final Repositories.Item item = new Repositories.Item();
@@ -17,5 +23,10 @@ public class TestUtils {
         item.owner = owner;
         item.fullName = owner.login + "/" + item.name;
         return item;
+    }
+
+    @NonNull
+    public static Answer withFirstArgument() {
+        return invocation -> invocation.getArguments()[0];
     }
 }

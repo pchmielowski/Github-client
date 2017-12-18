@@ -2,8 +2,8 @@ package net.chmielowski.github.screen;
 
 import junit.framework.Assert;
 
+import net.chmielowski.github.TestUtils;
 import net.chmielowski.github.data.Repositories;
-import net.chmielowski.github.utils.TestUtils;
 
 import org.junit.Test;
 
