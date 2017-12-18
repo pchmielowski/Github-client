@@ -29,7 +29,7 @@ import static com.google.gson.FieldNamingPolicy.LOWER_CASE_WITH_UNDERSCORES;
 public abstract class DataModule {
     @RepositoryDataSource.WorkOnBackground
     @Binds
-    abstract RepositoryDataSource bindRepoService(WorkingOnBackgroundRepoService impl);
+    abstract RepositoryDataSource bindRepoService(BackgroundRepoDataSource impl);
 
     @RepositoryDataSource.Github
     @Binds

@@ -11,12 +11,17 @@ import io.reactivex.Single;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.schedulers.Schedulers;
 
-public final class WorkingOnBackgroundRepoService implements RepositoryDataSource {
+/**
+ * Decorator for {@link RepositoryDataSource}
+ * Performs network operations on IO thread pool,
+ * returns result on main thread
+ */
+public final class BackgroundRepoDataSource implements RepositoryDataSource {
 
     private final RepositoryDataSource decorated;
 
     @Inject
-    WorkingOnBackgroundRepoService(@Github final RepositoryDataSource decorated) {
+    BackgroundRepoDataSource(@Github final RepositoryDataSource decorated) {
         this.decorated = decorated;
     }
 
