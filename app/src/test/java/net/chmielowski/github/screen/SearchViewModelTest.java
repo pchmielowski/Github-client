@@ -29,6 +29,7 @@ import static java.util.Arrays.asList;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
 import static java.util.stream.Collectors.toList;
+import static net.chmielowski.github.screen.ListState.empty;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
 import static net.chmielowski.github.screen.SearchViewModel.Query.firstPage;
@@ -77,6 +78,20 @@ public final class SearchViewModelTest {
                 .test();
 
         assertion.accept(test);
+    }
+
+    @Test
+    public void hidesLoadingOnFailure() throws Exception {
+        when(service.repositories(firstPage(QUERY_TEXT)))
+                .thenReturn(Maybe.empty());
+
+        createViewModel()
+                .replaceResults(query(QUERY_TEXT))
+                .test()
+                .assertValuesOnly(
+                        loading(),
+                        empty()
+                );
     }
 
     @Test

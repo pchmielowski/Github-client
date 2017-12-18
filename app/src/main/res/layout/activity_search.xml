@@ -62,7 +62,6 @@
                 app:layout_constraintTop_toTopOf="@+id/search"
                 app:visibility="@{model.searchMode}"/>
 
-
             <TextView
                 android:id="@+id/searches_label"
                 android:layout_width="0dp"

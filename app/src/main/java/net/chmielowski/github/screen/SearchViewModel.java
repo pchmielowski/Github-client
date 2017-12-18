@@ -93,6 +93,7 @@ public final class SearchViewModel {
                         .map(repo -> new RepositoryViewModel(repo, query.text))
                         .collect(toList()))
                 .map(ListState::loaded)
+                .defaultIfEmpty(ListState.empty())
                 .toObservable()
                 .startWith(ListState.loading())
                 .doOnSubscribe(__ -> lock())

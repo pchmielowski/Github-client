@@ -12,6 +12,7 @@ import net.chmielowski.github.screen.search.RealmFacade;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 import javax.inject.Singleton;
 
@@ -65,6 +66,9 @@ public abstract class DataModule {
                 .client(new OkHttpClient.Builder()
                         .addInterceptor(new HttpLoggingInterceptor()
                                 .setLevel(HttpLoggingInterceptor.Level.BODY))
+                        .connectTimeout(1, TimeUnit.MILLISECONDS)
+                        .readTimeout(1, TimeUnit.MILLISECONDS)
+                        .writeTimeout(1, TimeUnit.MILLISECONDS)
                         .addNetworkInterceptor(new StethoInterceptor())
                         .build())
                 .build();

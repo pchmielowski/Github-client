@@ -2,11 +2,12 @@ package net.chmielowski.github.screen;
 
 import android.support.annotation.NonNull;
 
-import java.util.Collections;
 import java.util.List;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+
+import static java.util.Collections.emptyList;
 
 @ToString
 @EqualsAndHashCode
@@ -25,8 +26,12 @@ public final class ListState {
     }
 
     @NonNull
-    public static ListState loading() {
-        return new ListState(Collections.emptyList(), true);
+    static ListState empty() {
+        return loaded(emptyList());
     }
 
+    @NonNull
+    static ListState loading() {
+        return new ListState(emptyList(), true);
+    }
 }
