@@ -19,6 +19,7 @@ import lombok.ToString;
 
 import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type.LIKE;
 import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type.UNLIKE;
+import static net.chmielowski.github.utils.DateFormatter.format;
 
 @RepositoryScope
 public final class DetailsViewModel {
@@ -26,6 +27,12 @@ public final class DetailsViewModel {
     public final ObservableField<String> name = new ObservableField<>();
     public final ObservableField<String> description = new ObservableField<>();
     public final ObservableField<String> avatar = new ObservableField<>();
+
+    public final ObservableField<String> createdAt = new ObservableField<>();
+    public final ObservableField<String> updatedAt = new ObservableField<>();
+    public final ObservableField<String> forks = new ObservableField<>();
+    public final ObservableField<String> openIssues = new ObservableField<>();
+
 
     public final ObservableBoolean favourite = new ObservableBoolean(false);
 
@@ -48,6 +55,10 @@ public final class DetailsViewModel {
         name.set(item.name);
         description.set(item.description);
         avatar.set(item.owner.avatarUrl);
+        createdAt.set(format(item.createdAt));
+        updatedAt.set(format(item.updatedAt));
+        forks.set(String.valueOf(item.forks));
+        openIssues.set(String.valueOf(item.openIssues));
     }
 
     @EqualsAndHashCode

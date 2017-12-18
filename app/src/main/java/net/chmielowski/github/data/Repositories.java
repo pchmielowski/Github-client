@@ -2,6 +2,7 @@ package net.chmielowski.github.data;
 
 
 import java.util.Collection;
+import java.util.Date;
 
 import lombok.EqualsAndHashCode;
 
@@ -22,6 +23,16 @@ public final class Repositories {
         public String description;
 
         public String language;
+
+        public Date createdAt;
+
+        public Date updatedAt;
+
+        public String homepage;
+
+        public int forks;
+
+        public int openIssues;
 
         public static final class Owner {
             public String login;

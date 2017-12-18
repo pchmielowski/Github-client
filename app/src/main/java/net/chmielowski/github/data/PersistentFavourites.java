@@ -22,7 +22,7 @@ public final class PersistentFavourites implements Favourites {
     @Override
     public List<RepositoryViewModel> all() {
         return persistence.get(realm ->
-                realm.where(RealmRepo.class)
+                realm.where(RealmFavouriteRepository.class)
                         .findAll()
                         .stream()
                         .map(RepositoryViewModel::new)
@@ -32,12 +32,12 @@ public final class PersistentFavourites implements Favourites {
     @Override
     public Single<Boolean> toggle(final Repositories.Item repo) {
         final Boolean like = persistence.get(realm -> {
-            final RealmResults<RealmRepo> found = realm.where(RealmRepo.class)
-                    .equalTo(RealmRepo.ID, repo.fullName)
+            final RealmResults<RealmFavouriteRepository> found = realm.where(RealmFavouriteRepository.class)
+                    .equalTo(RealmFavouriteRepository.ID, repo.fullName)
                     .findAll();
             if (found.isEmpty()) {
                 realm.executeTransaction(transaction ->
-                        transaction.copyToRealmOrUpdate(new RealmRepo(repo)));
+                        transaction.copyToRealmOrUpdate(new RealmFavouriteRepository(repo)));
                 return true;
             }
             realm.executeTransaction(transaction ->
@@ -51,8 +51,8 @@ public final class PersistentFavourites implements Favourites {
     @SuppressWarnings("ConstantConditions")
     public boolean isLiked(final String repo) {
         return persistence.get(realm -> {
-            final long count = realm.where(RealmRepo.class)
-                    .equalTo(RealmRepo.ID, repo)
+            final long count = realm.where(RealmFavouriteRepository.class)
+                    .equalTo(RealmFavouriteRepository.ID, repo)
                     .count();
             if (count > 1) {
                 throw new IllegalStateException(

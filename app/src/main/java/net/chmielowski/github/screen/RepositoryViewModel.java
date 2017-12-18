@@ -2,7 +2,7 @@ package net.chmielowski.github.screen;
 
 import android.support.annotation.NonNull;
 
-import net.chmielowski.github.data.RealmRepo;
+import net.chmielowski.github.data.RealmFavouriteRepository;
 import net.chmielowski.github.data.Repositories;
 
 import lombok.EqualsAndHashCode;
@@ -36,7 +36,7 @@ public final class RepositoryViewModel {
         this(repo.name, query, repo.owner.login, repo.fullName, repo.owner.avatarUrl, repo.language);
     }
 
-    public RepositoryViewModel(final RealmRepo repo) {
+    public RepositoryViewModel(final RealmFavouriteRepository repo) {
         this(repo.name, "", repo.owner, repo.id, repo.avatar, repo.language);
     }
 

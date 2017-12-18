@@ -5,7 +5,7 @@ import io.realm.annotations.PrimaryKey;
 import io.realm.annotations.RealmClass;
 
 @RealmClass
-public class RealmRepo implements RealmModel {
+public class RealmFavouriteRepository implements RealmModel {
     static final String ID = "id";
     @PrimaryKey
     public String id;
@@ -18,10 +18,10 @@ public class RealmRepo implements RealmModel {
 
     public String language;
 
-    public RealmRepo() {
+    public RealmFavouriteRepository() {
     }
 
-    RealmRepo(final Repositories.Item json) {
+    RealmFavouriteRepository(final Repositories.Item json) {
         this.id = json.fullName;
         this.name = json.name;
         this.owner = json.owner.login;
