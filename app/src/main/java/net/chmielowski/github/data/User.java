@@ -1,8 +1,5 @@
 package net.chmielowski.github.data;
 
-import android.support.annotation.Nullable;
-import android.util.Log;
-
 import java.util.Optional;
 
 import javax.inject.Inject;
@@ -12,22 +9,29 @@ import okhttp3.Credentials;
 
 @Singleton
 public final class User {
-    @Inject
-    User() { }
+    private final Persistence persistence;
 
-    @Nullable
-    private String token;
+    @Inject
+    User(final Persistence persistence) {
+        this.persistence = persistence;
+    }
 
     public void logout() {
-        token = null;
+        persistence.executeInTransaction(realm ->
+                realm.where(RealmUser.class)
+                        .findAll()
+                        .deleteAllFromRealm());
     }
 
     public void login(final String user, final String password) {
-        token = Credentials.basic(user, password);
+        persistence.executeInTransaction(realm ->
+                realm.copyToRealmOrUpdate(new RealmUser(Credentials.basic(user, password))));
     }
 
     Optional<String> token() {
-        Log.d("pchm", String.valueOf(token));
-        return Optional.ofNullable(token);
+        return persistence.get(realm ->
+                Optional.ofNullable(realm.where(RealmUser.class)
+                        .findFirst())
+                        .map(it -> it.token));
     }
 }
