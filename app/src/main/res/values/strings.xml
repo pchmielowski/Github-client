@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Github</string>
+    <string name="app_name">Github client</string>
 
     <string name="title_login">Login</string>
     <string name="title_search">Find repository</string>

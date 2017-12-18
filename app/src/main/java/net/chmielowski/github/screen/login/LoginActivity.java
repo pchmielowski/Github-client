@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.view.inputmethod.EditorInfo;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
@@ -15,13 +16,14 @@ import net.chmielowski.github.databinding.ActivityLoginBinding;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.search.SearchActivity;
 
-import java.util.Collections;
-
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
 
 import static android.support.design.widget.Snackbar.LENGTH_SHORT;
+import static com.jakewharton.rxbinding2.widget.RxTextView.editorActions;
+import static io.reactivex.Observable.merge;
+import static java.util.Collections.singletonList;
 
 
 public final class LoginActivity extends BaseActivity {
@@ -42,17 +44,21 @@ public final class LoginActivity extends BaseActivity {
     @NonNull
     @Override
     protected Iterable<Disposable> disposables() {
-        return Collections.singletonList(
-                RxView.clicks(binding.login)
-                        .flatMapSingle(__ -> model.login())
-                        .subscribe(success -> {
-                            if (success) {
-                                startActivity(new Intent(this, SearchActivity.class));
-                                finish();
-                            } else {
-                                Snackbar.make(binding.getRoot(), "Login failed", LENGTH_SHORT).show();
-                            }
-                        })
+        return singletonList(
+                merge(
+                        editorActions(binding.password, action -> action == EditorInfo.IME_ACTION_SEND),
+                        RxView.clicks(binding.login)
+                ).flatMapSingle(__ -> model.login())
+                        .subscribe(this::onLogin)
         );
+    }
+
+    private void onLogin(final Boolean success) {
+        if (success) {
+            startActivity(new Intent(this, SearchActivity.class));
+            finish();
+        } else {
+            Snackbar.make(binding.getRoot(), "Login failed", LENGTH_SHORT).show();
+        }
     }
 }
