@@ -11,7 +11,7 @@ import org.robolectric.annotation.Config;
 
 import java.util.function.Consumer;
 
-import static edu.emory.mathcs.backport.java.util.Collections.emptyList;
+import static java.util.Collections.emptyList;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
 import static net.chmielowski.github.screen.SearchResultsAdapter.TYPE_SPINNER;

@@ -14,11 +14,14 @@ import javax.inject.Singleton;
 
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.subjects.PublishSubject;
+import io.reactivex.subjects.Subject;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
 import static java.util.Objects.requireNonNull;
 import static java.util.stream.Collectors.toList;
+import static net.chmielowski.github.screen.SearchViewModel.ErrorMessage.EMPTY_QUERY;
 
 @Singleton
 public final class SearchViewModel {
@@ -26,8 +29,9 @@ public final class SearchViewModel {
 
     private final QueryHistory queryHistory;
 
-    public final ObservableField<String> query = new ObservableField<>();
+    public final ObservableField<String> query = new ObservableField<>("");
     public final ObservableBoolean searchMode = new ObservableBoolean(true);
+    public final ObservableBoolean emptyQuery = new ObservableBoolean(false);
 
     private int page = 0;
     private String lastQuery;
@@ -42,7 +46,6 @@ public final class SearchViewModel {
         this.networkState = networkState;
     }
 
-    // TODO: do not display spinner infinatelly on no response
     public Observable<ListState> replaceResults(final Observable<?> searchBtnClicked,
                                                 final Observable<String> searchQuery) {
         return replaceResults(
@@ -53,14 +56,22 @@ public final class SearchViewModel {
     }
 
     Observable<ListState> replaceResults(final Observable<CharSequence> searchQuery) {
-        // TODO: handle null/empty query
         return searchQuery
                 .compose(Assertions::neverCompletes)
                 .map(CharSequence::toString)
+                .filter(this::isNonEmpty)
                 .filter(__ -> networkState.isOnline())
                 .doOnNext(this::updateState)
                 .map(Query::firstPage)
                 .flatMap(this::fetchResults);
+    }
+
+    private boolean isNonEmpty(final String s) {
+        final boolean empty = s.trim().isEmpty();
+        if (empty) {
+            errorSubject.onNext(EMPTY_QUERY);
+        }
+        return !empty;
     }
 
     public Observable<ListState> appendResults(final Observable<ValueIgnored> scrolledToEnd) {
@@ -132,6 +143,16 @@ public final class SearchViewModel {
             searchMode.set(false);
         }
         return Single.just(changeMode);
+    }
+
+    enum ErrorMessage {
+        EMPTY_QUERY
+    }
+
+    private final Subject<ErrorMessage> errorSubject = PublishSubject.create();
+
+    Observable<ErrorMessage> error() {
+        return errorSubject;
     }
 
     @EqualsAndHashCode

@@ -32,6 +32,7 @@ import static java.util.stream.Collectors.toList;
 import static net.chmielowski.github.screen.ListState.empty;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
+import static net.chmielowski.github.screen.SearchViewModel.ErrorMessage.EMPTY_QUERY;
 import static net.chmielowski.github.screen.SearchViewModel.Query.firstPage;
 import static net.chmielowski.github.utils.TestUtils.sampleRepository;
 import static net.chmielowski.github.utils.ValueIgnored.VALUE_IGNORED;
@@ -92,6 +93,27 @@ public final class SearchViewModelTest {
                         loading(),
                         empty()
                 );
+    }
+
+    @Test
+    public void showsErrorOnEmptyQuery() throws Exception {
+        emptyQuery("");
+    }
+    @Test
+    public void showsErrorOnQueryWithSpacesOnly() throws Exception {
+        emptyQuery("         ");
+    }
+
+    private void emptyQuery(final String query) {
+        final SearchViewModel model = createViewModel();
+
+        final TestObserver<SearchViewModel.ErrorMessage> errorTest = model.error().test();
+        model.replaceResults(query(query))
+                .test()
+                .assertEmpty();
+
+        assertThat(model.searchMode.get(), is(true));
+        errorTest.assertValuesOnly(EMPTY_QUERY);
     }
 
     @Test
