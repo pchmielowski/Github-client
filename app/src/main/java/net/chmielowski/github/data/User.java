@@ -28,7 +28,7 @@ public final class User {
                 realm.copyToRealmOrUpdate(new RealmUser(Credentials.basic(user, password))));
     }
 
-    Optional<String> token() {
+    public Optional<String> token() {
         return persistence.get(realm ->
                 Optional.ofNullable(realm.where(RealmUser.class)
                         .findFirst())
