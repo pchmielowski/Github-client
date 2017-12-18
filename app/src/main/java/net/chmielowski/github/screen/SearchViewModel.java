@@ -42,6 +42,7 @@ public final class SearchViewModel {
         this.networkState = networkState;
     }
 
+    // TODO: do not display spinner infinatelly on no response
     public Observable<ListState> replaceResults(final Observable<?> searchBtnClicked,
                                                 final Observable<String> searchQuery) {
         return replaceResults(

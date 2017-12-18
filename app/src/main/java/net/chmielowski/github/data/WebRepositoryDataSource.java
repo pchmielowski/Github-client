@@ -4,6 +4,7 @@ import android.support.annotation.NonNull;
 
 import net.chmielowski.github.screen.SearchViewModel;
 
+import java.net.SocketTimeoutException;
 import java.util.Collection;
 import java.util.Map;
 
@@ -29,14 +30,7 @@ public final class WebRepositoryDataSource implements RepositoryDataSource {
     @SuppressWarnings("ConstantConditions") // response.body() shouldn't be null if isSuccessful()
     @Override
     public Maybe<Collection<Repositories.Item>> repositories(final SearchViewModel.Query query) {
-        // TODO: handle SocketTimeoutException
-        return server.find(query.text, query.page)
-                .doOnSuccess(response -> {
-                    if (response.code() / 100 == 4) {
-                        throw new IllegalStateException("Response code is 4**");
-                    }
-                })
-                .filter(Response::isSuccessful)
+        return makeRequest(server.find(query.text, query.page))
                 .map(response -> response.body().items)
                 .doOnSuccess(this::addToCache);
     }
@@ -57,15 +51,33 @@ public final class WebRepositoryDataSource implements RepositoryDataSource {
         final String[] split = name.split("/");
         return cache.containsKey(name)
                 ? Single.just(true)
-                : server.repository(split[0], split[1])
+                : makeRequest(server.repository(split[0], split[1]))
                 .doOnSuccess(response -> {
-                    if (!response.isSuccessful()) {
-                        return;
-                    }
                     final Repositories.Item item = response.body();
                     cache.put(item.fullName, item);
                 })
-                .map(Response::isSuccessful);
+                .map(__ -> true)
+                .toSingle(false);
+    }
+
+    /**
+     * Executes request and returns {@link Maybe}
+     * - with the value if response is successful
+     * - without value if response code is 5**, 6** or {@link SocketTimeoutException} was thrown
+     *
+     * @throws IllegalStateException if response code is 4**
+     *                               Also rethrows any {@link Throwable} whis is not {@link SocketTimeoutException}
+     */
+    private <T> Maybe<Response<T>> makeRequest(final Single<Response<T>> request) {
+        return request
+                .doOnSuccess(response -> {
+                    if (response.code() / 100 == 4) {
+                        throw new IllegalStateException("Response code is 4**");
+                    }
+                })
+                .filter(Response::isSuccessful)
+                .onErrorComplete(e -> e instanceof SocketTimeoutException);
+
     }
 
 }
