@@ -18,7 +18,7 @@ public final class User {
     @Nullable
     private String token;
 
-    void logout() {
+    public void logout() {
         token = null;
     }
 

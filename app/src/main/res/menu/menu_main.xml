@@ -1,10 +1,14 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    tools:context="net.chmielowski.github.screen.search.SearchActivity">
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="net.chmielowski.github.screen.search.SearchActivity">
     <item
-        android:id="@+id/action_settings"
+        android:id="@+id/action_favourites"
         android:icon="@drawable/ic_favorite"
         android:title="@string/label_favourite"
-        app:showAsAction="always" />
+        app:showAsAction="ifRoom"/>
+    <item
+        android:id="@+id/action_logout"
+        android:title="@string/label_logout"
+        app:showAsAction="never"/>
 </menu>

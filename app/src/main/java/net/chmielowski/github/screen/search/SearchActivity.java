@@ -19,6 +19,7 @@ import android.widget.EditText;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
+import net.chmielowski.github.data.User;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.network.NetworkIndicatorViewModel;
 import net.chmielowski.github.pagination.RxPagination;
@@ -28,6 +29,7 @@ import net.chmielowski.github.screen.QueryHistory;
 import net.chmielowski.github.screen.SearchResultsAdapter;
 import net.chmielowski.github.screen.SearchesAdapter;
 import net.chmielowski.github.screen.fav.FavsActivity;
+import net.chmielowski.github.screen.login.LoginActivity;
 
 import java.util.Arrays;
 
@@ -51,6 +53,8 @@ public class SearchActivity extends BaseActivity {
     QueryHistory queryHistory;
     @Inject
     NetworkIndicatorViewModel networkIndicatorViewModel;
+    @Inject
+    User user;
 
     private ActivitySearchBinding binding;
     private LinearLayoutManager resultsManager;
@@ -139,8 +143,14 @@ public class SearchActivity extends BaseActivity {
 
     @Override
     public boolean onOptionsItemSelected(final MenuItem item) {
-        if (item.getItemId() == R.id.action_settings) {
+        if (item.getItemId() == R.id.action_favourites) {
             startActivity(new Intent(this, FavsActivity.class));
+            return true;
+        }
+        if (item.getItemId() == R.id.action_logout) {
+            user.logout();
+            startActivity(new Intent(this, LoginActivity.class));
+            finish();
             return true;
         }
         throw new IllegalArgumentException("Unknown menu repositoryFromCache");
