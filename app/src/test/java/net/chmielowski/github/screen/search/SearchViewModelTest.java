@@ -43,7 +43,6 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.mockito.Mockito.when;
 
-// TODO: remove redundant tests
 public final class SearchViewModelTest {
 
     private QueryHistory history;

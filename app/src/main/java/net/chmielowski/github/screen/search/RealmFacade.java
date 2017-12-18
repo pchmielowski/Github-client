@@ -15,7 +15,6 @@ public final class RealmFacade implements Persistence {
     RealmFacade() {
     }
 
-    // TODO: inject factory
     private final Supplier<Realm> factory = Realm::getDefaultInstance;
 
     @Override

@@ -19,7 +19,6 @@ public class CustomApplication extends Application {
      * TODO:
      *  "no results"
      *  more info on details
-     *  show error message on error
      */
 
     private MainComponent component;
