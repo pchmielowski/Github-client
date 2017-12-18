@@ -13,7 +13,7 @@
     <string name="you_are_online_again">You are online again!</string>
     <string name="search">Search…</string>
     <string name="clear">Clear</string>
-    <string name="title_search">Search for repo</string>
+    <string name="title_search">Find repository</string>
     <string name="title_repository">Repository</string>
     <string name="title_favourites">Favourites</string>
     <string name="transition_card">card</string>
