@@ -21,6 +21,7 @@ import dagger.Module;
 import dagger.Provides;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
@@ -47,6 +48,9 @@ public abstract class DataModule {
     @Binds
     abstract Favourites bindFavouriteRepos(PersistentFavourites impl);
 
+    @Binds
+    abstract LoginService bindLoginService(WebLoginService impl);
+
     @Provides
     @NonNull
     static Server provideRestService(final Retrofit retrofit) {
@@ -66,25 +70,19 @@ public abstract class DataModule {
                 .client(new OkHttpClient.Builder()
                         .addInterceptor(new HttpLoggingInterceptor()
                                 .setLevel(HttpLoggingInterceptor.Level.BODY))
-                        .addNetworkInterceptor(new StethoInterceptor())
                         .addInterceptor(chain -> addToken(user, chain))
+                        .addNetworkInterceptor(new StethoInterceptor())
                         .build())
                 .build();
     }
 
     private static Response addToken(final User user, final Interceptor.Chain chain) throws IOException {
-        return user.token()
-                .map(token -> {
-                    try {
-                        return chain.proceed(
-                                chain.request().newBuilder()
-                                        .header("Authorization", token)
-                                        .build());
-                    } catch (final IOException e) {
-                        throw new RuntimeException(e);
-                    }
-                })
-                .orElse(chain.proceed(chain.request()));
+        final Request request = user.token()
+                .map(token -> chain.request().newBuilder()
+                        .header("Authorization", token)
+                        .build())
+                .orElseGet(chain::request);
+        return chain.proceed(request);
     }
 
 

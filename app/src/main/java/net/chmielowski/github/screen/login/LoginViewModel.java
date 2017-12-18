@@ -1,20 +1,19 @@
 package net.chmielowski.github.screen.login;
 
 import android.databinding.ObservableField;
-import android.util.Log;
 
-import net.chmielowski.github.data.User;
+import net.chmielowski.github.data.LoginService;
 
 import javax.inject.Inject;
 
 import io.reactivex.Single;
 
 public final class LoginViewModel {
-    private final User user;
+    private final LoginService service;
 
     @Inject
-    LoginViewModel(final User user) {
-        this.user = user;
+    LoginViewModel(final LoginService service) {
+        this.service = service;
     }
 
     public ObservableField<String> name = new ObservableField<>();
@@ -22,10 +21,6 @@ public final class LoginViewModel {
     public ObservableField<String> password = new ObservableField<>();
 
     public Single<Boolean> login() {
-        Log.d("pchm", "LoginViewModel login ");
-        user.login(name.get(), password.get());
-        Log.d("pchm", "saved");
-        return Single.just(true)
-                .doOnSuccess(__ -> Log.d("pchm", "Completed"));
+        return service.login(name.get(), password.get());
     }
 }

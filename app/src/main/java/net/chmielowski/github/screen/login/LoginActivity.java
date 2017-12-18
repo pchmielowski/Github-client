@@ -5,6 +5,7 @@ import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.Snackbar;
 
 import com.jakewharton.rxbinding2.view.RxView;
 
@@ -19,6 +20,8 @@ import java.util.Collections;
 import javax.inject.Inject;
 
 import io.reactivex.disposables.Disposable;
+
+import static android.support.design.widget.Snackbar.LENGTH_SHORT;
 
 
 public final class LoginActivity extends BaseActivity {
@@ -42,9 +45,13 @@ public final class LoginActivity extends BaseActivity {
         return Collections.singletonList(
                 RxView.clicks(binding.login)
                         .flatMapSingle(__ -> model.login())
-                        .subscribe(__ -> {
-                            startActivity(new Intent(this, SearchActivity.class));
-                            finish();
+                        .subscribe(success -> {
+                            if (success) {
+                                startActivity(new Intent(this, SearchActivity.class));
+                                finish();
+                            } else {
+                                Snackbar.make(binding.getRoot(), "Login failed", LENGTH_SHORT).show();
+                            }
                         })
         );
     }

@@ -16,4 +16,7 @@ public interface Server {
     Single<Response<Repositories.Item>> repository(
             @Path("owner") String owner,
             @Path("repository") String name);
+
+    @GET("/")
+    Single<Response<Void>> root();
 }

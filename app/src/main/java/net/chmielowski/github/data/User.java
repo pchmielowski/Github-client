@@ -1,6 +1,7 @@
 package net.chmielowski.github.data;
 
 import android.support.annotation.Nullable;
+import android.util.Log;
 
 import java.util.Optional;
 
@@ -12,12 +13,12 @@ import okhttp3.Credentials;
 @Singleton
 public final class User {
     @Inject
-    public User() { }
+    User() { }
 
     @Nullable
     private String token;
 
-    public void logout() {
+    void logout() {
         token = null;
     }
 
@@ -25,7 +26,8 @@ public final class User {
         token = Credentials.basic(user, password);
     }
 
-    public Optional<String> token() {
+    Optional<String> token() {
+        Log.d("pchm", String.valueOf(token));
         return Optional.ofNullable(token);
     }
 }

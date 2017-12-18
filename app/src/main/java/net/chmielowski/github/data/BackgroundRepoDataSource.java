@@ -14,7 +14,7 @@ import io.reactivex.schedulers.Schedulers;
 /**
  * Decorator for {@link RepositoryDataSource}
  * Performs network operations on IO thread pool,
- * returns result on main thread
+ * returns result on root thread
  */
 public final class BackgroundRepoDataSource implements RepositoryDataSource {
 
