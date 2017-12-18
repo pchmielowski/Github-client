@@ -32,7 +32,7 @@ public final class FavsActivity extends BaseActivity {
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CustomApplication.get(this).component(this).inject(this);
+        CustomApplication.get(this).activityComponent(this).inject(this);
         ActivityFavsBinding binding = DataBindingUtil.setContentView(this, R.layout.activity_favs);
         binding.setModel(model);
         binding.list.setLayoutManager(new LinearLayoutManager(this));

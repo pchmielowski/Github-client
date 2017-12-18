@@ -58,7 +58,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        CustomApplication.get(this).component(this).inject(this);
+        CustomApplication.get(this).activityComponent(this).inject(this);
         binding = DataBindingUtil.setContentView(this, R.layout.activity_search);
         binding.setIndicatorViewModel(networkIndicatorViewModel);
         binding.setModel(model);

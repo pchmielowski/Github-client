@@ -64,9 +64,9 @@ public class CustomApplication extends Application {
         return false;
     }
 
-    public DetailsActivityComponent component(final AppCompatActivity activity,
-                                              final String repository,
-                                              final boolean createNew) {
+    public DetailsActivityComponent activityComponent(final AppCompatActivity activity,
+                                                      final String repository,
+                                                      final boolean createNew) {
         if (createNew) {
             repositoryComponent = component
                     .plusRepositoryComponent(new RepositoryModule(repository));
@@ -76,7 +76,7 @@ public class CustomApplication extends Application {
                 .plusDetailsActivityComponent(new ActivityModule(activity));
     }
 
-    public ActivityComponent component(final AppCompatActivity activity) {
+    public ActivityComponent activityComponent(final AppCompatActivity activity) {
         return component
                 .plusActivityComponent(new ActivityModule(activity));
     }

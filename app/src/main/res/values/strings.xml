@@ -1,6 +1,7 @@
 <resources>
     <string name="app_name">Github</string>
-    
+
+    <string name="title_login">Login</string>
     <string name="title_search">Find repository</string>
     <string name="title_repository">Repository</string>
     <string name="title_favourites">Favourites</string>
@@ -21,4 +22,6 @@
     <string name="transition_owner">transition_owner</string>
     <string name="transition_avatar">transition_avatar</string>
     <string name="transition_card">card</string>
+    <string name="label_login">Login</string>
+    <string name="label_password">Password</string>
 </resources>

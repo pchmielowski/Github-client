@@ -29,7 +29,7 @@ public class DetailsActivity extends BaseActivity {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomApplication.get(this)
-                .component(this, getIntent().getStringExtra(KEY_ID), savedInstanceState == null)
+                .activityComponent(this, getIntent().getStringExtra(KEY_ID), savedInstanceState == null)
                 .inject(this);
 
         final ActivityDetailsBinding binding = DataBindingUtil

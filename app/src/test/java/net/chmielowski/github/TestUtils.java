@@ -19,7 +19,7 @@ public final class TestUtils {
         item.name = "name";
         final Repositories.Item.Owner owner = new Repositories.Item.Owner();
         owner.avatarUrl = "avatar url";
-        owner.login = "login";
+        owner.login = "name";
         item.owner = owner;
         item.fullName = owner.login + "/" + item.name;
         return item;

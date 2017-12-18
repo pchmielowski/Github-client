@@ -10,6 +10,7 @@ import net.chmielowski.github.screen.PersistentQueryHistory;
 import net.chmielowski.github.screen.QueryHistory;
 import net.chmielowski.github.screen.search.RealmFacade;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -18,7 +19,9 @@ import javax.inject.Singleton;
 import dagger.Binds;
 import dagger.Module;
 import dagger.Provides;
+import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
+import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
@@ -45,16 +48,14 @@ public abstract class DataModule {
     abstract Favourites bindFavouriteRepos(PersistentFavourites impl);
 
     @Provides
-    @Singleton
     @NonNull
     static Server provideRestService(final Retrofit retrofit) {
         return retrofit.create(Server.class);
     }
 
     @Provides
-    @Singleton
     @NonNull
-    static Retrofit provideRetrofit() {
+    static Retrofit provideRetrofit(final User user) {
         return new Retrofit.Builder()
                 .baseUrl("https://api.github.com/")
                 .addConverterFactory(GsonConverterFactory.create(
@@ -66,8 +67,24 @@ public abstract class DataModule {
                         .addInterceptor(new HttpLoggingInterceptor()
                                 .setLevel(HttpLoggingInterceptor.Level.BODY))
                         .addNetworkInterceptor(new StethoInterceptor())
+                        .addInterceptor(chain -> addToken(user, chain))
                         .build())
                 .build();
+    }
+
+    private static Response addToken(final User user, final Interceptor.Chain chain) throws IOException {
+        return user.token()
+                .map(token -> {
+                    try {
+                        return chain.proceed(
+                                chain.request().newBuilder()
+                                        .header("Authorization", token)
+                                        .build());
+                    } catch (final IOException e) {
+                        throw new RuntimeException(e);
+                    }
+                })
+                .orElse(chain.proceed(chain.request()));
     }
 
 
@@ -77,5 +94,5 @@ public abstract class DataModule {
     static Map<String, Repositories.Item> provideCache() {
         return new HashMap<>();
     }
-
 }
+
