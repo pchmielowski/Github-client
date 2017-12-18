@@ -9,9 +9,9 @@ import android.support.v7.widget.LinearLayoutManager;
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityFavsBinding;
-import net.chmielowski.github.screen.Adapter;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.OpenDetails;
+import net.chmielowski.github.screen.SearchResultsAdapter;
 
 import java.util.Arrays;
 
@@ -24,7 +24,7 @@ public final class FavsActivity extends BaseActivity {
     FavsViewModel model;
 
     @Inject
-    Adapter adapter;
+    SearchResultsAdapter adapter;
 
     @Inject
     OpenDetails openDetails;

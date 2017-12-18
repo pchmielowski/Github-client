@@ -27,7 +27,7 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 @ActivityScope
-public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public final class SearchResultsAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private static final int TYPE_REPO = 0;
     static final int TYPE_SPINNER = 1;
 
@@ -36,7 +36,7 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
     private boolean loading = false;
 
     @Inject
-    Adapter(@ActivityContext final Context context) {
+    SearchResultsAdapter(@ActivityContext final Context context) {
         this.context = context;
     }
 
@@ -62,22 +62,22 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
 
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, final int position) {
-        // TODO: refactor me
-        if (!(holder instanceof RepoViewHolder)) {
-            return;
+        if (holder instanceof RepoViewHolder) {
+            bindViewHolder((RepoViewHolder) holder, position);
         }
-        final RepoViewHolder casted = (RepoViewHolder) holder;
+    }
+
+    private void bindViewHolder(final RepoViewHolder holder, final int position) {
         final RepositoryViewModel model = items.get(position);
-        casted.bind(model);
+        holder.bind(model);
         RxView.clicks(holder.itemView)
-                .map(__ -> new Pair<>(casted.binding, model.id))
+                .map(__ -> new Pair<>(holder.binding, model.id))
                 .subscribe(clickSubject);
         Picasso.with(context)
                 .load(model.avatar)
                 .placeholder(R.drawable.ic_avatar_placeholder)
                 .fit()
-                .into(casted.binding.avatar);
-
+                .into(holder.binding.avatar);
     }
 
     @Override
@@ -95,7 +95,6 @@ public final class Adapter extends RecyclerView.Adapter<RecyclerView.ViewHolder>
         loading = state.loading;
         items.addAll(state.results);
         notifyDataSetChanged();
-        // TODO: try to notify only of range inserted
     }
 
     public void replace(final ListState state) {

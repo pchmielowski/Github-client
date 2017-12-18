@@ -12,9 +12,9 @@ import org.robolectric.annotation.Config;
 import java.util.function.Consumer;
 
 import static edu.emory.mathcs.backport.java.util.Collections.emptyList;
-import static net.chmielowski.github.screen.Adapter.TYPE_SPINNER;
 import static net.chmielowski.github.screen.ListState.loaded;
 import static net.chmielowski.github.screen.ListState.loading;
+import static net.chmielowski.github.screen.SearchResultsAdapter.TYPE_SPINNER;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.robolectric.RuntimeEnvironment.application;
@@ -22,7 +22,7 @@ import static org.robolectric.RuntimeEnvironment.application;
 @SuppressWarnings("unchecked")
 @Config(application = TestApplication.class)
 @RunWith(RobolectricTestRunner.class)
-public class AdapterTest {
+public class SearchResultsAdapterTest {
     @Test
     public void appendLoading() throws Exception {
         testLoading(adapter -> adapter.append(loading()));
@@ -33,8 +33,8 @@ public class AdapterTest {
         testLoading(adapter -> adapter.replace(loading()));
     }
 
-    private void testLoading(final Consumer<Adapter> action) {
-        final Adapter adapter = createAdapter();
+    private void testLoading(final Consumer<SearchResultsAdapter> action) {
+        final SearchResultsAdapter adapter = createAdapter();
 
         action.accept(adapter);
 
@@ -44,7 +44,7 @@ public class AdapterTest {
 
     @Test
     public void loadedEmptyList() throws Exception {
-        final Adapter adapter = createAdapter();
+        final SearchResultsAdapter adapter = createAdapter();
 
         adapter.append(loading());
         adapter.replace(loaded(emptyList()));
@@ -53,7 +53,7 @@ public class AdapterTest {
     }
 
     @NonNull
-    private static Adapter createAdapter() {
-        return new Adapter(application.getBaseContext());
+    private static SearchResultsAdapter createAdapter() {
+        return new SearchResultsAdapter(application.getBaseContext());
     }
 }

@@ -19,10 +19,10 @@ import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.network.NetworkIndicatorViewModel;
 import net.chmielowski.github.pagination.RxPagination;
-import net.chmielowski.github.screen.Adapter;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.OpenDetails;
 import net.chmielowski.github.screen.QueryHistory;
+import net.chmielowski.github.screen.SearchResultsAdapter;
 import net.chmielowski.github.screen.SearchViewModel;
 import net.chmielowski.github.screen.SearchesAdapter;
 import net.chmielowski.github.screen.fav.FavsActivity;
@@ -42,7 +42,7 @@ public class SearchActivity extends BaseActivity {
     @Inject
     SearchViewModel model;
     @Inject
-    Adapter resultsAdapter;
+    SearchResultsAdapter resultsAdapter;
     @Inject
     SearchesAdapter searchHistoryAdapter;
     @Inject
