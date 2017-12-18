@@ -6,6 +6,7 @@ import retrofit2.http.GET;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+// TODO: Server
 public interface RestService {
     @GET("search/repositories")
     Single<Response<Repositories>> searchRepositories(@Query("q") String query, @Query("page") int page);
