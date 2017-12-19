@@ -82,7 +82,7 @@ public class SearchActivity extends BaseActivity {
     @Override
     public void onBackPressed() {
         model.onBackPressed()
-                .filter(consumed -> consumed)
+                .filter(consumed -> !consumed)
                 .subscribe(__ -> super.onBackPressed());
     }
 
