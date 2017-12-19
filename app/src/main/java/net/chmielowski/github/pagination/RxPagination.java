@@ -22,7 +22,7 @@ public final class RxPagination {
     }
 
     private static boolean closeToEnd(final LinearLayoutManager manager) {
-        return (manager.findLastVisibleItemPosition() + 5) > manager.getItemCount();
+        return (manager.findLastVisibleItemPosition() + 2) > manager.getItemCount();
     }
 
     private static boolean scrolledDown(final RecyclerViewScrollEvent event) {
