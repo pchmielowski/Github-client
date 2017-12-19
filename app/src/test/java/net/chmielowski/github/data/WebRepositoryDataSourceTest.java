@@ -1,5 +1,7 @@
 package net.chmielowski.github.data;
 
+import android.support.annotation.NonNull;
+
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -26,10 +28,12 @@ import static retrofit2.Response.success;
 
 public class WebRepositoryDataSourceTest {
     private Server rest;
+    private RequestLimit limit;
 
     @Before
     public void setUp() throws Exception {
         rest = Mockito.mock(Server.class);
+        limit = Mockito.mock(RequestLimit.class);
     }
 
     @Test
@@ -39,10 +43,10 @@ public class WebRepositoryDataSourceTest {
         repositories.items = singletonList(repository);
 
         final String query = "query";
-        when(rest.find(query, 0))
+        when(rest.find(query, 1))
                 .thenReturn(just(success(repositories)));
 
-        final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
+        final WebRepositoryDataSource service = createDataSource();
         final TestObserver<Collection<Repositories.Item>> testObserver = service
                 .repositories(firstPage(query))
                 .test();
@@ -58,10 +62,10 @@ public class WebRepositoryDataSourceTest {
         repositories.items = singletonList(repository);
 
         final String query = "query";
-        when(rest.find(query, 0))
+        when(rest.find(query, 1))
                 .thenReturn(just(error(500, create(parse("text/plain"), "server error"))));
 
-        final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
+        final WebRepositoryDataSource service = createDataSource();
         final TestObserver<Collection<Repositories.Item>> testObserver = service
                 .repositories(firstPage(query))
                 .test();
@@ -82,10 +86,10 @@ public class WebRepositoryDataSourceTest {
         repositories.items = singletonList(repository);
 
         final String query = "query";
-        when(rest.find(query, 0))
+        when(rest.find(query, 1))
                 .thenReturn(just(error(404, create(parse("text/plain"), "client error"))));
 
-        final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
+        final WebRepositoryDataSource service = createDataSource();
         final TestObserver<Collection<Repositories.Item>> testObserver = service
                 .repositories(firstPage(query))
                 .test();
@@ -99,10 +103,15 @@ public class WebRepositoryDataSourceTest {
         Mockito.when(rest.repository(repo.owner.login, repo.name))
                 .thenReturn(just(success(repo)));
 
-        final WebRepositoryDataSource service = new WebRepositoryDataSource(rest, new HashMap<>());
+        final WebRepositoryDataSource service = createDataSource();
 
         service.cacheRepository(repo.fullName).subscribe();
 
         Assert.assertThat(service.repositoryFromCache(repo.fullName), notNullValue());
+    }
+
+    @NonNull
+    private WebRepositoryDataSource createDataSource() {
+        return new WebRepositoryDataSource(rest, new HashMap<>(), limit);
     }
 }

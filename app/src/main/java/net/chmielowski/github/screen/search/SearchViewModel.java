@@ -35,7 +35,7 @@ public final class SearchViewModel {
     public final ObservableField<String> query = new ObservableField<>("");
     public final ObservableBoolean searchMode = new ObservableBoolean(true);
 
-    private int page = 0;
+    private int page = 1;
     private String lastQuery;
     private boolean isLoading;
 
@@ -89,7 +89,7 @@ public final class SearchViewModel {
     private void updateState(final String text) {
         query.set("");
         lastQuery = text;
-        page = 0;
+        page = 1;
         if (!searchMode.get()) {
             throw new IllegalStateException("Not in search mode");
         }
@@ -172,9 +172,8 @@ public final class SearchViewModel {
 
         @NonNull
         public static Query firstPage(final String query) {
-            return new Query(0, query);
+            return new Query(1, query);
         }
-
 
     }
 

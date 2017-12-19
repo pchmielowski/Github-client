@@ -138,7 +138,7 @@ public final class SearchViewModelTest {
 
         when(service.repositories(firstPage(QUERY_TEXT)))
                 .thenReturn(just(emptyList()));
-        when(service.repositories(new Query(1, QUERY_TEXT)))
+        when(service.repositories(new Query(2, QUERY_TEXT)))
                 .thenReturn(just(secondPage));
 
         final SearchViewModel model = createViewModel();
@@ -163,9 +163,9 @@ public final class SearchViewModelTest {
 
         when(service.repositories(firstPage(QUERY_TEXT)))
                 .thenReturn(just(firstPage));
-        when(service.repositories(new Query(1, QUERY_TEXT)))
-                .thenReturn(just(secondPage));
         when(service.repositories(new Query(2, QUERY_TEXT)))
+                .thenReturn(just(secondPage));
+        when(service.repositories(new Query(3, QUERY_TEXT)))
                 .thenReturn(just(thirdPage));
 
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
@@ -193,7 +193,7 @@ public final class SearchViewModelTest {
 
         when(service.repositories(firstPage(QUERY_TEXT)))
                 .thenReturn(just(firstPage));
-        when(service.repositories(new Query(1, QUERY_TEXT)))
+        when(service.repositories(new Query(2, QUERY_TEXT)))
                 .thenReturn(Maybe.never());
 
         final Subject<ValueIgnored> scrolledSubject = PublishSubject.create();
@@ -221,7 +221,7 @@ public final class SearchViewModelTest {
 
         when(service.repositories(SearchViewModel.Query.firstPage(query)))
                 .thenReturn(just(firstPage));
-        when(service.repositories(new SearchViewModel.Query(1, query)))
+        when(service.repositories(new SearchViewModel.Query(2, query)))
                 .thenReturn(just(secondPage));
         when(service.repositories(SearchViewModel.Query.firstPage(nextQuery)))
                 .thenReturn(just(firstPageNextQuery));

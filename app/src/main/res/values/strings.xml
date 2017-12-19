@@ -10,6 +10,9 @@
     <string name="msg_you_unlike">You\'ve unliked</string>
     <string name="msg_you_are_offline">You are offline</string>
     <string name="msg_you_are_online_again">You are online again!</string>
+    <string name="msg_log_in">Log in to increase it</string>
+    <string name="msg_wait">Wait until the limit is refreshed</string>
+    <string name="msg_request_limit_reached">Request limit reached!</string>
 
     <string name="label_favourite">Favourite</string>
     <string name="label_add_to_favourites">Add to favourites</string>

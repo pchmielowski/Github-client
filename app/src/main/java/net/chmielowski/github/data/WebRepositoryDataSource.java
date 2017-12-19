@@ -19,12 +19,15 @@ import static java.util.Objects.requireNonNull;
 public final class WebRepositoryDataSource implements RepositoryDataSource {
     private final Server server;
     private final Map<String, Repositories.Item> cache;
+    private final RequestLimit limit;
 
     @Inject
     WebRepositoryDataSource(final Server server,
-                            final Map<String, Repositories.Item> cache) {
+                            final Map<String, Repositories.Item> cache,
+                            final RequestLimit limit) {
         this.server = server;
         this.cache = cache;
+        this.limit = limit;
     }
 
     @SuppressWarnings("ConstantConditions") // response.body() shouldn't be null if isSuccessful()
@@ -73,6 +76,7 @@ public final class WebRepositoryDataSource implements RepositoryDataSource {
                 .doOnSuccess(response -> {
                     final int code = response.code();
                     if (code == 403) {
+//                        limit.onReached();
                         return;
                     }
                     if (code / 100 == 4) {

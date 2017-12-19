@@ -51,6 +51,9 @@ public abstract class DataModule {
     @Binds
     abstract LoginService bindLoginService(WebLoginService impl);
 
+    @Binds
+    abstract RequestLimit bindRequestLimit(NotifyingRequestLimit impl);
+
     @Provides
     @NonNull
     static Server provideRestService(final Retrofit retrofit) {
