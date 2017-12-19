@@ -68,7 +68,7 @@ public class DetailsActivity extends BaseActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         if (model.homepage() != null) {
-            getMenuInflater().inflate(R.menu.menu_main, menu);
+            getMenuInflater().inflate(R.menu.menu_details, menu);
         }
         return true;
     }
