@@ -19,7 +19,6 @@ import android.widget.EditText;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
-import net.chmielowski.github.data.User;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
 import net.chmielowski.github.network.NetworkIndicatorViewModel;
 import net.chmielowski.github.pagination.RxPagination;
@@ -53,8 +52,6 @@ public class SearchActivity extends BaseActivity {
     QueryHistory queryHistory;
     @Inject
     NetworkIndicatorViewModel networkIndicatorViewModel;
-    @Inject
-    User user;
 
     private ActivitySearchBinding binding;
     private LinearLayoutManager resultsManager;

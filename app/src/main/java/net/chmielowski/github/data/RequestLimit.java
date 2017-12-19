@@ -1,5 +1,11 @@
 package net.chmielowski.github.data;
 
-interface RequestLimit {
+import net.chmielowski.github.utils.ValueIgnored;
+
+import io.reactivex.Observable;
+
+public interface RequestLimit {
     void onReached();
+
+    Observable<ValueIgnored> observe();
 }

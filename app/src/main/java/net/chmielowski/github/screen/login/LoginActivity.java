@@ -12,7 +12,6 @@ import com.jakewharton.rxbinding2.view.RxView;
 
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
-import net.chmielowski.github.data.User;
 import net.chmielowski.github.databinding.ActivityLoginBinding;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.search.SearchActivity;
@@ -31,9 +30,6 @@ import static io.reactivex.Observable.merge;
 public final class LoginActivity extends BaseActivity {
     @Inject
     LoginViewModel model;
-
-    @Inject
-    User user;
 
     private ActivityLoginBinding binding;
 

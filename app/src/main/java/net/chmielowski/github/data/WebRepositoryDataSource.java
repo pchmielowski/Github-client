@@ -76,7 +76,7 @@ public final class WebRepositoryDataSource implements RepositoryDataSource {
                 .doOnSuccess(response -> {
                     final int code = response.code();
                     if (code == 403) {
-//                        limit.onReached();
+                        limit.onReached();
                         return;
                     }
                     if (code / 100 == 4) {
