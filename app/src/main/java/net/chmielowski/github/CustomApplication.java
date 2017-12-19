@@ -15,12 +15,6 @@ import timber.log.Timber;
 
 public class CustomApplication extends Application {
 
-    /*
-     * TODO:
-     *  "no results"
-     *  more info on details
-     */
-
     private MainComponent component;
     @Nullable
     private RepositoryComponent repositoryComponent;
