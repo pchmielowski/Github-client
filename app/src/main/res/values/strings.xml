@@ -17,7 +17,7 @@
     <string name="label_last_searches">Last searches:</string>
     <string name="label_search">Search…</string>
     <string name="label_clear">Clear</string>
-    <string name="label_login">Your user name</string>
+    <string name="label_login">Your Github user name</string>
     <string name="label_password">Your Github password</string>
     <string name="label_logout">Log out</string>
     <string name="label_created_at">Created at:\u0020</string>
