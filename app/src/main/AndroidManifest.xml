@@ -27,7 +27,8 @@
 
         <activity
             android:name=".screen.login.LoginActivity"
-            android:label="@string/title_login">
+            android:label="@string/title_login"
+            android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
