@@ -153,7 +153,7 @@ public class SearchActivity extends BaseActivity {
             finish();
             return true;
         }
-        throw new IllegalArgumentException("Unknown menu repositoryFromCache");
+        throw new IllegalArgumentException("Unknown menu item");
     }
 
 }

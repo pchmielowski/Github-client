@@ -1,0 +1,10 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+      xmlns:app="http://schemas.android.com/apk/res-auto"
+      xmlns:tools="http://schemas.android.com/tools"
+      tools:context="net.chmielowski.github.screen.search.SearchActivity">
+    <item
+        android:id="@+id/action_homepage"
+        android:icon="@drawable/ic_open_in_browser"
+        android:title="@string/label_open_home_page"
+        app:showAsAction="never"/>
+</menu>

@@ -5,6 +5,8 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
+import android.view.Menu;
+import android.view.MenuItem;
 
 import net.chmielowski.github.Browser;
 import net.chmielowski.github.CustomApplication;
@@ -12,7 +14,7 @@ import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityDetailsBinding;
 import net.chmielowski.github.screen.BaseActivity;
 
-import java.util.Arrays;
+import java.util.Collections;
 
 import javax.inject.Inject;
 
@@ -44,11 +46,10 @@ public class DetailsActivity extends BaseActivity {
     @NonNull
     @Override
     protected Iterable<Disposable> disposables() {
-        return Arrays.asList(
-//                model.openUrl().subscribe(url -> browser.open(url)),
+        return Collections.singletonList(
                 model.observeActions()
-                .map(this::asMessage)
-                .subscribe(this::show));
+                        .map(this::asMessage)
+                        .subscribe(this::show));
     }
 
     private void show(final String message) {
@@ -61,6 +62,24 @@ public class DetailsActivity extends BaseActivity {
         return String.format("%s %s",
                 getString(action.type == LIKE ? R.string.msg_added_to_favs : R.string.msg_you_unlike),
                 action.repo);
+    }
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        if (model.homepage() != null) {
+            getMenuInflater().inflate(R.menu.menu_main, menu);
+        }
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(final MenuItem item) {
+        if (item.getItemId() == R.id.action_homepage) {
+            browser.open(model.homepage());
+            return true;
+        }
+        throw new IllegalArgumentException("Unknown menu item");
     }
 
     @Override

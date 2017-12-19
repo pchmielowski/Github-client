@@ -2,6 +2,7 @@ package net.chmielowski.github.screen.details;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+import android.support.annotation.Nullable;
 
 import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.RepositoryScope;
@@ -61,8 +62,9 @@ public final class DetailsViewModel {
         openIssues.set(String.valueOf(item.openIssues));
     }
 
-    Observable<String> openUrl(final Observable click) {
-        return click.map(__ -> repo.homepage);
+    @Nullable
+    String homepage() {
+        return repo.homepage;
     }
 
     @EqualsAndHashCode
