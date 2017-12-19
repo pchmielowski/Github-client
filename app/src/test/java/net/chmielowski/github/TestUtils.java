@@ -6,6 +6,8 @@ import net.chmielowski.github.data.Repositories;
 
 import org.mockito.stubbing.Answer;
 
+import java.util.Date;
+
 public final class TestUtils {
     private TestUtils() {
         throw new AssertionError("No instances!");
@@ -22,6 +24,10 @@ public final class TestUtils {
         owner.login = "name";
         item.owner = owner;
         item.fullName = owner.login + "/" + item.name;
+        item.createdAt = new Date();
+        item.updatedAt = new Date();
+        item.openIssues = 234;
+        item.forks = 34;
         return item;
     }
 
