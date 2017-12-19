@@ -19,11 +19,14 @@
     <string name="label_clear">Clear</string>
     <string name="label_login">Your user name</string>
     <string name="label_password">Your Github password</string>
-    <string name="label_without_login">Click here to continue without login (number of requests will be limited).</string>
+    <string name="label_logout">Log out</string>
+    <string name="label_created_at">Created at:\u0020</string>
+    <string name="label_last_update_at">Last update at:\u0020</string>
+    <string name="label_forks">Forks:\u0020</string>
+    <string name="label_open_issues">Open issues:\u0020</string>
 
     <string name="transition_name">transition_name</string>
     <string name="transition_owner">transition_owner</string>
     <string name="transition_avatar">transition_avatar</string>
     <string name="transition_card">card</string>
-    <string name="label_logout">Log out</string>
 </resources>

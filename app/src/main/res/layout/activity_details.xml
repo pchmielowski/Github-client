@@ -32,7 +32,8 @@
                 android:transitionName="@string/transition_avatar"
                 app:avatarUrl="@{model.avatar}"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_avatar_placeholder"/>
 
             <TextView
                 android:id="@+id/owner"
@@ -43,7 +44,8 @@
                 android:transitionName="@string/transition_owner"
                 app:layout_constraintEnd_toStartOf="@+id/fav"
                 app:layout_constraintStart_toEndOf="@+id/avatar"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:text="Owner"/>
 
             <TextView
                 android:id="@+id/name"
@@ -54,7 +56,8 @@
                 android:transitionName="@string/transition_name"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toEndOf="@+id/avatar"
-                app:layout_constraintTop_toBottomOf="@+id/owner"/>
+                app:layout_constraintTop_toBottomOf="@+id/owner"
+                tools:text="Name"/>
 
             <ImageView
                 android:id="@+id/fav"
@@ -65,7 +68,8 @@
                 android:padding="@dimen/margin_small"
                 android:src="@{model.favourite ? @drawable/ic_favorite_red : @drawable/ic_favorite_black}"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintTop_toTopOf="parent"/>
+                app:layout_constraintTop_toTopOf="parent"
+                tools:src="@drawable/ic_favorite_red"/>
 
             <TextView
                 android:id="@+id/description"
@@ -74,7 +78,80 @@
                 android:text="@{model.description}"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/name"/>
+                app:layout_constraintTop_toBottomOf="@+id/name"
+                tools:text="Description of the repo. Can be a little longer."/>
+
+            <TextView
+                android:id="@+id/label_created_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_created_at"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/description"
+                app:layout_constraintTop_toBottomOf="@+id/description"/>
+
+            <TextView
+                android:id="@+id/created_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.createdAt}"
+                app:layout_constraintBottom_toBottomOf="@+id/label_created_at"
+                app:layout_constraintStart_toEndOf="@+id/label_created_at"
+                tools:text="some date"/>
+
+            <TextView
+                android:id="@+id/label_updated_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_last_update_at"
+                app:layout_constraintStart_toStartOf="@+id/label_created_at"
+                app:layout_constraintTop_toBottomOf="@+id/label_created_at"/>
+
+            <TextView
+                android:id="@+id/updated_at"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.updatedAt}"
+                app:layout_constraintBottom_toBottomOf="@+id/label_updated_at"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label_updated_at"
+                tools:text="some date"/>
+
+            <TextView
+                android:id="@+id/label_forks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_forks"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toStartOf="@+id/label_updated_at"
+                app:layout_constraintTop_toBottomOf="@+id/label_updated_at"/>
+
+            <TextView
+                android:id="@+id/forks"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.forks}"
+                app:layout_constraintBottom_toBottomOf="@+id/label_forks"
+                app:layout_constraintStart_toEndOf="@+id/label_forks"
+                tools:text="123"/>
+
+            <TextView
+                android:id="@+id/label_issues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/label_open_issues"
+                app:layout_constraintStart_toStartOf="@+id/label_forks"
+                app:layout_constraintTop_toBottomOf="@+id/label_forks"/>
+
+            <TextView
+                android:id="@+id/issues"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@{model.openIssues}"
+                app:layout_constraintBottom_toBottomOf="@+id/label_issues"
+                app:layout_constraintLeft_toLeftOf="parent"
+                app:layout_constraintStart_toEndOf="@+id/label_issues"
+                tools:text="23"/>
         </android.support.constraint.ConstraintLayout>
     </android.support.v7.widget.CardView>
 </layout>

@@ -61,6 +61,10 @@ public final class DetailsViewModel {
         openIssues.set(String.valueOf(item.openIssues));
     }
 
+    Observable<String> openUrl(final Observable click) {
+        return click.map(__ -> repo.homepage);
+    }
+
     @EqualsAndHashCode
     @ToString
     final static class Action {

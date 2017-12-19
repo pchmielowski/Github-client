@@ -6,12 +6,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.Snackbar;
 
+import net.chmielowski.github.Browser;
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityDetailsBinding;
 import net.chmielowski.github.screen.BaseActivity;
 
-import java.util.Collections;
+import java.util.Arrays;
 
 import javax.inject.Inject;
 
@@ -24,6 +25,9 @@ public class DetailsActivity extends BaseActivity {
 
     @Inject
     DetailsViewModel model;
+
+    @Inject
+    Browser browser;
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
@@ -40,7 +44,9 @@ public class DetailsActivity extends BaseActivity {
     @NonNull
     @Override
     protected Iterable<Disposable> disposables() {
-        return Collections.singletonList(model.observeActions()
+        return Arrays.asList(
+//                model.openUrl().subscribe(url -> browser.open(url)),
+                model.observeActions()
                 .map(this::asMessage)
                 .subscribe(this::show));
     }
