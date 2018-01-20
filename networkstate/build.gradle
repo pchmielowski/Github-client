@@ -44,4 +44,8 @@ dependencies {
     implementation 'com.jakewharton.rxbinding2:rxbinding-support-v4:2.0.0'
     implementation 'com.jakewharton.rxbinding2:rxbinding-recyclerview-v7:2.0.0'
     implementation 'com.google.android.gms:play-services-gcm:11.6.2'
+    final MOCKITO_VERSION = '2.7.22'
+    testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
+    androidTestCompile "org.mockito:mockito-android:$MOCKITO_VERSION"
+
 }

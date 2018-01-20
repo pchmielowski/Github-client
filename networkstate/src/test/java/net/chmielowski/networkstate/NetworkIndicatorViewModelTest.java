@@ -1,8 +1,4 @@
-package net.chmielowski.github.network;
-
-import net.chmielowski.networkstate.BasicNetworkState;
-import net.chmielowski.networkstate.NetworkIndicatorViewModel;
-import net.chmielowski.networkstate.NetworkState;
+package net.chmielowski.networkstate;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,7 +13,6 @@ import static net.chmielowski.networkstate.BasicNetworkState.State.OFFLINE;
 import static net.chmielowski.networkstate.BasicNetworkState.State.ONLINE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.when;
 
 public class NetworkIndicatorViewModelTest {
 
@@ -27,7 +22,7 @@ public class NetworkIndicatorViewModelTest {
 
     @Before
     public void setUp() throws Exception {
-        when(state.observe()).thenReturn(networkState);
+        Mockito.when(state.observe()).thenReturn(networkState);
     }
 
     @Test
