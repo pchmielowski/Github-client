@@ -7,8 +7,12 @@ import android.support.v4.content.LocalBroadcastManager;
 import com.google.android.gms.gcm.GcmNetworkManager;
 
 import net.chmielowski.github.ApplicationContext;
+import net.chmielowski.networkstate.BasicNetworkState;
+import net.chmielowski.networkstate.NetworkIndicatorViewModel;
+import net.chmielowski.networkstate.NetworkState;
 
-import dagger.Binds;
+import javax.inject.Singleton;
+
 import dagger.Module;
 import dagger.Provides;
 
@@ -16,9 +20,24 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 
 @Module
 public abstract class NetworkModule {
-    @SuppressWarnings("unused")
-    @Binds
-    abstract NetworkState bindNetworkState(BasicNetworkState impl);
+    @Provides
+    @Singleton
+    static NetworkState provideNetworkState(
+            final ConnectivityManager connectivityManager,
+            final GcmNetworkManager networkManager,
+            final LocalBroadcastManager broadcastManager) {
+        return new BasicNetworkState(
+                connectivityManager,
+                networkManager,
+                broadcastManager
+        );
+    }
+
+    @Provides
+    @Singleton
+    static NetworkIndicatorViewModel provideNetworkIndicatorViewModel(final NetworkState networkState) {
+        return new NetworkIndicatorViewModel(networkState);
+    }
 
     @Provides
     static ConnectivityManager provideConnectivityManager(@ApplicationContext final Context context) {

@@ -1,4 +1,4 @@
-package net.chmielowski.github.network;
+package net.chmielowski.networkstate;
 
 import android.support.annotation.NonNull;
 

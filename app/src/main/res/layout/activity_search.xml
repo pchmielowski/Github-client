@@ -7,7 +7,7 @@
 
         <variable
             name="indicatorViewModel"
-            type="net.chmielowski.github.network.NetworkIndicatorViewModel"/>
+            type="net.chmielowski.networkstate.NetworkIndicatorViewModel"/>
 
         <variable
             name="model"
@@ -26,7 +26,7 @@
             android:animateLayoutChanges="true"
             tools:ignore="GradleDependency">
 
-            <net.chmielowski.github.network.NetworkStateIndicator
+            <net.chmielowski.networkstate.NetworkStateIndicator
                 android:id="@+id/network_indicator"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"

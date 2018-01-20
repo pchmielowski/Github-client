@@ -1,37 +1,31 @@
-package net.chmielowski.github.network;
+package net.chmielowski.networkstate;
 
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.Nullable;
-
-import javax.inject.Inject;
-import javax.inject.Singleton;
 
 import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
 
 import static io.reactivex.Completable.timer;
 import static java.util.concurrent.TimeUnit.SECONDS;
-import static net.chmielowski.github.network.BasicNetworkState.State.ONLINE;
 
-@Singleton
 public final class NetworkIndicatorViewModel {
     private final Completable timer;
     public ObservableBoolean visible = new ObservableBoolean(false);
-    public ObservableField<BasicNetworkState.State> state = new ObservableField<>(ONLINE);
+    public ObservableField<BasicNetworkState.State> state = new ObservableField<>(BasicNetworkState.State.ONLINE);
 
     private final NetworkState networkState;
 
     @Nullable
     private Disposable disposable;
 
-    NetworkIndicatorViewModel(final NetworkState networkState, final Completable timer) {
+    public NetworkIndicatorViewModel(final NetworkState networkState, final Completable timer) {
         this.networkState = networkState;
         this.timer = timer;
     }
 
-    @Inject
-    NetworkIndicatorViewModel(final NetworkState networkState) {
+    public NetworkIndicatorViewModel(final NetworkState networkState) {
         this(networkState, timer(3, SECONDS));
     }
 

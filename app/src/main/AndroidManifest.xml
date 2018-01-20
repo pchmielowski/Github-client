@@ -17,7 +17,7 @@
         android:theme="@style/AppTheme"
         tools:ignore="AllowBackup,GoogleAppIndexingWarning">
         <service
-            android:name=".network.SendNetworkConnectedBroadcast"
+            android:name="net.chmielowski.networkstate.SendNetworkConnectedBroadcast"
             android:exported="true"
             android:permission="com.google.android.gms.permission.BIND_NETWORK_TASK_SERVICE">
             <intent-filter>

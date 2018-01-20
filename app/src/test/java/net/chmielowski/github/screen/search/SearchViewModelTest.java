@@ -5,12 +5,12 @@ import android.support.annotation.NonNull;
 import net.chmielowski.github.TestUtils;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RepositoryDataSource;
-import net.chmielowski.github.network.NetworkState;
 import net.chmielowski.github.screen.ListState;
 import net.chmielowski.github.screen.QueryHistory;
 import net.chmielowski.github.screen.RepositoryViewModel;
 import net.chmielowski.github.screen.search.SearchViewModel.Query;
 import net.chmielowski.github.utils.ValueIgnored;
+import net.chmielowski.networkstate.NetworkState;
 
 import org.junit.Before;
 import org.junit.Test;

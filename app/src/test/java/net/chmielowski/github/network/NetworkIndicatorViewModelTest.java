@@ -1,5 +1,9 @@
 package net.chmielowski.github.network;
 
+import net.chmielowski.networkstate.BasicNetworkState;
+import net.chmielowski.networkstate.NetworkIndicatorViewModel;
+import net.chmielowski.networkstate.NetworkState;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
@@ -9,8 +13,8 @@ import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 import static io.reactivex.Completable.never;
-import static net.chmielowski.github.network.BasicNetworkState.State.OFFLINE;
-import static net.chmielowski.github.network.BasicNetworkState.State.ONLINE;
+import static net.chmielowski.networkstate.BasicNetworkState.State.OFFLINE;
+import static net.chmielowski.networkstate.BasicNetworkState.State.ONLINE;
 import static org.hamcrest.CoreMatchers.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;

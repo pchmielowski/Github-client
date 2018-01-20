@@ -20,7 +20,6 @@ import android.widget.EditText;
 import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivitySearchBinding;
-import net.chmielowski.github.network.NetworkIndicatorViewModel;
 import net.chmielowski.github.pagination.RxPagination;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.OpenDetails;
@@ -29,6 +28,7 @@ import net.chmielowski.github.screen.SearchResultsAdapter;
 import net.chmielowski.github.screen.SearchesAdapter;
 import net.chmielowski.github.screen.fav.FavsActivity;
 import net.chmielowski.github.screen.login.LoginActivity;
+import net.chmielowski.networkstate.NetworkIndicatorViewModel;
 
 import java.util.Arrays;
 

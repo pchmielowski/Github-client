@@ -1,4 +1,4 @@
-package net.chmielowski.github.network;
+package net.chmielowski.networkstate;
 
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -15,25 +15,20 @@ import com.google.android.gms.gcm.Task;
 
 import java.util.Optional;
 
-import javax.inject.Inject;
-import javax.inject.Singleton;
-
 import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
 import static java.util.Objects.requireNonNull;
 
-@Singleton
 public final class BasicNetworkState implements NetworkState {
     private final ConnectivityManager connectivityManager;
     private final GcmNetworkManager networkManager;
     private final LocalBroadcastManager broadcastManager;
 
-    @Inject
-    BasicNetworkState(final ConnectivityManager connectivityManager,
-                      final GcmNetworkManager networkManager,
-                      final LocalBroadcastManager broadcastManager) {
+    public BasicNetworkState(final ConnectivityManager connectivityManager,
+                             final GcmNetworkManager networkManager,
+                             final LocalBroadcastManager broadcastManager) {
         this.connectivityManager = requireNonNull(connectivityManager);
         this.networkManager = requireNonNull(networkManager);
         this.broadcastManager = broadcastManager;
