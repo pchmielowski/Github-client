@@ -19,6 +19,7 @@ import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 
+import static android.content.Context.CONNECTIVITY_SERVICE;
 import static java.util.Objects.requireNonNull;
 
 public final class BasicNetworkState implements NetworkState {
@@ -26,13 +27,19 @@ public final class BasicNetworkState implements NetworkState {
     private final GcmNetworkManager networkManager;
     private final LocalBroadcastManager broadcastManager;
 
-    public BasicNetworkState(final ConnectivityManager connectivityManager,
-                             final GcmNetworkManager networkManager,
-                             final LocalBroadcastManager broadcastManager) {
+    private BasicNetworkState(final ConnectivityManager connectivityManager,
+                              final GcmNetworkManager networkManager,
+                              final LocalBroadcastManager broadcastManager) {
         this.connectivityManager = requireNonNull(connectivityManager);
         this.networkManager = requireNonNull(networkManager);
         this.broadcastManager = broadcastManager;
 
+    }
+
+    public BasicNetworkState(final Context context) {
+        this((ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE),
+                GcmNetworkManager.getInstance(context),
+                LocalBroadcastManager.getInstance(context));
     }
 
     @Override
