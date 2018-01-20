@@ -6,7 +6,7 @@ android {
     compileSdkVersion 27
     defaultConfig {
         applicationId "net.chmielowski.github"
-        minSdkVersion 24
+        minSdkVersion 26
         targetSdkVersion 27
         versionCode 1
         versionName "1.0"
@@ -101,6 +101,7 @@ dependencies {
     implementation 'com.google.android.gms:play-services-gcm:11.6.2'
 
     implementation 'com.jakewharton.timber:timber:4.6.0'
+    compile project(path: ':networkstate')
 }
 
 // Ensure the no-op dependency is always used in JVM tests.

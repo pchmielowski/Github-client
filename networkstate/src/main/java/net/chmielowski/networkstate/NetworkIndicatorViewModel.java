@@ -7,7 +7,6 @@ import android.support.annotation.Nullable;
 import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
 
-import static io.reactivex.Completable.timer;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 public final class NetworkIndicatorViewModel {
@@ -26,7 +25,7 @@ public final class NetworkIndicatorViewModel {
     }
 
     public NetworkIndicatorViewModel(final NetworkState networkState) {
-        this(networkState, timer(3, SECONDS));
+        this(networkState, Completable.timer(3, SECONDS));
     }
 
     public Disposable start() {

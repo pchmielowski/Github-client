@@ -10,7 +10,8 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 import android.widget.ViewSwitcher;
 
-import net.chmielowski.github.databinding.ViewNetworkStateIndicatorBinding;
+import net.chmielowski.networkstate.databinding.ViewNetworkStateIndicatorBinding;
+
 
 public final class NetworkStateIndicator extends FrameLayout {
 

@@ -1,3 +1,37 @@
 <resources>
-    <string name="app_name">NetworkState</string>
+    <string name="app_name">Github client</string>
+
+    <string name="title_login">Login</string>
+    <string name="title_search">Find repository</string>
+    <string name="title_repository">Repository</string>
+    <string name="title_favourites">Favourites</string>
+
+    <string name="msg_added_to_favs">Added to favourites: </string>
+    <string name="msg_you_unlike">You\'ve unliked</string>
+    <string name="msg_you_are_offline">You are offline</string>
+    <string name="msg_you_are_online_again">You are online again!</string>
+    <string name="msg_log_in">Log in to increase it</string>
+    <string name="msg_wait">Wait until the limit is refreshed</string>
+    <string name="msg_request_limit_reached">Request limit reached!</string>
+
+    <string name="label_favourite">Favourite</string>
+    <string name="label_add_to_favourites">Add to favourites</string>
+    <string name="label_avatar">avatar</string>
+    <string name="label_last_searches">Last searches:</string>
+    <string name="label_search">Search…</string>
+    <string name="label_clear">Clear</string>
+    <string name="label_login">Your Github user name</string>
+    <string name="label_password">Your Github password</string>
+    <string name="label_logout">Log out</string>
+    <string name="label_created_at">Created at:\u0020</string>
+    <string name="label_last_update_at">Last update at:\u0020</string>
+    <string name="label_forks">Forks:\u0020</string>
+    <string name="label_open_issues">Open issues:\u0020</string>
+    <string name="label_open_home_page">Home page</string>
+    <string name="label_without_login"><u>Browse anonymously (with the lower request limit).</u></string>
+
+    <string name="transition_name">transition_name</string>
+    <string name="transition_owner">transition_owner</string>
+    <string name="transition_avatar">transition_avatar</string>
+    <string name="transition_card">card</string>
 </resources>
