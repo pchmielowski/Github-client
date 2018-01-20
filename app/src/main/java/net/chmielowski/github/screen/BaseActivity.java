@@ -18,6 +18,7 @@ import io.reactivex.disposables.Disposable;
 public abstract class BaseActivity extends AppCompatActivity {
     private final CompositeDisposable disposables = new CompositeDisposable();
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     RequestLimit limit;
 

@@ -54,6 +54,7 @@ public class CustomApplication extends Application {
         Timber.plant(new Timber.DebugTree());
     }
 
+    @SuppressWarnings("WeakerAccess")
     protected boolean isTest() {
         return false;
     }

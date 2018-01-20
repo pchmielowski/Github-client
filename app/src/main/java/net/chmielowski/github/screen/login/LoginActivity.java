@@ -28,6 +28,7 @@ import static io.reactivex.Observable.merge;
 
 
 public final class LoginActivity extends BaseActivity {
+    @SuppressWarnings("WeakerAccess")
     @Inject
     LoginViewModel model;
 

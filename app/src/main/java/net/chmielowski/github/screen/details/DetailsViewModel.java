@@ -22,6 +22,7 @@ import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type
 import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type.UNLIKE;
 import static net.chmielowski.github.utils.DateFormatter.format;
 
+@SuppressWarnings("WeakerAccess")
 @RepositoryScope
 public final class DetailsViewModel {
     public final ObservableField<String> owner = new ObservableField<>();

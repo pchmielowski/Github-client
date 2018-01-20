@@ -25,9 +25,11 @@ import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type
 public class DetailsActivity extends BaseActivity {
     public static final String KEY_ID = "REPOSITORY_ID";
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     DetailsViewModel model;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     Browser browser;
 

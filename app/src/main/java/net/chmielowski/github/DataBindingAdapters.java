@@ -7,6 +7,7 @@ import android.widget.ImageView;
 
 import com.squareup.picasso.Picasso;
 
+@SuppressWarnings("WeakerAccess")
 public final class DataBindingAdapters {
     @BindingAdapter("visibility")
     public static void setVisibility(final View view, final boolean value) {

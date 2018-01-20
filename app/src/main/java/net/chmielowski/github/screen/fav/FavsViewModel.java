@@ -13,6 +13,7 @@ import javax.inject.Inject;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
+@SuppressWarnings("WeakerAccess")
 public class FavsViewModel {
 
     public final ObservableBoolean loading = new ObservableBoolean();

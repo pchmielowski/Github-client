@@ -20,12 +20,15 @@ import javax.inject.Inject;
 import io.reactivex.disposables.Disposable;
 
 public final class FavsActivity extends BaseActivity {
+    @SuppressWarnings("WeakerAccess")
     @Inject
     FavsViewModel model;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     SearchResultsAdapter adapter;
 
+    @SuppressWarnings("WeakerAccess")
     @Inject
     OpenDetails openDetails;
 
