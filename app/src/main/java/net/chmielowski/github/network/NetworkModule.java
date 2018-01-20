@@ -16,21 +16,22 @@ import static android.content.Context.CONNECTIVITY_SERVICE;
 
 @Module
 public abstract class NetworkModule {
+    @SuppressWarnings("unused")
     @Binds
     abstract NetworkState bindNetworkState(BasicNetworkState impl);
 
     @Provides
-    public static ConnectivityManager provideConnectivityManager(@ApplicationContext final Context context) {
+    static ConnectivityManager provideConnectivityManager(@ApplicationContext final Context context) {
         return (ConnectivityManager) context.getSystemService(CONNECTIVITY_SERVICE);
     }
 
     @Provides
-    public static GcmNetworkManager provideGcmNetworkManager(@ApplicationContext final Context context) {
+    static GcmNetworkManager provideGcmNetworkManager(@ApplicationContext final Context context) {
         return GcmNetworkManager.getInstance(context);
     }
 
     @Provides
-    public static LocalBroadcastManager provideBroadcastManager(@ApplicationContext final Context context) {
+    static LocalBroadcastManager provideBroadcastManager(@ApplicationContext final Context context) {
         return LocalBroadcastManager.getInstance(context);
     }
 
