@@ -6,6 +6,7 @@ import net.chmielowski.networkstate.SendNetworkConnectedBroadcast;
 
 import javax.inject.Singleton;
 
+import dagger.BindsInstance;
 import dagger.Component;
 
 @Singleton
@@ -17,4 +18,12 @@ public interface MainComponent {
     void inject(SendNetworkConnectedBroadcast broadcast);
 
     ActivityComponent plusActivityComponent(ActivityModule module);
+
+    @Component.Builder
+    interface Builder {
+        MainComponent build();
+
+        @BindsInstance
+        Builder application(CustomApplication context);
+    }
 }

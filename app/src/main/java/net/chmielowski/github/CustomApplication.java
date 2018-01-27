@@ -32,7 +32,7 @@ public class CustomApplication extends Application {
         super.onCreate();
         component = DaggerMainComponent
                 .builder()
-                .applicationModule(new ApplicationModule(this))
+                .application(this)
                 .build();
         if (isTest()) {
             return;

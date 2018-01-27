@@ -2,21 +2,13 @@ package net.chmielowski.github;
 
 import android.content.Context;
 
+import dagger.Binds;
 import dagger.Module;
-import dagger.Provides;
 
 @Module
-class ApplicationModule {
-    private final Context context;
-
-    ApplicationModule(final Context context) {
-        this.context = context;
-    }
+abstract class ApplicationModule {
 
     @ApplicationContext
-    @Provides
-    Context provideContext() {
-        return context;
-    }
-
+    @Binds
+    abstract Context bindContext(final CustomApplication app);
 }
