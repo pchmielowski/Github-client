@@ -17,7 +17,7 @@ public interface MainComponent {
 
     void inject(SendNetworkConnectedBroadcast broadcast);
 
-    ActivityComponent plusActivityComponent(ActivityModule module);
+    ActivityComponent.Builder plusActivityComponent();
 
     @Component.Builder
     interface Builder {

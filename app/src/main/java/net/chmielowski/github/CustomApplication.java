@@ -68,12 +68,16 @@ public class CustomApplication extends Application {
         }
         assert repositoryComponent != null;
         return repositoryComponent
-                .plusDetailsActivityComponent(new ActivityModule(activity));
+                .plusDetailsActivityComponent()
+                .activity(activity)
+                .build();
     }
 
     public ActivityComponent activityComponent(final AppCompatActivity activity) {
         return component
-                .plusActivityComponent(new ActivityModule(activity));
+                .plusActivityComponent()
+                .activity(activity)
+                .build();
     }
 
     public MainComponent mainComponent() {

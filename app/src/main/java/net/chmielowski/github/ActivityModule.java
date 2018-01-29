@@ -7,18 +7,7 @@ import dagger.Module;
 import dagger.Provides;
 
 @Module
-final class ActivityModule {
-    private final AppCompatActivity activity;
-
-    ActivityModule(final AppCompatActivity activity) {
-        this.activity = activity;
-    }
-
-    @Provides
-    AppCompatActivity provideActivity() {
-        return activity;
-    }
-
+abstract class ActivityModule {
     @ActivityContext
     @Provides
     static Context provideContext(final AppCompatActivity activity) {

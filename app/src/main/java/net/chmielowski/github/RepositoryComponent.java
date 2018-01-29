@@ -6,5 +6,5 @@ import dagger.Subcomponent;
 @Subcomponent(modules = RepositoryModule.class)
 interface RepositoryComponent {
 
-    DetailsActivityComponent plusDetailsActivityComponent(ActivityModule module);
+    DetailsActivityComponent.Builder plusDetailsActivityComponent();
 }
