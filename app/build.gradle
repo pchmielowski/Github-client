@@ -11,6 +11,11 @@ android {
         versionCode 1
         versionName "1.0"
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
     }
     dataBinding {
         enabled = true
@@ -101,6 +106,9 @@ dependencies {
     implementation 'com.google.android.gms:play-services-gcm:11.8.0'
 
     implementation 'com.jakewharton.timber:timber:4.6.0'
+
+    implementation "com.google.auto.factory:auto-factory:1.0-beta5"
+
     compile project(path: ':networkstate')
 }
 
