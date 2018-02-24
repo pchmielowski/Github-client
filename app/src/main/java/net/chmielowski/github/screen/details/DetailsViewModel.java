@@ -1,8 +1,13 @@
 package net.chmielowski.github.screen.details;
 
+import android.arch.lifecycle.MutableLiveData;
+import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
 import android.support.annotation.Nullable;
+
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 
 import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.RepositoryScope;
@@ -12,7 +17,6 @@ import net.chmielowski.github.data.RepositoryDataSource;
 
 import javax.inject.Inject;
 
-import io.reactivex.Observable;
 import io.reactivex.subjects.PublishSubject;
 import io.reactivex.subjects.Subject;
 import lombok.EqualsAndHashCode;
@@ -24,7 +28,8 @@ import static net.chmielowski.github.utils.DateFormatter.format;
 
 @SuppressWarnings("WeakerAccess")
 @RepositoryScope
-public final class DetailsViewModel {
+@AutoFactory
+public final class DetailsViewModel extends ViewModel {
     public final ObservableField<String> owner = new ObservableField<>();
     public final ObservableField<String> name = new ObservableField<>();
     public final ObservableField<String> description = new ObservableField<>();
@@ -43,9 +48,10 @@ public final class DetailsViewModel {
     private final Repositories.Item repo;
 
     @Inject
-    DetailsViewModel(@RepositoryDataSource.WorkOnBackground final RepositoryDataSource service,
-                     final Favourites likedRepos,
-                     @RepositoryId final String id) {
+    DetailsViewModel(
+            @Provided @RepositoryDataSource.WorkOnBackground final RepositoryDataSource service,
+            @Provided final Favourites likedRepos,
+            @Provided @RepositoryId final String id) {
         this.likedRepos = likedRepos;
         this.repo = service.repositoryFromCache(id);
         bind(this.repo);
@@ -87,17 +93,13 @@ public final class DetailsViewModel {
     }
 
 
-    private Subject<Action> addedSubject = PublishSubject.create();
+    MutableLiveData<Action> addedLiveData = new MutableLiveData<>();
 
     public void toggleLike() {
         likedRepos.toggle(repo)
                 .subscribe(like -> {
                     favourite.set(like);
-                    addedSubject.onNext(new Action(like ? LIKE : UNLIKE, name.get()));
+                    addedLiveData.setValue(new Action(like ? LIKE : UNLIKE, name.get()));
                 });
-    }
-
-    Observable<Action> observeActions() {
-        return addedSubject;
     }
 }

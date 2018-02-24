@@ -1,5 +1,8 @@
 package net.chmielowski.github.screen.details;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,6 +16,7 @@ import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityDetailsBinding;
 import net.chmielowski.github.screen.BaseActivity;
+import net.chmielowski.github.screen.fav.FavsViewModel;
 
 import java.util.Collections;
 
@@ -25,8 +29,8 @@ import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type
 public class DetailsActivity extends BaseActivity {
     public static final String KEY_ID = "REPOSITORY_ID";
 
-    @SuppressWarnings("WeakerAccess")
     @Inject
+    DetailsViewModelFactory factory;
     DetailsViewModel model;
 
     @SuppressWarnings("WeakerAccess")
@@ -40,18 +44,27 @@ public class DetailsActivity extends BaseActivity {
                 .activityComponent(this, getIntent().getStringExtra(KEY_ID), savedInstanceState == null)
                 .inject(this);
 
+        model = ViewModelProviders.of(this, new ViewModelProvider.Factory() {
+            @SuppressWarnings("unchecked")
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull final Class<T> modelClass) {
+                return (T) factory.create();
+            }
+        }).get(DetailsViewModel.class);
+
+
         final ActivityDetailsBinding binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_details);
         binding.setModel(model);
+
+        model.addedLiveData.observe(this, action -> show(asMessage(action)));
     }
 
     @NonNull
     @Override
     protected Iterable<Disposable> disposables() {
-        return Collections.singletonList(
-                model.observeActions()
-                        .map(this::asMessage)
-                        .subscribe(this::show));
+        return Collections.emptyList();
     }
 
     private void show(final String message) {
