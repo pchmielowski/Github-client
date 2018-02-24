@@ -1,7 +1,5 @@
 package net.chmielowski.github.screen.details;
 
-import android.arch.lifecycle.ViewModel;
-import android.arch.lifecycle.ViewModelProvider;
 import android.arch.lifecycle.ViewModelProviders;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -16,7 +14,7 @@ import net.chmielowski.github.CustomApplication;
 import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityDetailsBinding;
 import net.chmielowski.github.screen.BaseActivity;
-import net.chmielowski.github.screen.fav.FavsViewModel;
+import net.chmielowski.github.utils.Factory;
 
 import java.util.Collections;
 
@@ -44,14 +42,8 @@ public class DetailsActivity extends BaseActivity {
                 .activityComponent(this, getIntent().getStringExtra(KEY_ID), savedInstanceState == null)
                 .inject(this);
 
-        model = ViewModelProviders.of(this, new ViewModelProvider.Factory() {
-            @SuppressWarnings("unchecked")
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull final Class<T> modelClass) {
-                return (T) factory.create();
-            }
-        }).get(DetailsViewModel.class);
+        model = ViewModelProviders.of(this, new Factory(() -> factory.create()))
+                .get(DetailsViewModel.class);
 
 
         final ActivityDetailsBinding binding = DataBindingUtil
