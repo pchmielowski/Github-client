@@ -1,7 +1,11 @@
 package net.chmielowski.github.screen.login;
 
+import android.arch.lifecycle.ViewModel;
 import android.databinding.ObservableBoolean;
 import android.databinding.ObservableField;
+
+import com.google.auto.factory.AutoFactory;
+import com.google.auto.factory.Provided;
 
 import net.chmielowski.github.data.LoginService;
 
@@ -10,14 +14,13 @@ import javax.inject.Singleton;
 
 import io.reactivex.Single;
 
-@Singleton
-public final class LoginViewModel {
+@AutoFactory
+public final class LoginViewModel extends ViewModel {
     private final LoginService service;
 
     public ObservableBoolean loading = new ObservableBoolean(false);
 
-    @Inject
-    LoginViewModel(final LoginService service) {
+    LoginViewModel(@Provided final LoginService service) {
         this.service = service;
     }
 

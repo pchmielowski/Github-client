@@ -87,6 +87,10 @@ dependencies {
     androidTestCompile "com.google.dagger:dagger:$DAGGER_VERSION"
     annotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
     androidTestAnnotationProcessor "com.google.dagger:dagger-compiler:$DAGGER_VERSION"
+
+    implementation 'com.google.auto.factory:auto-factory:1.0-beta5'
+    annotationProcessor 'com.google.auto.factory:auto-factory:1.0-beta5'
+
     final MOCKITO_VERSION = '2.7.22'
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
     androidTestCompile "org.mockito:mockito-android:$MOCKITO_VERSION"

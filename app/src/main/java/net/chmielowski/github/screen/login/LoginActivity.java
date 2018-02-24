@@ -1,5 +1,8 @@
 package net.chmielowski.github.screen.login;
 
+import android.arch.lifecycle.ViewModel;
+import android.arch.lifecycle.ViewModelProvider;
+import android.arch.lifecycle.ViewModelProviders;
 import android.content.Intent;
 import android.databinding.DataBindingUtil;
 import android.os.Bundle;
@@ -28,16 +31,25 @@ import static io.reactivex.Observable.merge;
 
 
 public final class LoginActivity extends BaseActivity {
-    @SuppressWarnings("WeakerAccess")
     @Inject
-    LoginViewModel model;
+    LoginViewModelFactory factory;
 
+    private LoginViewModel model;
     private ActivityLoginBinding binding;
 
     @Override
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomApplication.get(this).activityComponent(this).inject(this);
+        model = ViewModelProviders.of(this, new ViewModelProvider.Factory() {
+            @SuppressWarnings("unchecked")
+            @NonNull
+            @Override
+            public <T extends ViewModel> T create(@NonNull final Class<T> modelClass) {
+                return (T) factory.create();
+            }
+        }).get(LoginViewModel.class);
+
         user.token().ifPresent(__ -> goToSearch());
         binding = DataBindingUtil
                 .setContentView(this, R.layout.activity_login);
