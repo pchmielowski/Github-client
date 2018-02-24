@@ -1,10 +1,14 @@
 package net.chmielowski.github.screen.fav;
 
+import android.arch.core.executor.testing.InstantTaskExecutorRule;
+
 import net.chmielowski.github.data.Favourites;
 import net.chmielowski.github.data.RepositoryDataSource;
 
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.TestRule;
 import org.mockito.Mockito;
 
 import io.reactivex.observers.TestObserver;
@@ -15,6 +19,8 @@ import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.when;
 
 public class FavsViewModelTest {
+    @Rule
+    public TestRule rule = new InstantTaskExecutorRule();
 
     private RepositoryDataSource service;
     private Favourites favourites;
