@@ -42,7 +42,7 @@ public class DetailsActivity extends BaseActivity {
                 .activityComponent(this, getIntent().getStringExtra(KEY_ID), savedInstanceState == null)
                 .inject(this);
 
-        model = ViewModelProviders.of(this, new Factory(() -> factory.create()))
+        model = ViewModelProviders.of(this, new Factory(() -> factory.create(getIntent().getStringExtra(KEY_ID))))
                 .get(DetailsViewModel.class);
 
 

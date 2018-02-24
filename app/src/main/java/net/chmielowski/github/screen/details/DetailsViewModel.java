@@ -10,15 +10,12 @@ import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 
 import net.chmielowski.github.RepositoryId;
-import net.chmielowski.github.RepositoryScope;
 import net.chmielowski.github.data.Favourites;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RepositoryDataSource;
 
 import javax.inject.Inject;
 
-import io.reactivex.subjects.PublishSubject;
-import io.reactivex.subjects.Subject;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 
@@ -27,7 +24,6 @@ import static net.chmielowski.github.screen.details.DetailsViewModel.Action.Type
 import static net.chmielowski.github.utils.DateFormatter.format;
 
 @SuppressWarnings("WeakerAccess")
-@RepositoryScope
 @AutoFactory
 public final class DetailsViewModel extends ViewModel {
     public final ObservableField<String> owner = new ObservableField<>();
@@ -51,7 +47,7 @@ public final class DetailsViewModel extends ViewModel {
     DetailsViewModel(
             @Provided @RepositoryDataSource.WorkOnBackground final RepositoryDataSource service,
             @Provided final Favourites likedRepos,
-            @Provided @RepositoryId final String id) {
+            @RepositoryId final String id) {
         this.likedRepos = likedRepos;
         this.repo = service.repositoryFromCache(id);
         bind(this.repo);
