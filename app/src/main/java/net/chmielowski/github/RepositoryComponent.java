@@ -2,8 +2,7 @@ package net.chmielowski.github;
 
 import dagger.Subcomponent;
 
-@RepositoryScope
-@Subcomponent(modules = RepositoryModule.class)
+@Subcomponent
 interface RepositoryComponent {
 
     DetailsActivityComponent.Builder plusDetailsActivityComponent();

@@ -9,7 +9,6 @@ import android.support.annotation.Nullable;
 import com.google.auto.factory.AutoFactory;
 import com.google.auto.factory.Provided;
 
-import net.chmielowski.github.RepositoryId;
 import net.chmielowski.github.data.Favourites;
 import net.chmielowski.github.data.Repositories;
 import net.chmielowski.github.data.RepositoryDataSource;
@@ -47,7 +46,7 @@ public final class DetailsViewModel extends ViewModel {
     DetailsViewModel(
             @Provided @RepositoryDataSource.WorkOnBackground final RepositoryDataSource service,
             @Provided final Favourites likedRepos,
-            @RepositoryId final String id) {
+            final String id) {
         this.likedRepos = likedRepos;
         this.repo = service.repositoryFromCache(id);
         bind(this.repo);

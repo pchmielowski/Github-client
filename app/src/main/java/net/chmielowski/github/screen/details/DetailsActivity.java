@@ -39,7 +39,7 @@ public class DetailsActivity extends BaseActivity {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomApplication.get(this)
-                .activityComponent(this, getIntent().getStringExtra(KEY_ID), savedInstanceState == null)
+                .activityComponent(this, savedInstanceState == null)
                 .inject(this);
 
         model = ViewModelProviders.of(this, new Factory(() -> factory.create(getIntent().getStringExtra(KEY_ID))))

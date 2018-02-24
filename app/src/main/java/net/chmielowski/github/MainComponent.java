@@ -13,7 +13,7 @@ import dagger.Component;
 @Component(modules = {DataModule.class, ApplicationModule.class, NetworkModule.class})
 public interface MainComponent {
 
-    RepositoryComponent plusRepositoryComponent(RepositoryModule module);
+    RepositoryComponent plusRepositoryComponent();
 
     void inject(SendNetworkConnectedBroadcast broadcast);
 

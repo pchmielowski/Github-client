@@ -60,11 +60,10 @@ public class CustomApplication extends Application {
     }
 
     public DetailsActivityComponent activityComponent(final AppCompatActivity activity,
-                                                      final String repository,
                                                       final boolean createNew) {
         if (createNew) {
             repositoryComponent = component
-                    .plusRepositoryComponent(new RepositoryModule(repository));
+                    .plusRepositoryComponent();
         }
         assert repositoryComponent != null;
         return repositoryComponent
