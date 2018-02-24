@@ -18,6 +18,7 @@ import net.chmielowski.github.R;
 import net.chmielowski.github.databinding.ActivityLoginBinding;
 import net.chmielowski.github.screen.BaseActivity;
 import net.chmielowski.github.screen.search.SearchActivity;
+import net.chmielowski.github.utils.Factory;
 
 import java.util.Arrays;
 
@@ -41,14 +42,8 @@ public final class LoginActivity extends BaseActivity {
     public void onCreate(@Nullable final Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         CustomApplication.get(this).activityComponent(this).inject(this);
-        model = ViewModelProviders.of(this, new ViewModelProvider.Factory() {
-            @SuppressWarnings("unchecked")
-            @NonNull
-            @Override
-            public <T extends ViewModel> T create(@NonNull final Class<T> modelClass) {
-                return (T) factory.create();
-            }
-        }).get(LoginViewModel.class);
+        model = ViewModelProviders.of(this, new Factory(() -> factory.create()))
+                .get(LoginViewModel.class);
 
         user.token().ifPresent(__ -> goToSearch());
         binding = DataBindingUtil
